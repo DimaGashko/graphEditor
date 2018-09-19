@@ -1,2 +1,3 @@
-const a: number = 5;
-console.log(`Hello number ${a}`);
+function getOne(): number {
+   return 1; 
+} 
