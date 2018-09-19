@@ -50,6 +50,11 @@ gulp.task('html', () => {
       .pipe($.connect.reload());
 });
 
+gulp.task('doc', (cb) => {
+   return gulp.src(['README.md', 'app/**/*.js'], {read: false})
+      .pipe($.jsdoc3(cb));
+});
+
 gulp.task('connect', () => {
    return $.connect.server({
       root: 'app',

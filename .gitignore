@@ -5,6 +5,7 @@ dist/
 app/**/*.js
 app/**/*.css
 app/index.html
+docs/
 
 node_modules/
 package-lock.json
