@@ -19,6 +19,21 @@ gulp.task('html', () => {
       //.pipe($.connect.reload());
 });
 
+gulp.task('style', () => {
+      return gulp.src('app/styles/main.sass')
+         .pipe($.sass())
+         .on('error', $.notify.onError((err) => {
+            return {
+               title: 'Sass',
+               message: err.message,
+            }
+         }))
+         .pipe($.autoprefixer('last 2 versions', '> 1 %', 'ie 9'))
+         .pipe($.rename('main.css'))
+         .pipe(gulp.dest('app/styles/'))
+         .pipe($.connect.reload());
+   });
+
 // - - - BUILD - - - 
 
 // - - - WATCHERS - - -
