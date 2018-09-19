@@ -1,0 +1,32 @@
+{
+   "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/*.spec.ts": true,
+      "**/*.js": {
+         "when": "$(basename).ts",
+      },
+      "**/*.{css}": {
+         "when": "$(basename).sass",
+      },
+      "**/*.{html}": {
+         "when": "$(basename).jade",
+      },
+      ".vscode": true,
+      "**/e2e": true,
+      "**/environments": true,
+      "**/browserslist": true,
+      "**/tsconfig.*": true,
+      "angular.json": true,
+      "**/tslint.json": true,
+      "package-lock.json": true,
+      ".editorconfig": true,
+      "**/test.ts": true,
+      "**/polyfills.ts": true,
+      "**/karma.*": true, 
+      "**/*.{url}": true, 
+   }
+}
