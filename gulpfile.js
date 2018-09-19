@@ -5,8 +5,11 @@ const $ = require('gulp-load-plugins')();
 
 // - - - DEV - - -
 gulp.task('scripts', () => {
-   return gulp.src('app/**/js.js')
-      
+   const tsProject = $.typescript.createProject('tsconfig.json');
+   const tsResult = gulp.src('app/**/*.ts') 
+      .pipe(tsProject());
+
+   return tsResult.js      
       .on('error', $.notify.onError((err) => {
          return {
             title: 'TypeScript',

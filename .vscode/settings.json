@@ -19,7 +19,6 @@
       "**/e2e": true,
       "**/environments": true,
       "**/browserslist": true,
-      "**/tsconfig.*": true,
       "angular.json": true,
       "**/tslint.json": true,
       "package-lock.json": true,

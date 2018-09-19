@@ -24,11 +24,13 @@
     "gulp-notify": "3.1.0",
     "gulp-pug": "3.3.0",
     "gulp-rename": "1.2.2",
+    "gulp-replace": "0.6.1",
+    "gulp-rev-append": "0.1.8",
     "gulp-sass": "3.1.0",
+    "gulp-typescript": "^5.0.0-alpha.3",
     "gulp-uglify": "3.0.0",
     "gulp-useref": "3.1.4",
     "gulp.spritesmith": "6.9.0",
-    "gulp-replace": "0.6.1",
-    "gulp-rev-append": "0.1.8"
+    "typescript": "^3.0.3"
   }
 }
