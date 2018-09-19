@@ -64,11 +64,11 @@ gulp.task('connect', () => {
 gulp.task('watch', () => {
    gulp.watch("app/**/*.sass", gulp.parallel('styles'));
    gulp.watch("app/**/*.jade", gulp.parallel('html'));
-   //gulp.watch("app/**/*.ts", gulp.parallel('scripts'));
+   gulp.watch("app/**/*.ts", gulp.parallel('scripts'));
 });
 
 // - - - DEFAULT - - -
 gulp.task('default', gulp.series(
-   gulp.parallel('styles', 'html'/*, 'scripts'*/),
+   gulp.parallel('styles', 'html', 'scripts'),
    gulp.parallel('connect', 'watch'),
 ));
