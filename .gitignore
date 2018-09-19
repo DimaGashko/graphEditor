@@ -2,9 +2,9 @@
 
 # compiled output
 dist/
-app/**/*.js
-app/**/*.css
-app/index.html
+#app/**/*.js
+#app/**/*.css
+#app/index.html
 
 node_modules/
 package-lock.json
