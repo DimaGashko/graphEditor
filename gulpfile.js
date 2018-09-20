@@ -64,6 +64,13 @@ gulp.task('connect', () => {
 });
 
 // - - - BUILD - - - 
+gulp.task('build:clean', (cb) => {
+   return gulp.src('dist/', { read: false }).on('error', () => {
+      console.log('The folder "dist/" alredy removed');
+      cb();
+   })
+   .pipe($.clean());
+});
 
 // - - - WATCHERS - - -
 gulp.task('watch', () => {
