@@ -72,6 +72,14 @@ gulp.task('build:clean', (cb) => {
    .pipe($.clean());
 });
 
+gulp.task('build:move', (cb) => {
+   return gulp.src([
+      'app/manifest.json',
+      'app/favicon.png',
+   ])
+      .pipe(gulp.dest('dist/'))
+});
+
 // - - - WATCHERS - - -
 gulp.task('watch', () => {
    gulp.watch("app/**/*.sass", gulp.parallel('styles'));
