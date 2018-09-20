@@ -72,13 +72,46 @@ gulp.task('build:clean', (cb) => {
    .pipe($.clean());
 });
 
-gulp.task('build:move', (cb) => {
+gulp.task('build:move', () => {
    return gulp.src([
       'app/manifest.json',
       'app/favicon.png',
    ])
       .pipe(gulp.dest('dist/'))
 });
+
+gulp.task('build:img', () => {
+   return gulp.src('app/**/*.{png,jpg,bmp,gif}')
+      .pipe($.imagemin())
+      .pipe(gulp.dest('dist/'))
+      .pipe($.connect.reload());
+});
+
+gulp.task('build:useref', () => {
+   return gulp.src('app/index.html')
+      .pipe($.useref())
+      .pipe($.if('*.js', $.uglify()))
+      .pipe($.if('*.css', $.minifyCss()))
+      .pipe(gulp.dest('dist/'))
+      .pipe($.connect.reload());
+});
+
+gulp.task('build:html', () => {
+   return gulp.src('dist/**/*.html')
+      .pipe($.htmlmin({
+         collapseWhitespace: true
+      }))
+      .pipe(gulp.dest('dist/'))
+});
+
+gulp.task('build', gulp.series(
+   'build:clean',
+   gulp.parallel(
+      gulp.series('build:useref', 'build:html'), 
+      'build:img',
+      'build:move'
+   ),
+));
 
 // - - - WATCHERS - - -
 gulp.task('watch', () => {
