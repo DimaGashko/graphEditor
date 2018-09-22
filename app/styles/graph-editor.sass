@@ -1,0 +1,27 @@
+.graph_editor
+   height: 100%
+   min-width: 800px
+
+   &__toolkit
+      height: $toolkit-h
+      background: red
+
+   &__content
+      height: calc(100% - #{$toolkit-h})
+      min-height: 200px
+      @extend %clearfix
+
+   &__graph_manager,
+   &__project_manager
+      height: 100%
+      float: left
+   
+   &__graph_manager
+      width: 300px
+   
+      background: green
+
+   &__project_manager
+      width: calc(100% - 300px)
+
+      background: blue

@@ -7,17 +7,17 @@ const $ = require('gulp-load-plugins')();
 gulp.task('scripts', () => {
    const tsProject = $.typescript.createProject('tsconfig.json');
    const tsResult = gulp.src('app/**/*.ts') 
-      .pipe(tsProject());
-
-   return tsResult.js      
+      .pipe(tsProject())
       .on('error', $.notify.onError((err) => {
          return {
             title: 'TypeScript',
             message: err.message,
          }
-      }))
+      }));
+
+   return tsResult.js
       .pipe(gulp.dest('app/'))
-      .pipe($.connect.reload());
+      .pipe($.connect.reload())
 });
 
 gulp.task('styles', () => {
