@@ -1,27 +1,30 @@
 .graph_editor
+   $toolkit-h: 60px
+
    height: 100%
    min-width: 800px
 
    &__toolkit
       height: $toolkit-h
-      background: red
+      background: $color3
+      border-bottom: 1px solid $blocks-border-color
 
    &__content
+      @extend %clearfix
       height: calc(100% - #{$toolkit-h})
       min-height: 200px
-      @extend %clearfix
 
    &__graph_manager,
    &__project_manager
       height: 100%
       float: left
+      box-sizing: border-box
    
    &__graph_manager
       width: 300px
-   
-      background: green
+      background: $color2
+      border-right: 1px solid $blocks-border-color
 
    &__project_manager
       width: calc(100% - 300px)
-
-      background: blue
+      background: $color0
