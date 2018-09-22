@@ -1,11 +1,6 @@
-let GraphEditor = (function () {
-
-   class GraphEditor { 
-      constructor() { 
-         console.log('App inited!');
-      }
+export class GraphEditor {
+   constructor() { 
+      console.log('App!');
    }
 
-   return GraphEditor;
-
-}());
+}

@@ -1,5 +1,2 @@
-(function () {
-
-   var graphEditor = new GraphEditor;
-   
-}());
+import { GraphEditor } from "./graph-editor";
+let graphEditor = new GraphEditor();

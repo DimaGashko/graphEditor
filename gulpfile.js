@@ -4,7 +4,7 @@ const gulp = require('gulp');
 const $ = require('gulp-load-plugins')();
 
 // - - - DEV - - -
-gulp.task('scripts', () => {
+gulp.task('typescript', () => { 
    const tsProject = $.typescript.createProject('tsconfig.json');
    const tsResult = gulp.src('app/**/*.ts') 
       .pipe(tsProject())
@@ -15,14 +15,25 @@ gulp.task('scripts', () => {
          }
       }));
 
-   return tsResult.js
-      .pipe(gulp.dest('app/'))
-      .pipe($.connect.reload())
+   return tsResult.js.pipe(gulp.dest('app/'));
 });
+
+gulp.task('browserify', () => { 
+   return gulp.src('app/scripts/main.js')
+      .pipe($.browserify())
+      .pipe($.rename('main.build.js'))
+      .pipe($.connect.reload())
+      .pipe($.notify("Scripts complete!"))
+      .pipe(gulp.dest('app/scripts/'));
+});
+
+gulp.task('scripts', gulp.series('typescript', 'browserify'));
 
 gulp.task('styles', () => {
    return gulp.src('app/styles/main.sass')
-      .pipe($.sass())
+      .pipe($.sass({
+         includePaths: ['node_modules']
+      }))
       .on('error', $.notify.onError((err) => {
          return {
             title: 'Sass',
@@ -30,7 +41,7 @@ gulp.task('styles', () => {
          }
       }))
       .pipe($.autoprefixer('last 2 versions', '> 1 %', 'ie 9'))
-      .pipe($.rename('main.css'))
+      .pipe($.rename('main.build.css'))
       .pipe(gulp.dest('app/styles/'))
       .pipe($.connect.reload());
 });
