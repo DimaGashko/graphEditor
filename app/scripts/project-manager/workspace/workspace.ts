@@ -4,16 +4,22 @@ export default class Workspace extends Component {
    private ctx: CanvasRenderingContext2D | null = null;
    private metrix: any = {};
 
-   constructor(root: Element) { 
+   constructor() { 
       super();
+   }
 
+   public init(root: Element) { 
       this.getElements(root);
-      this.init();
       this.initEvents();
+      this.initCanvas();
    }
 
    private initEvents(): void {
       window.addEventListener('resize', (event) => {
+         this.onresize();
+      });
+
+      window.addEventListener('load', () => { 
          this.onresize();
       });
    }
@@ -24,16 +30,16 @@ export default class Workspace extends Component {
    }
 
    private updateMetrix(): void { 
-      this.metrix.gameW = this.els.root.offsetWidth;
-      this.metrix.gameH = this.els.root.offsetHeight;
+      this.metrix.gameW = this.els.root.clientWidth;
+      this.metrix.gameH = this.els.root.clientHeight;
    }
 
    private updateSize(): void {
       this.els.canvas.width = this.metrix.gameW;
-      this.els.canvas.heigh = this.metrix.gameH;
+      this.els.canvas.height = this.metrix.gameH;
    }
 
-   private init(): void { 
+   private initCanvas(): void { 
       this.ctx = (<HTMLCanvasElement>this.els.canvas).getContext('2d');
    }
 

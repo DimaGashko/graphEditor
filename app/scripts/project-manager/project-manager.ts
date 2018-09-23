@@ -98,7 +98,6 @@ export default class ProjectManager extends Component {
 
       this.els.projectList = r.querySelector('.project_manager__project_list');
       this.els.projects = r.querySelector('.project_manager__projects');
-      console.log(this.els.projects);
    }
 
    private createParametrs(root: HTMLElement) { 

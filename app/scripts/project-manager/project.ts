@@ -1,5 +1,6 @@
 import Component from "../framework/component";
 import { tmpl } from "../other/functions";
+import Workspace from "./workspace/workspace";
 
 let nextId = 0;
 
@@ -9,12 +10,17 @@ export default class Project extends Component {
    private id: number = nextId++;
    private name: string = `Project ${this.id + 1}`;
 
+   private workspace: Workspace = new Workspace();
+
    constructor() { 
       super();      
    }
 
    public init(parent: Element) { 
       this.create(parent);
+      this.getElements();
+      
+      this.workspace.init(this.els.workspace);
    }
 
    public show() { 
@@ -63,7 +69,7 @@ export default class Project extends Component {
 
    private getElements() { 
       let r: HTMLElement = this.els.root;
-      //this.els. = r.querySelector('.');
+      this.els.workspace = r.querySelector('.workspace');
    }
 
 }
