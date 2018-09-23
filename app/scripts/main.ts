@@ -13,9 +13,6 @@ import GraphEditor from "./graph-editor";
 
    graphEditor.projectManager.createNewProject();
    graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject();
 
    (<any>window).g = graphEditor;
 

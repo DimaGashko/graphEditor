@@ -25,10 +25,12 @@ export default class Project extends Component {
 
    public show() { 
       this.els.root.style.display = 'block';
+      this.workspace.start();
    }
 
    public hide() { 
       this.els.root.style.display = 'none';
+      this.workspace.stop();
    }
 
    /**
