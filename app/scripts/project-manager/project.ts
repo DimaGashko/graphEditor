@@ -3,6 +3,7 @@ import Component from "../framework/component";
 let nextId = 0;
 
 export default class Project extends Component {
+   private maxProjectName: number = 50;
    private id: number = nextId++;
    private name: string = `Project ${this.id + 1}`;
 
@@ -19,7 +20,7 @@ export default class Project extends Component {
     * @returns {boolean} удалось ли выполнить переименование
     */
    public rename(name: string): boolean {
-      name = name.trim().slice(0, 50);
+      name = name.trim().slice(0, this.maxProjectName);
       if (name.length < 1) return false;
 
       this.name = name;
