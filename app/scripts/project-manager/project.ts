@@ -10,6 +10,7 @@ export default class Project extends Component {
 
    constructor() { 
       super(); 
+      console.log('P'); 
    }
 
    /**

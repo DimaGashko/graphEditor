@@ -38,7 +38,7 @@ export default class ProjectManager extends Component {
 
    private selectProject(project: Project): void { 
       this.selectedProject = project;
-      this.render();
+      this.render();   
    }
 
    private selectProjectById(id: number): void { 
