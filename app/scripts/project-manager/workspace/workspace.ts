@@ -1,11 +1,17 @@
 import Component from "../../framework/component";
 import WSRender from "./ws_render";
+import WSCamera from "./ws_camera";
+import WSData from "./ws_data";
+import WSConverter from "./ws_converter";
 
 export default class Workspace extends Component {
    private playing: boolean = false;
    private animateFrameId: number = 0;
 
-   private render: WSRender = new WSRender();
+   private data: WSData = new WSData();
+   private camera: WSCamera = new WSCamera();
+   private converter: WSConverter = new WSConverter(this.data);
+   private render: WSRender = new WSRender(this.data, this.camera);
 
    constructor() { 
       super();

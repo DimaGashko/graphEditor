@@ -1,4 +1,6 @@
 import Component from "../../framework/component";
+import WSData from "./ws_data";
+import WSCamera from "./ws_camera";
 
 
 export default class WSRender extends Component {
@@ -6,7 +8,7 @@ export default class WSRender extends Component {
 
    private metrix: any = {}; 
    
-   constructor() { 
+   constructor(private data: WSData, private camera: WSCamera) { 
       super();
    }
 
