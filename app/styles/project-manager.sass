@@ -32,16 +32,16 @@
    height: 100%
    line-height: 
    font-size: 0
-   background: transparent
+   background: $color3
    border-right: 1px solid rgba(0,0,0,.1)
    box-sizing: border-box
    position: relative
 
    &-selected
-      background: $color0
+      background: $color1
 
-      .project_in_list__select 
-         opacty: 1
+      .project_in_list__select
+         opacity: 1
 
    &__select
       display: inline-block
@@ -53,7 +53,7 @@
       cursor: default
       opacity: 0.7
       outline: 0
-      transition: opacity .2s
+      transition: opacity .3s
       white-space: nowrap
       overflow: hidden
       text-overflow: ellipsis
@@ -75,7 +75,7 @@
       font-family: Arial, Helvetica, sans-serif
       color: transparent
       opacity: 0.4
-      transition: opacity .2s
+      transition: opacity .3s
       outline: none
 
       &:hover, &:focus

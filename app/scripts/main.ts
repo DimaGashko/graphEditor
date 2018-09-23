@@ -11,6 +11,12 @@ import GraphEditor from "./graph-editor";
    
    let graphEditor = new GraphEditor(root);
 
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+
    (<any>window).g = graphEditor;
 
 }());

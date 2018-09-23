@@ -4,10 +4,9 @@ let nextId = 0;
 
 export default class Project extends Component {
    private maxProjectName: number = 50;
+
    private id: number = nextId++;
    private name: string = `Project ${this.id + 1}`;
-
-   public selected: boolean = false; 
 
    constructor() { 
       super(); 

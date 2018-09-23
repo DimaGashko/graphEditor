@@ -2,10 +2,10 @@ script(type="text/template" id="project_list_tmpl")
    <% for (let i = 0; i < projects.length; i++) { %>
       <% let project = projects[i]; %>
 
-      div(
-         class!="project_in_list <%= (project.selected) ? 'project_in_list-selected' : '' %>", 
-         data-project-id=!"<%= project.getId() %>")
-
+      .project_in_list(
+         class!="<%= (select === project) ? 'project_in_list-selected' : '' %>"
+         data-project-id!="<%= project.getId() %>")
+   
          button.project_in_list__select(title!="<%= project.name %>") <%= project.name %>
          button.project_in_list__close(title="Close") x
 

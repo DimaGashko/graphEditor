@@ -3,7 +3,8 @@ import Project from "./project";
 import { tmpl } from "../other/functions"
 
 export default class ProjectManager extends Component {
-   public projects: Project[] = [];
+   private projects: Project[] = [];
+   private selectedProject: Project|null = null;
 
    constructor() { 
       super();
@@ -21,6 +22,7 @@ export default class ProjectManager extends Component {
       this.projects.push(project);
 
       this.initProjectEvents(project);
+      this.selectProject(project);
 
       this.trigger('change');
       return project;
@@ -28,6 +30,22 @@ export default class ProjectManager extends Component {
 
    public render(): void {
       this.renderProjectList();
+   }
+
+   public getSelectedProject(): Project|null { 
+      return this.selectedProject;
+   }
+
+   private selectProject(project: Project): void { 
+      this.selectedProject = project;
+      this.render();
+   }
+
+   private selectProjectById(id: number): void { 
+      const project = this.projects.filter(project => project.getId() === id)[0];
+      if (!project) return;
+
+      this.selectProject(project);
    }
 
    private initProjectEvents(project: Project): void { 
@@ -40,12 +58,25 @@ export default class ProjectManager extends Component {
       this.addEvent('change', () => { 
          this.render();
       });
+
+      (<HTMLElement>this.els.root).addEventListener('click', (event: MouseEvent) => { 
+         const targ = <Element>event.target;
+         if (!targ) return;
+
+         const projectInList = targ.closest('.project_in_list');
+         
+         if (projectInList && targ.closest('.project_in_list__select')) { 
+            const id = projectInList.getAttribute('data-project-id');
+            if (id) this.selectProjectById(parseInt(id));
+         } 
+
+      });
    }
 
    private renderProjectList(): void { 
-      console.log('asdf');
       const html = tmpl('project_list_tmpl', {
-         projects: this.projects
+         projects: this.projects,
+         select: this.getSelectedProject(),
       });
       (<HTMLElement>this.els.projectList).innerHTML = html;
    }
