@@ -4,7 +4,7 @@ import WSCamera from "./ws_camera";
 
 
 export default class WSRender extends Component {
-   private ctx: CanvasRenderingContext2D | null = null;
+   private ctx: CanvasRenderingContext2D = (<CanvasRenderingContext2D>{});
 
    private metrix: any = {}; 
    
@@ -13,14 +13,16 @@ export default class WSRender extends Component {
    }
 
    public init(canvas: HTMLCanvasElement, root: Element) { 
-      this.els.canvas = canvas;
-      this.ctx = canvas.getContext('2d');
-
       this.els.root = root;
+
+      this.els.canvas = canvas;
+      const ctx = canvas.getContext('2d');
+
+      if (ctx) this.ctx = ctx;
    }
 
    public render(): void {
-      
+      this.ctx.fillRect(-5, -5, 10, 10);
    }
 
    public updateMetrix(): void { 
@@ -31,6 +33,8 @@ export default class WSRender extends Component {
    public updateSize(): void {
       this.els.canvas.width = this.metrix.gameW;
       this.els.canvas.height = this.metrix.gameH;
+
+
    }
 
 }
