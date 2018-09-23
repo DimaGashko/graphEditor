@@ -9,8 +9,7 @@ export default class Project extends Component {
    private name: string = `Project ${this.id + 1}`;
 
    constructor() { 
-      super(); 
-      console.log('78');     
+      super();     
    }
 
    /**

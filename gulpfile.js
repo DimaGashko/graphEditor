@@ -7,15 +7,16 @@ const tsProject = $.typescript.createProject('tsconfig.json');
 
 // - - - DEV - - -
 gulp.task('typescript', () => { 
-   return gulp.src('app/scripts/**/*.ts') 
+   const tsResult = gulp.src('app/scripts/**/*.ts') 
       .pipe(tsProject())
       .on('error', $.notify.onError((err) => {
          return {
             title: 'TypeScript',
             message: err.message,
          }
-      }))
-      .pipe(gulp.dest('app/scripts'));
+      }));
+
+   return tsResult.js.pipe(gulp.dest('app/scripts'));
 });
 
 gulp.task('browserify', () => { 
