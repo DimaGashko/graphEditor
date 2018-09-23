@@ -8,9 +8,11 @@
       height: $header-h
       background: $color1
       border-bottom: 1px solid $blocks-border-color
+      overflow: auto
 
    &__project_list 
       height: $header-h
+      //white-space: nowrap
 
    &__project_list
       font-size: 0
@@ -29,27 +31,38 @@
    line-height: 1
    height: 100%
    line-height: 
-   font-size: 14px 
-   padding: 5px
-   background: $color0
+   font-size: 0
+   background: transparent
    border-right: 1px solid rgba(0,0,0,.1)
    box-sizing: border-box
+   position: relative
 
-   &:selected
+   &-selected
+      background: $color0
 
-   &:before
-      content: ''
+      .project_in_list__select 
+         opacty: 1
+
+   &__select
       display: inline-block
       vertical-align: middle
+      border: none
+      background: none
       height: 100%
-      width: 0
+      font-size: 14px 
+      cursor: default
+      opacity: 0.7
+      outline: 0
+      transition: opacity .2s
 
-   &__name
-      display: inline-block
-      vertical-align: middle
+      &:focus
+         opacity: 1
 
    &__close
       @include sprite($close)
+      background-position: center
+      background-repeat: no-repeat
+      height: 100%
       display: inline-block
       vertical-align: middle
       position: relative
