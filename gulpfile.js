@@ -62,7 +62,10 @@ gulp.task('html', () => {
 });
 
 gulp.task('doc', (cb) => {
-   return gulp.src(['README.md', 'app/**/*.js'], {read: false})
+   gulp.src('doc/gen', {read: false}).on('error', () => cb())
+      .pipe($.clean());
+      
+   return gulp.src(['README.md', 'app/scripts/**/*.js'], {read: false})
       .pipe($.jsdoc3(cb));
 });
 
@@ -70,7 +73,7 @@ gulp.task('connect', () => {
    return $.connect.server({
       root: 'app',
       livereload: true,
-      port: 8000,
+      port: 8001,
    });
 });
 
