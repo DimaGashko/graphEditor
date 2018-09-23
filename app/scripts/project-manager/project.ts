@@ -10,7 +10,7 @@ export default class Project extends Component {
 
    constructor() { 
       super(); 
-      console.log('9');     
+      console.log('78');     
    }
 
    /**

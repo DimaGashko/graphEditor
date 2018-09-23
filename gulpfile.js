@@ -3,20 +3,19 @@
 const gulp = require('gulp');
 const $ = require('gulp-load-plugins')();
 
-var tsProject = $.typescript.createProject('tsconfig.jsojn');
+const tsProject = $.typescript.createProject('tsconfig.json');
 
 // - - - DEV - - -
 gulp.task('typescript', () => { 
-   const tsResult = gulp.src('app/**/*.ts') 
+   return gulp.src('app/scripts/**/*.ts') 
       .pipe(tsProject())
       .on('error', $.notify.onError((err) => {
          return {
             title: 'TypeScript',
             message: err.message,
          }
-      }));
-
-   return tsResult.js.pipe(gulp.dest('app/'));
+      }))
+      .pipe(gulp.dest('app/scripts'));
 });
 
 gulp.task('browserify', () => { 
@@ -90,7 +89,7 @@ gulp.task('connect', () => {
    return $.connect.server({
       root: 'app',
       livereload: true,
-      port: 8888,
+      port: 8000,
    });
 });
 
