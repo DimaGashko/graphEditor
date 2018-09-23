@@ -69,6 +69,22 @@ gulp.task('doc', (cb) => {
       .pipe($.jsdoc3(cb));
 });
 
+gulp.task('sprite', (cb) => {
+   var spriteData = gulp.src('app/img/icons/*.*')
+      .pipe($.spritesmith({
+         imgName: 'sprite.png',
+         imgPath: '../img/sprite.png',
+         cssName: '_sprite.sass',
+         cssFormat: 'sass',
+         algorithm: 'binary-tree',
+      }));
+      
+   spriteData.img.pipe(gulp.dest('app/img'));
+   spriteData.css.pipe(gulp.dest('app/styles'));
+
+   cb();
+});
+
 gulp.task('connect', () => {
    return $.connect.server({
       root: 'app',
@@ -132,6 +148,7 @@ gulp.task('watch', () => {
    gulp.watch("app/**/*.sass", gulp.parallel('styles'));
    gulp.watch("app/**/*.jade", gulp.parallel('html'));
    gulp.watch("app/**/*.ts", gulp.parallel('scripts'));
+   gulp.watch("app/img/icons/**/*.*", gulp.parallel('sprite'));
 });
 
 // - - - DEFAULT - - -

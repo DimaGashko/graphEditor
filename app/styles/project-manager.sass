@@ -13,7 +13,7 @@
       height: $header-h
 
    &__project_list
-      
+      font-size: 0
 
    &__new_project
 
@@ -35,6 +35,8 @@
    border-right: 1px solid rgba(0,0,0,.1)
    box-sizing: border-box
 
+   &:selected
+
    &:before
       content: ''
       display: inline-block
@@ -47,13 +49,17 @@
       vertical-align: middle
 
    &__close
+      @include sprite($close)
       display: inline-block
       vertical-align: middle
+      position: relative
+      background-color: transparent
       border: none
-      background: transparent
-      font-size: 10px
       font-family: Arial, Helvetica, sans-serif
-      color: #aaa
+      color: transparent
+      opacity: 0.4
+      transition: opacity .2s
+      outline: none
 
-      &:hover
-         color: red
+      &:hover, &:focus
+         opacity: 1
