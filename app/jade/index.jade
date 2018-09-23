@@ -3,8 +3,8 @@ html(lang="en")
    head
       include components/system/meta.jade 
 
-      link(rel="stylesheet", href="styles/main.css") 
-      script(src="scripts/main.build.js")
+      link(rel="stylesheet", href="styles/main.build.css") 
+      script(src="scripts/main.build.js" defer)
    body
       .graph_editor
          .graph_editor__toolkit
@@ -21,3 +21,4 @@ html(lang="en")
                      .projects_manager__projects
 
       include components/app/templates.jade 
+   

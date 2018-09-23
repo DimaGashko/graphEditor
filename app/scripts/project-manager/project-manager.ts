@@ -1,13 +1,18 @@
 import Component from "../framework/component";
-import Template from "../framework/template";
 import Project from "./project";
+import { tmpl } from "../other/functions"
 
 export default class ProjectManager extends Component {
-   private projects: Project[] = [];
+   public projects: Project[] = [];
 
    constructor() { 
       super();
-      this.init();
+   }
+
+   public init(root: HTMLElement): void {
+      this.createParametrs(root);
+      this.getElements();
+      this.initProjects();
    }
 
    public createNewProject(name?: string): void { 
@@ -15,13 +20,28 @@ export default class ProjectManager extends Component {
       if (name) project.rename(name);
 
       this.projects.push(project);
+
+      this.addProjectToProjectList(project);
    }
 
-   private init(): void { 
-      this.initProjects();
+   private addProjectToProjectList(project: Project): void { 
+      <HTMLElement>(this.els.projectList).insertAdjacentHTML(
+         'beforeEnd', tmpl('project_in_list_tmpl', project)
+      );
    }
 
    private initProjects(): void {
       this.createNewProject();
    }
+
+   private getElements(): void { 
+      let r: HTMLElement = this.els.root;
+
+      this.els.projectList = r.querySelector('.project_manager__project_list');
+   }
+
+   private createParametrs(root: HTMLElement) { 
+      this.els.root = root;
+   }
+
 }

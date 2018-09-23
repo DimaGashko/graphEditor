@@ -42,8 +42,8 @@ gulp.task('styles', () => {
       }))
       .pipe($.autoprefixer('last 2 versions', '> 1 %', 'ie 9'))
       .pipe($.rename('main.build.css'))
+      .pipe($.connect.reload())
       .pipe(gulp.dest('app/styles/'))
-      .pipe($.connect.reload());
 });
 
 gulp.task('html', () => {
@@ -73,7 +73,7 @@ gulp.task('connect', () => {
    return $.connect.server({
       root: 'app',
       livereload: true,
-      port: 8001,
+      port: 8000,
    });
 });
 

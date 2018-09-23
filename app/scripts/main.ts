@@ -1,6 +1,19 @@
 import GraphEditor from "./graph-editor";
-import Template from "./framework/template";
-let graphEditor = new GraphEditor();
 
-let t = new Template('<p><%=name%></p>');
-console.log(t.get({name: 'Anonim'}));
+(function () { 
+
+   let root: HTMLElement|null = document.querySelector('.graph_editor');
+   if (!root) {
+      console.log('Не удалось получить элемент .graph_editor');
+      alert('Error. Cannot create the Graph Editor');
+      return;
+   }
+   
+   let graphEditor = new GraphEditor(root);
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+   graphEditor.projectManager.createNewProject();
+
+}());

@@ -9,8 +9,12 @@
       background: $color1
       border-bottom: 1px solid $blocks-border-color
 
+   &__project_list 
+      height: $header-h
+
    &__project_list
-   
+      
+
    &__new_project
 
    &__content
@@ -18,3 +22,38 @@
       background: $color0
 
    &__projects
+
+.project_in_list
+   display: inline-block
+   vertical-align: middle
+   line-height: 1
+   height: 100%
+   line-height: 
+   font-size: 14px 
+   padding: 5px
+   background: $color0
+   border-right: 1px solid rgba(0,0,0,.1)
+   box-sizing: border-box
+
+   &:before
+      content: ''
+      display: inline-block
+      vertical-align: middle
+      height: 100%
+      width: 0
+
+   &__name
+      display: inline-block
+      vertical-align: middle
+
+   &__close
+      display: inline-block
+      vertical-align: middle
+      border: none
+      background: transparent
+      font-size: 10px
+      font-family: Arial, Helvetica, sans-serif
+      color: #aaa
+
+      &:hover
+         color: red

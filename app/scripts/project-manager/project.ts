@@ -4,7 +4,9 @@ let nextId = 0;
 
 export default class Project extends Component {
    private id: number = nextId++;
-   private name: string = `New Project ${this.id + 1}`;
+   private name: string = `Project ${this.id + 1}`;
+
+   public selected: boolean = true; 
 
    constructor() { 
       super(); 
@@ -16,12 +18,20 @@ export default class Project extends Component {
     * @param name новое название
     * @returns {boolean} удалось ли выполнить переименование
     */
-   rename(name: string): boolean {
+   public rename(name: string): boolean {
       name = name.trim().slice(0, 10);
       if (name.length < 1) return false;
 
       this.name = name;
       return true;
+   }
+
+   public getName(): string { 
+      return this.name;
+   }
+
+   public getId(): number { 
+      return this.id;
    }
 
 }
