@@ -56,14 +56,12 @@ export default class Events {
     * 
     * Все параметры после первого будут переданны во все handler-ы
     */
-   trigger(type: string/*[, parametrs]*/) { 
+   trigger(type: string, ...parametrs: any[]) { 
       //На такое событие не подписывались
       if (!this.handlers[type]) return;
-
-      var args = (<any>Array).from(arguments).slice(1);
       
       this.handlers[type].forEach((handler: any) => { 
-         handler.apply(null, args);
+         handler(...parametrs);
       });
    }
 }

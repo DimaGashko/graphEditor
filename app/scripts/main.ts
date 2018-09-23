@@ -10,11 +10,7 @@ import GraphEditor from "./graph-editor";
    }
    
    let graphEditor = new GraphEditor(root);
-   graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject("ASDFASDFasf safdfaaad fasdjfkl asdjfk;sd adsk jasdfk; jsdfkljs d;fkjsd f;klsdf");
-   graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject();
+
+   (<any>window).g = graphEditor;
 
 }());

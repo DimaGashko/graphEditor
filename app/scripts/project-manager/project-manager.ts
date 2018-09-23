@@ -12,22 +12,42 @@ export default class ProjectManager extends Component {
    public init(root: HTMLElement): void {
       this.createParametrs(root);
       this.getElements();
+      this.initEvents();
       this.initProjects();
    }
 
-   public createNewProject(name?: string): void { 
+   public createNewProject(): Project { 
       let project = new Project();
-      if (name) project.rename(name);
-
       this.projects.push(project);
 
-      this.addProjectToProjectList(project);
+      this.initProjectEvents(project);
+
+      this.trigger('change');
+      return project;
    }
 
-   private addProjectToProjectList(project: Project): void { 
-      <HTMLElement>(this.els.projectList).insertAdjacentHTML(
-         'beforeEnd', tmpl('project_in_list_tmpl', project)
-      );
+   public render(): void {
+      this.renderProjectList();
+   }
+
+   private initProjectEvents(project: Project): void { 
+      project.addEvent('change', () => { 
+         this.render();
+      });
+   }
+
+   private initEvents(): void { 
+      this.addEvent('change', () => { 
+         this.render();
+      });
+   }
+
+   private renderProjectList(): void { 
+      console.log('asdf');
+      const html = tmpl('project_list_tmpl', {
+         projects: this.projects
+      });
+      (<HTMLElement>this.els.projectList).innerHTML = html;
    }
 
    private initProjects(): void {

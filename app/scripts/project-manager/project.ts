@@ -17,14 +17,14 @@ export default class Project extends Component {
     * Устанавливает имя проекта
     * 
     * @param name новое название
-    * @returns {boolean} удалось ли выполнить переименование
     */
-   public rename(name: string): boolean {
+   public rename(name: string): void {
       name = name.trim().slice(0, this.maxProjectName);
-      if (name.length < 1) return false;
-
+      if (name.length < 1) return;
       this.name = name;
-      return true;
+
+      this.trigger('rename', this);
+      this.trigger('change', this);
    }
 
    public getName(): string { 
