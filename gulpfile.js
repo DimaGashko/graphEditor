@@ -3,9 +3,10 @@
 const gulp = require('gulp');
 const $ = require('gulp-load-plugins')();
 
+var tsProject = $.typescript.createProject('tsconfig.jsojn');
+
 // - - - DEV - - -
 gulp.task('typescript', () => { 
-   const tsProject = $.typescript.createProject('tsconfig.json');
    const tsResult = gulp.src('app/**/*.ts') 
       .pipe(tsProject())
       .on('error', $.notify.onError((err) => {
