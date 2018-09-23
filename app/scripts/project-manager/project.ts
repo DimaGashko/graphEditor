@@ -53,6 +53,10 @@ export default class Project extends Component {
       return this.id;
    }
 
+   public close(): void { 
+      console.log(`${this.getName()} close`);
+   }
+
    private create(parent: Element) { 
       this.els.parent = parent;
 

@@ -38,10 +38,26 @@ export default class ProjectManager extends Component {
       return this.selectedProject;
    }
 
+   public getProjectById(id: number): Project|null { 
+      return this.projects
+         .filter(project => project.getId() === id)[0] || null;
+   }
+
    private selectProject(project: Project): void { 
+      if (this.getSelectedProject() === project) return;
+
       this.selectedProject = project;
       this.showProject(project);
-      this.render();   
+      this.trigger('change');  
+   }
+
+   private closeProject(project: Project): void {
+      if (this.getSelectedProject() === project) { 
+         
+      }
+
+      project.close();
+      this.trigger('change');  
    }
 
    private showProject(project: Project): void {
@@ -50,10 +66,17 @@ export default class ProjectManager extends Component {
    }
 
    private selectProjectById(id: number): void { 
-      const project = this.projects.filter(project => project.getId() === id)[0];
+      const project = this.getProjectById(id);
       if (!project) return;
 
       this.selectProject(project);
+   }
+
+   private closeProjectById(id: number): void { 
+      const project = this.getProjectById(id);
+      if (!project) return;
+
+      this.closeProject(project);
    }
 
    private initProjectEvents(project: Project): void { 
@@ -73,10 +96,17 @@ export default class ProjectManager extends Component {
 
          const projectInList = targ.closest('.project_in_list');
          
-         if (projectInList && targ.closest('.project_in_list__select')) { 
-            const id = projectInList.getAttribute('data-project-id');
-            if (id) this.selectProjectById(parseInt(id));
-         } 
+         if (projectInList) {
+            if (targ.closest('.project_in_list__select')) {
+               const id = projectInList.getAttribute('data-project-id');
+               if (id) this.selectProjectById(parseInt(id));
+         
+            } else if (targ.closest('.project_in_list__close')) {
+               const id = projectInList.getAttribute('data-project-id');
+               console.log('id')
+               if (id) this.closeProjectById(parseInt(id));
+            }
+         }
 
       });
    }
