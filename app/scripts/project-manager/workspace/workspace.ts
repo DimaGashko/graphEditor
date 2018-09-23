@@ -22,6 +22,10 @@ export default class Workspace extends Component {
       window.addEventListener('load', () => { 
          this.onresize();
       });
+
+      this.addEvent('resize', () => { 
+         this.onresize();
+      });
    }
 
    private onresize() { 
