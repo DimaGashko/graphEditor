@@ -6,7 +6,10 @@ script(type="text/template" id="project_list_tmpl")
          class!="<%= (select === project) ? 'project_in_list-selected' : '' %>"
          data-project-id!="<%= project.getId() %>")
    
-         button.project_in_list__select(title!="<%= project.name %>") <%= project.name %>
+         button.project_in_list__select(title!="<%= project.getName() %>") <%= project.getName() %>
          button.project_in_list__close(title="Close") x
 
    <% } %> 
+
+script(type="text/template" id="project_tmpl")
+      canvas.project__canvas HTML5 canvas not supported

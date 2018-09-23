@@ -19,6 +19,8 @@ export default class ProjectManager extends Component {
 
    public createNewProject(): Project { 
       let project = new Project();
+      project.init(this.els.projects);
+
       this.projects.push(project);
 
       this.initProjectEvents(project);
@@ -38,7 +40,13 @@ export default class ProjectManager extends Component {
 
    private selectProject(project: Project): void { 
       this.selectedProject = project;
+      this.showProject(project);
       this.render();   
+   }
+
+   private showProject(project: Project): void {
+      this.projects.forEach(project => project.hide());
+      project.show();
    }
 
    private selectProjectById(id: number): void { 
@@ -89,6 +97,8 @@ export default class ProjectManager extends Component {
       let r: HTMLElement = this.els.root;
 
       this.els.projectList = r.querySelector('.project_manager__project_list');
+      this.els.projects = r.querySelector('.project_manager__projects');
+      console.log(this.els.projects);
    }
 
    private createParametrs(root: HTMLElement) { 
