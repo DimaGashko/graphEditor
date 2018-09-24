@@ -84,7 +84,7 @@ export default class ProjectManager extends Component {
          this.render();
       });
    }
-
+   
    private initEvents(): void { 
       this.addEvent('change', () => { 
          this.render();
@@ -103,7 +103,6 @@ export default class ProjectManager extends Component {
          
             } else if (targ.closest('.project_in_list__close')) {
                const id = projectInList.getAttribute('data-project-id');
-               console.log('id')
                if (id) this.closeProjectById(parseInt(id));
             }
          }

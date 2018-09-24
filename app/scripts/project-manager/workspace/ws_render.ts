@@ -1,8 +1,7 @@
 import Component from "../../framework/component";
 import WSData from "./ws_data";
-import Vector from "../../other/vector";
 import WSConverter from "./ws_converter";
-
+import Vector from "../../math/vector/vector";
 
 export default class WSRender extends Component {
    private ctx: CanvasRenderingContext2D = (<CanvasRenderingContext2D>{});
