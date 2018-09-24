@@ -38,16 +38,18 @@ export default class WSRender extends Component {
          ctx.lineTo(xy2.x, xy2.y);
       });
 
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
       graph.getVertices().forEach((vertex) => { 
          let targ: WSVertex = vertex.targ;
          let xy = conv.toDisplay(targ.coords);
 
-         ctx.fillRect(xy.x, xy.y, 10, 10);
-
+         ctx.moveTo(xy.x, xy.y);
+         ctx.arc(xy.x, xy.y, 10, 0, Math.PI * 2);
       });
 
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      ctx.fill();
    }
 
    public updateMetrix(): void { 
