@@ -1,6 +1,7 @@
 import GraphEditor from "./graph-editor";
 
 (function () { 
+   console.time('GraphEditor');
 
    let root: HTMLElement|null = document.querySelector('.graph_editor');
    if (!root) {
@@ -14,6 +15,7 @@ import GraphEditor from "./graph-editor";
    graphEditor.projectManager.createNewProject();
    graphEditor.projectManager.createNewProject();
 
-   (<any>window).g = graphEditor;
+   console.timeEnd('GraphEditor');
 
+   (<any>window).g = graphEditor;
 }());
