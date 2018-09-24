@@ -4,6 +4,28 @@ import Edge from "./edge";
 /**
  * Представление графа и алгоритмы на графе
  * 
+ * Испльзование:
+ *
+ * let graph: Graph = new Graph();
+ *
+ * let v0 = new Vertex(0);
+ * let v1 = new Vertex(1);
+ * 
+ * let e0 = new Edge(v0, v1, 'uni', 1);
+ * 
+ * graph.addVertex(v0);
+ * graph.addVertex(v1);
+ * 
+ * graph.addEdge(e1);
+ * 
+ * Получим граф вида:
+ * (0) ---> (1)
+ * 
+ * p.s.при добавлении ребра, его вершины автоматически добавляются в граф, 
+ * поэтому писать addVertex для вершин, которые указываются в 
+ * ребрах - не обязательно (их можно передавать до добавления 
+ * ребер, что бы сохранить последовательность)
+ * 
  * @class
  */
 export default class Graph { 
@@ -31,6 +53,7 @@ export default class Graph {
 
    /**
     * Возвращает граф в виде матрицы смежности
+    * Если в графе есть кратные ребра, то они "склеиваются"
     */
    public toAdjacencyMatrix(): number[][] { 
       let matrix: number[][] = [];
@@ -65,6 +88,12 @@ export default class Graph {
       return [[]];
    }
 
+   /**
+    * На основании переданной матрицы смежности возвращает граф
+    * 
+    * @param {number[][]} matrix матрица смежности
+    * @returns Graph
+    */
    static parseAdjacencyMatrix(matrix: number[][]): Graph { 
       let graph = new Graph();
       let vertices: Vertex[] = [];
@@ -84,7 +113,7 @@ export default class Graph {
          for (let j = 0; j < len; j++) { 
             //Нет ребра
             if (matrix[i][j] === 0) continue;
-
+            
             //Ориентированное ребро
             if (matrix[i][j] !== matrix[j][i]) { 
                graph.addEdge(
