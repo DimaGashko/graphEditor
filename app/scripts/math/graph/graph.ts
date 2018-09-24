@@ -51,6 +51,14 @@ export default class Graph {
       this.addVertex(edge.v2);
    }
 
+   public getVertices(): Vertex[] { 
+      return this.vertices.slice();
+   }
+
+   public getEdges(): Edge[] { 
+      return this.edges.slice();
+   }
+
    /**
     * Возвращает граф в виде матрицы смежности
     * Если в графе есть кратные ребра, то они "склеиваются"

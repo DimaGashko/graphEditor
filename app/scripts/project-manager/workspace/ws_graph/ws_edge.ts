@@ -1,6 +1,6 @@
 export default class WSEdge {
-
-   constructor() { 
+   
+   constructor(public name: string = 'e') { 
       
    }
 }

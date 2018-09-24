@@ -2,6 +2,7 @@ import Component from "../../framework/component";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
 import Vector from "../../math/vector/vector";
+import WSVertex from "./ws_graph/ws_vertex";
 
 export default class WSRender extends Component {
    private ctx: CanvasRenderingContext2D = (<CanvasRenderingContext2D>{});
@@ -20,12 +21,33 @@ export default class WSRender extends Component {
    }
 
    public render(): void {
+      let ctx = this.ctx, z = this.data.zoom, conv = this.converter;
+      let graph = this.data.wsGraph.graph;
       this.clear();
 
-      let coords = (this.converter.toDisplay(new Vector(-280, -280)));
-      let size = new Vector(560, 560).scale(this.data.zoom)
+      ctx.beginPath();
 
-      this.ctx.fillRect(coords.x, coords.y, size.x, size.y);
+      graph.getEdges().forEach((edge) => { 
+         let targ1: WSVertex = edge.v1.targ;
+         let targ2: WSVertex = edge.v2.targ;
+
+         let xy1 = conv.toDisplay(targ1.coords);
+         let xy2 = conv.toDisplay(targ2.coords);
+
+         ctx.moveTo(xy1.x, xy1.y);
+         ctx.lineTo(xy2.x, xy2.y);
+      });
+
+      graph.getVertices().forEach((vertex) => { 
+         let targ: WSVertex = vertex.targ;
+         let xy = conv.toDisplay(targ.coords);
+
+         ctx.fillRect(xy.x, xy.y, 10, 10);
+
+      });
+
+      ctx.lineWidth = 2;
+      ctx.stroke();
    }
 
    public updateMetrix(): void { 

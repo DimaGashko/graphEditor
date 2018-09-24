@@ -2,7 +2,6 @@ import GraphEditor from "./graph-editor";
 import Graph from "./math/graph/graph";
 import Vertex from "./math/graph/vertex";
 import Edge from "./math/graph/edge";
-import WSVertex from "./project-manager/workspace/ws_graph/ws_vertix";
 
 let graph: Graph = new Graph();
 
