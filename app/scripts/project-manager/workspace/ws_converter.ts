@@ -8,11 +8,19 @@ export default class WSConverter extends Component {
       super();
    }
 
-   public toReal(displayCoords: Vector): Vector { 
-      return new Vector(0, 0);
+   public toReal(display: Vector): Vector { 
+      let result = display.sub(this.data.getOffset());
+      result = result.diScale(this.data.zoom);
+      result = result.sub(this.data.camera);
+
+      return result;
    }
 
-   public toDisplay(realCoords: Vector): Vector { 
-      return new Vector(0, 0);
+   public toDisplay(real: Vector): Vector { 
+      let result = real.sub(this.data.camera);
+      result = result.scale(this.data.zoom);
+      result = result.add(this.data.getOffset());
+
+      return result;
    }
 }

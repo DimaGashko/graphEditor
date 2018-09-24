@@ -22,7 +22,7 @@ export default class Vector {
     * 
     * @param {Vector} vector вектор, который будет добавлен
     */
-   plus(vector: Vector): Vector {
+   add(vector: Vector): Vector {
       return new Vector(
          this.x + vector.x,
          this.y + vector.y
@@ -34,7 +34,7 @@ export default class Vector {
     * 
     * @param {Vector} vector вектор, который будет вычтен
     */
-   minus(vector: Vector): Vector {
+   sub(vector: Vector): Vector {
       return new Vector(
          this.x - vector.x,
          this.y - vector.y
