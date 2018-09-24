@@ -4,7 +4,10 @@ interface IVertextStyle {
    background: string;
    borderWidth: number;
    borderColor: string;
-   font: string;
+   fontFamily: string,
+   fontVariant: string,
+   fontSize: number,
+
    color: string;
 }
 
@@ -15,7 +18,9 @@ export default class WSVertex {
       background: '#fff',
       borderWidth: 2, 
       borderColor: '#000',
-      font: '14px Arial',
+      fontFamily: 'Arial',
+      fontSize: 14,
+      fontVariant: 'normal',
       color: '#000',
    }
 

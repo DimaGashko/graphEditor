@@ -43,6 +43,7 @@ export default class WSRender extends Component {
       let ctx = this.ctx;
       ctx.save();
 
+      let zoom = Math.max(this.data.zoom.x, this.data.zoom.y);
       let targ: WSVertex = vertex.targ;
       let xy = this.converter.toDisplay(targ.coords);
       let r = targ.radius.scale(this.data.zoom);
@@ -56,7 +57,7 @@ export default class WSRender extends Component {
       ctx.fill();
 
       //Граница
-      ctx.lineWidth = targ.style.borderWidth;
+      ctx.lineWidth = targ.style.borderWidth * zoom;
       ctx.strokeStyle = targ.style.borderColor;
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
@@ -65,7 +66,9 @@ export default class WSRender extends Component {
       ctx.stroke();
 
       //Название
-      ctx.font = targ.style.font;
+      ctx.font = `${targ.style.fontVariant} 
+         ${targ.style.fontSize * zoom}px ${targ.style.fontFamily}`;
+      
       ctx.fillStyle = targ.style.color;
 
       ctx.shadowColor = targ.style.background;
@@ -73,7 +76,7 @@ export default class WSRender extends Component {
       ctx.shadowOffsetY = 0;
       ctx.shadowBlur = 2;
 
-      ctx.fillText(targ.name, xy.x, xy.y, 100);
+      ctx.fillText(targ.name, xy.x, xy.y, 100 * zoom);
 
       ctx.restore();
    }
@@ -82,6 +85,7 @@ export default class WSRender extends Component {
       let ctx = this.ctx;
       ctx.save();
 
+      let zoom = Math.max(this.data.zoom.x, this.data.zoom.y);
       let targE: WSEdge = edge.targ; 
       let targV1: WSVertex = edge.v1.targ;
       let targV2: WSVertex = edge.v2.targ;
@@ -90,7 +94,7 @@ export default class WSRender extends Component {
       let xy2 = this.converter.toDisplay(targV2.coords);
 
       ctx.beginPath();
-      ctx.lineWidth = targE.style.lineWidth;
+      ctx.lineWidth = targE.style.lineWidth * zoom;
       ctx.strokeStyle = targE.style.lineColor;
 
       ctx.moveTo(xy1.x, xy1.y);
