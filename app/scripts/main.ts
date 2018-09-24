@@ -11,7 +11,8 @@ let v3 = new Vertex(3);
 let v4 = new Vertex(4);
 
 let e1 = new Edge(v1, v2);
-let e2 = new Edge(v1, v3);
+let e2 = new Edge(v1, v3, 'uni');
+
 
 graph.addEdge(e1);
 graph.addEdge(e2);
