@@ -10,7 +10,7 @@ export default class WSData {
    public wsGraph: WSGraph = new WSGraph();
 
    constructor() {
-      (<any>window).a = this;
+      
    }
 
 }

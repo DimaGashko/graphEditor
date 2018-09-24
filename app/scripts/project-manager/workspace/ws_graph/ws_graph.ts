@@ -13,14 +13,15 @@ export default class WSGraph {
    }
 
    private create() {
-      let v1 = new Vertex(new WSVertex('v1', new Vector(-100, -50)));
-      let v2 = new Vertex(new WSVertex('v2', new Vector(50, 100)));
-      let v3 = new Vertex(new WSVertex('v3', new Vector(60, -70)));
-      let v4 = new Vertex(new WSVertex('v4', new Vector(150, 150)));
+      let v1 = new Vertex(new WSVertex('v1', new Vector(-200, 100)));
+      let v2 = new Vertex(new WSVertex('v2', new Vector(0, 100)));
+      let v3 = new Vertex(new WSVertex('v3', new Vector(130, -70)));
+      let v4 = new Vertex(new WSVertex('v4', new Vector(150, 200)));
 
-      this.graph.addEdge(new Edge(v1, v2, 'bi', 1, new WSEdge('e1')));
-      this.graph.addEdge(new Edge(v2, v3, 'bi', 1, new WSEdge('e2')));
-      this.graph.addEdge(new Edge(v1, v3, 'uni', 2, new WSEdge('e3')));
+      this.graph.addEdge(new Edge(v1, v2, 'uni', 1, new WSEdge('e1')));
+      this.graph.addEdge(new Edge(v2, v3, 'uni', 1, new WSEdge('e2')));
+      this.graph.addEdge(new Edge(v1, v3, 'bi', 2, new WSEdge('e3')));
       this.graph.addEdge(new Edge(v2, v4, 'uni', 1, new WSEdge('e4')));
+      this.graph.addEdge(new Edge(v3, v4, 'bi', 1, new WSEdge('e5')));
    }
 }

@@ -3,6 +3,9 @@ import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
 import Vector from "../../math/vector/vector";
 import WSVertex from "./ws_graph/ws_vertex";
+import Vertex from "../../math/graph/vertex";
+import Edge from "../../math/graph/edge";
+import WSEdge from "./ws_graph/ws_edge";
 
 export default class WSRender extends Component {
    private ctx: CanvasRenderingContext2D = (<CanvasRenderingContext2D>{});
@@ -21,35 +24,88 @@ export default class WSRender extends Component {
    }
 
    public render(): void {
-      let ctx = this.ctx, z = this.data.zoom, conv = this.converter;
-      let graph = this.data.wsGraph.graph;
       this.clear();
+
+      this.getGraph().getEdges().forEach((edge) => { 
+         this.drowEdge(edge);
+      });
+
+      this.getGraph().getVertices().forEach((vertex) => { 
+         this.drowVertex(vertex);
+      });
+   }
+
+   private getGraph() { 
+      return this.data.wsGraph.graph;
+   }   
+
+   private drowVertex(vertex: Vertex) { 
+      let ctx = this.ctx;
+      ctx.save();
+
+      let targ: WSVertex = vertex.targ;
+      let xy = this.converter.toDisplay(targ.coords);
+      let r = targ.radius.scale(this.data.zoom);
 
       ctx.beginPath();
 
-      graph.getEdges().forEach((edge) => { 
-         let targ1: WSVertex = edge.v1.targ;
-         let targ2: WSVertex = edge.v2.targ;
+      //Круг фона
+      ctx.fillStyle = targ.style.background,
+      
+      ctx.arc(xy.x, xy.y, r.x, 0, Math.PI * 2);
+      ctx.fill();
 
-         let xy1 = conv.toDisplay(targ1.coords);
-         let xy2 = conv.toDisplay(targ2.coords);
-
-         ctx.moveTo(xy1.x, xy1.y);
-         ctx.lineTo(xy2.x, xy2.y);
-      });
-
-      ctx.lineWidth = 2;
+      //Граница
+      ctx.lineWidth = targ.style.borderWidth;
+      ctx.strokeStyle = targ.style.borderColor;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      
+      ctx.arc(xy.x, xy.y, r.x, 0, Math.PI * 2);
       ctx.stroke();
 
-      graph.getVertices().forEach((vertex) => { 
-         let targ: WSVertex = vertex.targ;
-         let xy = conv.toDisplay(targ.coords);
+      //Название
+      ctx.font = targ.style.font;
+      ctx.fillStyle = targ.style.color;
 
-         ctx.moveTo(xy.x, xy.y);
-         ctx.arc(xy.x, xy.y, 10, 0, Math.PI * 2);
-      });
+      ctx.shadowColor = targ.style.background;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.shadowBlur = 2;
 
-      ctx.fill();
+      ctx.fillText(targ.name, xy.x, xy.y, 100);
+
+      ctx.restore();
+   }
+
+   private drowEdge(edge: Edge) { 
+      let ctx = this.ctx;
+      ctx.save();
+
+      let targE: WSEdge = edge.targ; 
+      let targV1: WSVertex = edge.v1.targ;
+      let targV2: WSVertex = edge.v2.targ;
+
+      let xy1 = this.converter.toDisplay(targV1.coords);
+      let xy2 = this.converter.toDisplay(targV2.coords);
+
+      ctx.beginPath();
+      ctx.lineWidth = targE.style.lineWidth;
+      ctx.strokeStyle = targE.style.lineColor;
+
+      ctx.moveTo(xy1.x, xy1.y);
+      ctx.lineTo(xy2.x, xy2.y);
+      ctx.stroke();
+
+      //Стрелка для ориентировоного ребра
+      if (edge.type === 'uni') { 
+         ctx.strokeStyle = 'green';
+         ctx.moveTo(xy1.x, xy1.y);
+         ctx.lineTo(xy2.x, xy2.y);
+         ctx.stroke();
+      }
+
+      ctx.restore();
    }
 
    public updateMetrix(): void { 

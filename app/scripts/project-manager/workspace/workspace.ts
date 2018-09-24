@@ -2,7 +2,6 @@ import Component from "../../framework/component";
 import WSRender from "./ws_render";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
-import WSGraph from "./ws_graph/ws_graph";
 
 export default class Workspace extends Component {
    private playing: boolean = false;
