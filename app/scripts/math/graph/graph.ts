@@ -2,12 +2,12 @@ import Vertex from "./vertex";
 import Edge from "./edge";
 
 /**
- * Граф
+ * Представление графа и алгоритмы на графе
  * 
  * @class
  */
 export default class Graph { 
-   private vertexis: Vertex[] = [];
+   private vertices: Vertex[] = [];
    private edges: Edge[] = [];
 
    constructor() { 
@@ -15,9 +15,9 @@ export default class Graph {
    }
 
    public addVertex(vertex: Vertex): void { 
-      if (this.vertexis.indexOf(vertex) !== -1) return;
+      if (this.vertices.indexOf(vertex) !== -1) return;
 
-      this.vertexis.push(vertex);
+      this.vertices.push(vertex);
    }
 
    public addEdge(edge: Edge): void { 
@@ -27,6 +27,42 @@ export default class Graph {
 
       this.addVertex(edge.v1);
       this.addVertex(edge.v2);
+   }
+
+   /**
+    * Возвращает граф в виде матрицы смежности
+    */
+   public toAdjacencyMatrix(): number[][] { 
+      let matrix: number[][] = [];
+      this.vertices.forEach(() => { 
+         matrix.push(new Array(this.vertices.length).fill(0));
+      });
+
+      this.edges.forEach((edge) => { 
+         let v1 = this.vertices.indexOf(edge.v1);
+         let v2 = this.vertices.indexOf(edge.v2);
+         if (v1 === -1 || v2 === -1) return;
+
+         if (v1 === v2) {
+            matrix[v1][v2] += edge.weight;
+
+         } else {
+            matrix[v1][v2] += edge.weight;
+
+            if (edge.type === "bi") {
+               matrix[v2][v1] += edge.weight;
+            }
+         }
+      });
+
+      return matrix;
+   }
+
+   /**
+    * Возвращает граф в виде матрицы инцидентности
+    */
+   public toIncidenceMatrix(): number[][] { 
+      return [[]];
    }
 
 }
