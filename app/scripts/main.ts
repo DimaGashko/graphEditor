@@ -2,17 +2,17 @@ import GraphEditor from "./graph-editor";
 import Graph from "./math/graph/graph";
 import Vertex from "./math/graph/vertex";
 import Edge from "./math/graph/edge";
+import WSVertex from "./project-manager/workspace/ws_graph/ws_vertix";
 
 let graph: Graph = new Graph();
 
-let v1 = new Vertex(1);
+let v1 = new Vertex(new WSVertex());
 let v2 = new Vertex(2);
 let v3 = new Vertex(3);
 let v4 = new Vertex(4);
 
 let e1 = new Edge(v1, v2);
 let e2 = new Edge(v1, v3, 'uni');
-
 
 graph.addEdge(e1);
 graph.addEdge(e2);
