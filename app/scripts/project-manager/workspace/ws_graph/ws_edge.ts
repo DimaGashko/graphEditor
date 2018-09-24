@@ -1,4 +1,5 @@
-export default class WSEdge { 
+export default class WSEdge {
+
    constructor() { 
       
    }
