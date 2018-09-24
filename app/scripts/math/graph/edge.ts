@@ -7,8 +7,8 @@ import Vertex from "./vertex";
  */
 export default class Edge { 
    constructor(
-      public v1: Vertex,
-      public v2: Vertex,
+      public begin: Vertex,
+      public end: Vertex,
       public targ?: any
    ) { 
 

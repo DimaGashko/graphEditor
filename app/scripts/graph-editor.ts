@@ -4,7 +4,7 @@ import ProjectManager from "./project-manager/project-manager";
 export default class GraphEditor extends Component {
    public projectManager: ProjectManager = new ProjectManager();
 
-   constructor(root: HTMLElement) { 
+   constructor(root: Element) { 
       super();
       this.initParametrs(root);
       this.getElements();
@@ -21,7 +21,7 @@ export default class GraphEditor extends Component {
       this.els.projectManager = r.querySelector('.project_manager');
    }
 
-   private initParametrs(root: HTMLElement): void { 
+   private initParametrs(root: Element): void { 
       this.els.root = root;
    }
 

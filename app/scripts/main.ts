@@ -18,6 +18,8 @@ graph.addEdge(e2);
 
 graph.addVertex(v4);
 
+(<any>window).g = graph;
+
 (function () {
    console.time('GraphEditor');
 
@@ -35,5 +37,5 @@ graph.addVertex(v4);
 
    console.timeEnd('GraphEditor');
 
-   (<any>window).g = graphEditor;
+   (<any>window).ge = graphEditor;
 }());
