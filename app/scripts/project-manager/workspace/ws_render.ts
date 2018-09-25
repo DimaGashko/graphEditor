@@ -26,6 +26,8 @@ export default class WSRender extends Component {
    public render(): void {
       this.clear();
 
+      
+
       this.getGraph().getEdges().forEach((edge) => { 
          this.drowEdge(edge);
       });
@@ -77,10 +79,6 @@ export default class WSRender extends Component {
    }
 
    private drowEdge(edge: Edge) { 
-      if (edge.v1 === edge.v2) { 
-         this.drowLoopEdge(edge);
-      }
-
       let ctx = this.ctx;
       ctx.save();
 
@@ -89,25 +87,28 @@ export default class WSRender extends Component {
       let targV1: WSVertex = edge.v1.targ;
       let targV2: WSVertex = edge.v2.targ;
 
+      ctx.fillStyle = targE.style.color;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      ctx.font = `${targE.style.fontVariant} 
+         ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
+
+      if (edge.v1 === edge.v2) { 
+         this.drowLoopEdge(edge);   
+         return;
+      }
+
       let xy1 = this.converter.toDisplay(targV1.coords);
       let xy2 = this.converter.toDisplay(targV2.coords);
 
       ctx.beginPath();
       ctx.lineWidth = targE.style.lineWidth * zoom;
-      ctx.strokeStyle = targE.style.lineColor;
 
       ctx.moveTo(xy1.x, xy1.y);
       ctx.lineTo(xy2.x, xy2.y);
       ctx.stroke();
 
       //Текст
-      ctx.font = `${targE.style.fontVariant} 
-         ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
-      
-      ctx.fillStyle = targE.style.color;
-      ctx.textBaseline = "middle";
-      ctx.textAlign = "center";
-
       let offsetX = 0; (xy1.x < xy2.x) ? 10 : -10;
       let offsetY = (xy1.y < xy2.y) ? 10 : -10;
 
@@ -154,32 +155,33 @@ export default class WSRender extends Component {
       let targV: WSVertex = edge.v1.targ;
 
       let xy = this.converter.toDisplay(targV.coords);
-      let r = targV.radius.x * zoom;
+      for (let i = 0; i < 1; i = i + 0.5) {
+         ctx.save();
+         let r = targV.radius.x * zoom +  i * 20;
 
-      ctx.beginPath();
-      ctx.arc(xy.x - r, xy.y - r, r, 0, Math.PI * 2);
-      ctx.stroke();
+         ctx.lineWidth = targE.style.loopWidth;
+         ctx.beginPath();
+         ctx.arc(xy.x - r / Math.SQRT2, xy.y - r / Math.SQRT2, r, 0, Math.PI * 2);
+         ctx.stroke();  
+         
+         //Переносим СК на круг петли (под углом 45)
+         let rx = xy.x - r / Math.SQRT2 * 2;
+         let ry = xy.y - r / Math.SQRT2 * 2;
 
-      //Текст
-      ctx.font = `${targE.style.fontVariant} 
-         ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
+         ctx.translate(rx, ry);
+         ctx.rotate(-Math.PI / 4);
       
-      ctx.fillStyle = targE.style.color;
-      ctx.textBaseline = "middle";
-      ctx.textAlign = "center";
-
-      ctx.fillText(this.getEdgeText(edge),
-         xy.x - r*2 + -5 * zoom,
-         xy.y - r*2 + -5 * zoom
-      );
-
-      //Arrow
-      //Переносим СК в верхнюю часть вершины
-      ctx.translate(xy.x, xy.y - r);
-
-      ctx.moveTo(0, 0);
-      ctx.fillRect(-3, -3, 6, 6);
-      
+         //Текст
+         ctx.font = `${targE.style.fontVariant} 
+            ${targE.style.loopFontSize * zoom}px ${targE.style.fontFamily}`;
+        
+         ctx.fillText(this.getEdgeText(edge), 0, -5 * zoom);
+       
+         //Arrow
+         ctx.fillRect(-1, -1, 2, 2);
+         
+         ctx.restore();
+      }
 
       ctx.restore();
    }
