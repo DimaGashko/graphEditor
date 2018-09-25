@@ -27,10 +27,6 @@ export default class WSRender extends Component {
    public render(): void {
       this.clear();
 
-      this.getGraph().getVertices().forEach((vertex) => { 
-         this.drowVertex(vertex);
-      });
-
       this.getGraph().getEdges().forEach((edge) => { 
          if (edge.v1 !== edge.v2) { 
             this.drowEdge(edge, 0);
@@ -40,6 +36,9 @@ export default class WSRender extends Component {
          }
       });
       
+      this.getGraph().getVertices().forEach((vertex) => { 
+         this.drowVertex(vertex);
+      });
    }
 
    private getGraph() { 
@@ -113,6 +112,8 @@ export default class WSRender extends Component {
       let xy1 = this.converter.toDisplay(targV1.coords);
       let xy2 = this.converter.toDisplay(targV2.coords);
       let edgeW = Math.hypot(xy1.x - xy2.x, xy1.y - xy2.y);
+      let r1 = targV1.radius.x * zoom;
+      let r2 = targV2.radius.x * zoom;
 
       ctx.beginPath();
       ctx.lineWidth = targE.style.lineWidth * zoom;
@@ -141,6 +142,12 @@ export default class WSRender extends Component {
          ctx.save();
          ctx.beginPath();
 
+         let timeArrow = r2 / edgeW; //Время, когда кривая 
+            //будет на окружности второй вершины
+         
+         let arrStart = getBezieCoords(begin, controll, end, timeArrow);
+         ctx.translate(arrStart.x, arrStart.y);
+
          //Поворасиваем СК по направляющей кривой
          ctx.rotate(Math.atan2(controll.y, centerX));
 
@@ -158,14 +165,14 @@ export default class WSRender extends Component {
       //Текст
       ctx.save();
       
-      let curveCenter = getBezieCoords(begin, controll, end, 0.5);
-      ctx.translate(curveCenter.x, curveCenter.y);
-
-      ctx.fillRect(-3, -3, 6, 6);
+      let textCoords = getBezieCoords(begin, controll, end, 0.5);
+      ctx.translate(textCoords.x, textCoords.y);
 
       if (xy1.x > xy2.x) { 
          ctx.rotate(Math.PI);
       }
+
+      ctx.fillText(this.getEdgeText(edge), 0, -10 * zoom);
 
       ctx.restore();
 
