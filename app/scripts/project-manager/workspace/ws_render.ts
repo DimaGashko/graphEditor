@@ -101,12 +101,31 @@ export default class WSRender extends Component {
       ctx.lineTo(xy2.x, xy2.y);
       ctx.stroke();
 
-      //Стрелка для ориентировоного ребра
-      if (edge.type === 'uni') { 
-         ctx.strokeStyle = 'green';
-         ctx.moveTo(xy1.x, xy1.y);
-         ctx.lineTo(xy2.x, xy2.y);
+      //Стрелка для ориентировоного ребра (не петли)
+      if (edge.type === 'uni' && targV1 !== targV2) { 
+         ctx.save();
+         ctx.beginPath();
+
+         //Переносим начало координат в конец ребра
+         ctx.translate(xy2.x, xy2.y);
+
+         //Поворачиваем ребро горизонтально
+         ctx.rotate(Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x));
+
+         //Смещаем сисему координат в начало конечной вершины
+         ctx.translate(-targV2.radius.x * zoom, 0);
+         //(Теперь начало координат указывает на видимую часть конца ребра)
+
+         //Рисуем стрелочку
+         ctx.beginPath();
+         ctx.moveTo(0, 0);
+         ctx.lineTo(-targE.arrowSize * zoom, -5 * zoom);
+         ctx.moveTo(0, 0);
+         ctx.lineTo(-targE.arrowSize * zoom, 5 * zoom);
+
          ctx.stroke();
+
+         ctx.restore();
       }
 
       ctx.restore();

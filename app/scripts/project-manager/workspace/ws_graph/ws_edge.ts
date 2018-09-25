@@ -7,6 +7,7 @@ interface IEdgeStyle {
 }
 
 export default class WSEdge {
+   public arrowSize: number = 15;
 
    public style: IEdgeStyle = {
       lineColor: '#000',
