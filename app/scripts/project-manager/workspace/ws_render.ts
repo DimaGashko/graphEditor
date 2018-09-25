@@ -26,8 +26,6 @@ export default class WSRender extends Component {
    public render(): void {
       this.clear();
 
-      
-
       this.getGraph().getEdges().forEach((edge) => { 
          this.drowEdge(edge);
       });
@@ -35,12 +33,18 @@ export default class WSRender extends Component {
       this.getGraph().getVertices().forEach((vertex) => { 
          this.drowVertex(vertex);
       });
+      
    }
 
    private getGraph() { 
       return this.data.wsGraph.graph;
    }   
 
+   /**
+    * Рисует вершину графа
+    * 
+    * @param {Vertex} vertex верниша
+    */
    private drowVertex(vertex: Vertex) { 
       let ctx = this.ctx;
       ctx.save();
@@ -78,7 +82,14 @@ export default class WSRender extends Component {
       ctx.restore();
    }
 
-   private drowEdge(edge: Edge) { 
+   /**
+    * Рисует ребро графа
+    * 
+    * @param {Edge} egde верниша
+    * @param {number} multipleCount кратность этого ребра (если есть кратные 
+    * ребра, то первое из кратных ребер - 0, второе - 1)
+    */
+   private drowEdge(edge: Edge, multipleCount: number = 0) { 
       let ctx = this.ctx;
       ctx.save();
 
@@ -94,7 +105,8 @@ export default class WSRender extends Component {
          ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
 
       if (edge.v1 === edge.v2) { 
-         this.drowLoopEdge(edge);   
+         this.drowLoopEdge(edge, 0); 
+         this.drowLoopEdge(edge, 1); 
          return;
       }
 
@@ -135,9 +147,9 @@ export default class WSRender extends Component {
          //Рисуем стрелочку
          ctx.beginPath();
          ctx.moveTo(0, 0);
-         ctx.lineTo(-targE.arrowSize * zoom, -5 * zoom);
+         ctx.lineTo(-targE.style.arrowSize * zoom, -5 * zoom);
          ctx.moveTo(0, 0);
-         ctx.lineTo(-targE.arrowSize * zoom, 5 * zoom);
+         ctx.lineTo(-targE.style.arrowSize * zoom, 5 * zoom);
 
          ctx.stroke();
          ctx.restore();
@@ -146,7 +158,14 @@ export default class WSRender extends Component {
       ctx.restore();
    }
 
-   private drowLoopEdge(edge: Edge) { 
+   /**
+    * Рисует ребро-петлю графа
+    * 
+    * @param {Edge} egde верниша
+    * @param {number} multipleCount кратность этого ребра (если есть кратные 
+    * ребра, то первое из кратных ребер - 0, второе - 1)
+    */
+   private drowLoopEdge(edge: Edge, multipleCount: number = 0) { 
       let ctx = this.ctx;
       ctx.save();
 
@@ -154,34 +173,39 @@ export default class WSRender extends Component {
       let targE: WSEdge = edge.targ; 
       let targV: WSVertex = edge.v1.targ;
 
+      ctx.lineWidth = targE.style.loopWidth;
+
       let xy = this.converter.toDisplay(targV.coords);
-      for (let i = 0; i < 1; i = i + 0.5) {
-         ctx.save();
-         let r = targV.radius.x * zoom +  i * 20;
 
-         ctx.lineWidth = targE.style.loopWidth;
-         ctx.beginPath();
-         ctx.arc(xy.x - r / Math.SQRT2, xy.y - r / Math.SQRT2, r, 0, Math.PI * 2);
-         ctx.stroke();  
-         
-         //Переносим СК на круг петли (под углом 45)
-         let rx = xy.x - r / Math.SQRT2 * 2;
-         let ry = xy.y - r / Math.SQRT2 * 2;
-
-         ctx.translate(rx, ry);
-         ctx.rotate(-Math.PI / 4);
+      //Радиус окружности ребра-петли
+      let r = (Math.min(targV.radius.x, 20) + multipleCount * 10) * zoom;
       
-         //Текст
-         ctx.font = `${targE.style.fontVariant} 
-            ${targE.style.loopFontSize * zoom}px ${targE.style.fontFamily}`;
-        
-         ctx.fillText(this.getEdgeText(edge), 0, -5 * zoom);
-       
-         //Arrow
-         ctx.fillRect(-1, -1, 2, 2);
-         
-         ctx.restore();
-      }
+      ctx.beginPath();
+
+      //Рисуем ребро-перлю
+      ctx.arc(xy.x - r / Math.SQRT2, xy.y - r / Math.SQRT2, r, 0, Math.PI * 2);
+      ctx.stroke();  
+      
+      //Переносим СК на круг петли (под углом 45)
+      let rx = xy.x - r / Math.SQRT2 * 2;
+      let ry = xy.y - r / Math.SQRT2 * 2;
+
+      ctx.translate(rx, ry);
+      ctx.rotate(-Math.PI / 4);
+   
+      //Текст
+      ctx.font = `${targE.style.fontVariant} 
+         ${targE.style.loopFontSize * zoom}px ${targE.style.fontFamily}`;
+      
+      ctx.fillText(this.getEdgeText(edge), 0, -10 * zoom);
+      
+      //Arrow
+      ctx.rotate(Math.PI / 30);
+      ctx.moveTo(0, 0);
+      ctx.lineTo(targE.style.loopArrowSize * zoom, 5 * zoom);
+      ctx.moveTo(0, 0);
+      ctx.lineTo(targE.style.loopArrowSize * zoom, -5 * zoom);
+      ctx.stroke();
 
       ctx.restore();
    }

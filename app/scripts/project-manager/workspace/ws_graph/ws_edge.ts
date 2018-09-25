@@ -4,13 +4,15 @@ interface IEdgeStyle {
    fontVariant: string,
    fontSize: number,
    color: string,
+   arrowSize: number
 
+   loopArrowSize: number
    loopWidth: number,
    loopFontSize: number,
 }
 
 export default class WSEdge {
-   public arrowSize: number = 15;
+   public  = 15;
 
    public style: IEdgeStyle = {
       lineWidth: 2,
@@ -18,7 +20,9 @@ export default class WSEdge {
       fontSize: 14,
       fontVariant: 'normal',
       color: '#000',
+      arrowSize: 10,
 
+      loopArrowSize: 10,
       loopWidth: 1,
       loopFontSize: 10
    }
