@@ -26,6 +26,10 @@ export default class WSRender extends Component {
    public render(): void {
       this.clear();
 
+      this.getGraph().getVertices().forEach((vertex) => { 
+         this.drowVertex(vertex);
+      });
+
       this.getGraph().getEdges().forEach((edge) => { 
          if (edge.v1 !== edge.v2) { 
             this.drowEdge(edge, 0);
@@ -33,10 +37,6 @@ export default class WSRender extends Component {
          } else {
             this.drowLoopEdge(edge, 0); 
          }
-      });
-
-      this.getGraph().getVertices().forEach((vertex) => { 
-         this.drowVertex(vertex);
       });
       
    }
@@ -111,13 +111,10 @@ export default class WSRender extends Component {
 
       let xy1 = this.converter.toDisplay(targV1.coords);
       let xy2 = this.converter.toDisplay(targV2.coords);
+      let edgeW = Math.hypot(xy1.x - xy2.x, xy1.y - xy2.y);
 
       ctx.beginPath();
       ctx.lineWidth = targE.style.lineWidth * zoom;
-
-      ctx.moveTo(xy1.x, xy1.y);
-      ctx.lineTo(xy2.x, xy2.y);
-      ctx.stroke();
 
       //Переносим начало координат в конец ребра
       ctx.translate(xy2.x, xy2.y);
@@ -125,9 +122,38 @@ export default class WSRender extends Component {
       //Поворачиваем ребро горизонтально
       ctx.rotate(Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x));
 
+      //Смещаем сисему координат в начало конечной вершины
+      ctx.translate(-targV2.radius.x * zoom, 0);
+
+      let centerX = -edgeW / 2;
+      let controllY = 40 * zoom;
+
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(centerX, controllY, -edgeW + targV1.radius.x + targV2.radius.x, 0);
+      ctx.stroke();
+
+      //Стрелка
+      if (edge.type === 'uni') { 
+         ctx.save();
+         ctx.beginPath();
+
+         //Поворасиваем СК по направляющей кривой
+         ctx.rotate(Math.atan2(controllY, centerX));
+
+         //Рисуем стрелочку
+         ctx.beginPath();
+         ctx.moveTo(0, 0);
+         ctx.lineTo(targE.style.arrowSize * zoom, -5 * zoom);
+         ctx.moveTo(0, 0);
+         ctx.lineTo(targE.style.arrowSize * zoom, 5 * zoom);
+
+         ctx.stroke();
+         ctx.restore();
+      }
+
       //Текст
       ctx.save();
-      let textX = -Math.hypot(xy1.x - xy2.x, xy1.y - xy2.y) / 2;
+      let textX = centerX;
 
       if (xy1.x > xy2.x) { 
          ctx.rotate(Math.PI);
@@ -137,26 +163,6 @@ export default class WSRender extends Component {
       ctx.fillText(this.getEdgeText(edge), textX, -10 * zoom);
 
       ctx.restore();
-
-      //Стрелка для ориентировоного ребра (не петли)
-      if (edge.type === 'uni' && targV1 !== targV2) { 
-         ctx.save();
-         ctx.beginPath();
-
-         //Смещаем сисему координат в начало конечной вершины
-         ctx.translate(-targV2.radius.x * zoom, 0);
-         //(Теперь начало координат указывает на видимую часть конца ребра)
-
-         //Рисуем стрелочку
-         ctx.beginPath();
-         ctx.moveTo(0, 0);
-         ctx.lineTo(-targE.style.arrowSize * zoom, -5 * zoom);
-         ctx.moveTo(0, 0);
-         ctx.lineTo(-targE.style.arrowSize * zoom, 5 * zoom);
-
-         ctx.stroke();
-         ctx.restore();
-      }
 
       ctx.restore();
    }
