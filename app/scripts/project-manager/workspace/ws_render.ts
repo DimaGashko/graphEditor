@@ -173,6 +173,14 @@ export default class WSRender extends Component {
          xy.y - r*2 + -5 * zoom
       );
 
+      //Arrow
+      //Переносим СК в верхнюю часть вершины
+      ctx.translate(xy.x, xy.y - r);
+
+      ctx.moveTo(0, 0);
+      ctx.fillRect(-3, -3, 6, 6);
+      
+
       ctx.restore();
    }
 
