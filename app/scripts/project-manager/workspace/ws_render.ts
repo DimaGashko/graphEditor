@@ -28,8 +28,14 @@ export default class WSRender extends Component {
       this.clear();
 
       this.getGraph().getEdges().forEach((edge) => { 
-         if (edge.v1 !== edge.v2) { 
+         if (edge.v1 !== edge.v2) {
             this.drowEdge(edge, 0);
+            this.drowEdge(edge, 1);
+            this.drowEdge(edge, 2);
+            this.drowEdge(edge, 3);
+            this.drowEdge(edge, 4);
+            this.drowEdge(edge, 5);
+            this.drowEdge(edge, 6);
          
          } else {
             this.drowLoopEdge(edge, 0); 
@@ -129,8 +135,20 @@ export default class WSRender extends Component {
 
       let centerX = -edgeW / 2;
 
+      let controllY = 0;
+
+      if (multipleCount === 0) { 
+         controllY = 0;
+      
+      } else if (multipleCount % 2 === 0) {
+         controllY = (-40 * zoom) * (multipleCount - 1);
+      
+      } else { 
+         controllY = 40 * zoom * multipleCount;
+      } 
+      
       let begin = new Vector(0, 0);
-      let controll = new Vector(centerX, 40 * zoom);
+      let controll = new Vector(centerX, controllY);
       let end = new Vector(-edgeW, 0);
 
       ctx.moveTo(begin.x, begin.y);

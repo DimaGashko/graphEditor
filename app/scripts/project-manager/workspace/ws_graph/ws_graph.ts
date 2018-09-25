@@ -20,9 +20,9 @@ export default class WSGraph {
 
       this.graph.addEdge(new Edge(v2, v1, 'uni', 1, new WSEdge('e1')));
       this.graph.addEdge(new Edge(v2, v3, 'uni', 1, new WSEdge('e2')));
-      this.graph.addEdge(new Edge(v1, v3, 'bi', 2, new WSEdge('e3')));
+      //this.graph.addEdge(new Edge(v1, v3, 'bi', 2, new WSEdge('e3')));
       this.graph.addEdge(new Edge(v2, v4, 'uni', 1, new WSEdge('e4')));
-      this.graph.addEdge(new Edge(v3, v4, 'bi', 1, new WSEdge('e5')));
-      this.graph.addEdge(new Edge(v2, v2, 'uni', 1, new WSEdge('e5')));
+      //this.graph.addEdge(new Edge(v3, v4, 'bi', 1, new WSEdge('e5')));
+      //this.graph.addEdge(new Edge(v2, v2, 'uni', 1, new WSEdge('e5')));
    }
 }
