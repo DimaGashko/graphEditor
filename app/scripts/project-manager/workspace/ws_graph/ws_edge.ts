@@ -4,6 +4,7 @@ interface IEdgeStyle {
    fontFamily: string,
    fontVariant: string,
    fontSize: number,
+   color: string,
 }
 
 export default class WSEdge {
@@ -15,6 +16,7 @@ export default class WSEdge {
       fontFamily: 'Arial',
       fontSize: 14,
       fontVariant: 'normal',
+      color: '#000',
    }
 
    constructor(public name: string = 'e') { 

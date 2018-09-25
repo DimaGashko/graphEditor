@@ -59,8 +59,6 @@ export default class WSRender extends Component {
       //Граница
       ctx.lineWidth = targ.style.borderWidth * zoom;
       ctx.strokeStyle = targ.style.borderColor;
-      ctx.textBaseline = "middle";
-      ctx.textAlign = "center";
       
       ctx.arc(xy.x, xy.y, r.x, 0, Math.PI * 2);
       ctx.stroke();
@@ -70,11 +68,8 @@ export default class WSRender extends Component {
          ${targ.style.fontSize * zoom}px ${targ.style.fontFamily}`;
       
       ctx.fillStyle = targ.style.color;
-
-      ctx.shadowColor = targ.style.background;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-      ctx.shadowBlur = 2;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
 
       ctx.fillText(targ.name, xy.x, xy.y, 100 * zoom);
 
@@ -101,6 +96,24 @@ export default class WSRender extends Component {
       ctx.lineTo(xy2.x, xy2.y);
       ctx.stroke();
 
+      //Текст
+      let text = `${targE.name}${(edge.weight !== 1) ? ` (${edge.weight})` : ''}`;
+
+      ctx.font = `${targE.style.fontVariant} 
+         ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
+      
+      ctx.fillStyle = targE.style.color;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+
+      let offsetX = 0; (xy1.x < xy2.x) ? 10 : -10;
+      let offsetY = (xy1.y < xy2.y) ? 10 : -10;
+
+      ctx.fillText(text,
+         (xy1.x + xy2.x) / 2 + offsetX * zoom,
+         (xy1.y + xy2.y) / 2 + offsetY * zoom
+      );
+
       //Стрелка для ориентировоного ребра (не петли)
       if (edge.type === 'uni' && targV1 !== targV2) { 
          ctx.save();
@@ -124,7 +137,6 @@ export default class WSRender extends Component {
          ctx.lineTo(-targE.arrowSize * zoom, 5 * zoom);
 
          ctx.stroke();
-
          ctx.restore();
       }
 
