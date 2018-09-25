@@ -6,6 +6,7 @@ import WSVertex from "./ws_graph/ws_vertex";
 import Vertex from "../../math/graph/vertex";
 import Edge from "../../math/graph/edge";
 import WSEdge from "./ws_graph/ws_edge";
+import { getBezieCoords } from "../../math/geometry/geometry";
 
 export default class WSRender extends Component {
    private ctx: CanvasRenderingContext2D = (<CanvasRenderingContext2D>{});
@@ -123,13 +124,16 @@ export default class WSRender extends Component {
       ctx.rotate(Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x));
 
       //Смещаем сисему координат в начало конечной вершины
-      ctx.translate(-targV2.radius.x * zoom, 0);
+      //ctx.translate(-targV2.radius.x * zoom, 0);
 
       let centerX = -edgeW / 2;
-      let controllY = 40 * zoom;
 
-      ctx.moveTo(0, 0);
-      ctx.quadraticCurveTo(centerX, controllY, -edgeW + targV1.radius.x + targV2.radius.x, 0);
+      let begin = new Vector(0, 0);
+      let controll = new Vector(centerX, 40 * zoom);
+      let end = new Vector(-edgeW, 0);
+
+      ctx.moveTo(begin.x, begin.y);
+      ctx.quadraticCurveTo(controll.x, controll.y, end.x, end.y);
       ctx.stroke();
 
       //Стрелка
@@ -138,7 +142,7 @@ export default class WSRender extends Component {
          ctx.beginPath();
 
          //Поворасиваем СК по направляющей кривой
-         ctx.rotate(Math.atan2(controllY, centerX));
+         ctx.rotate(Math.atan2(controll.y, centerX));
 
          //Рисуем стрелочку
          ctx.beginPath();
@@ -153,14 +157,15 @@ export default class WSRender extends Component {
 
       //Текст
       ctx.save();
-      let textX = centerX;
+      
+      let curveCenter = getBezieCoords(begin, controll, end, 0.5);
+      ctx.translate(curveCenter.x, curveCenter.y);
+
+      ctx.fillRect(-3, -3, 6, 6);
 
       if (xy1.x > xy2.x) { 
          ctx.rotate(Math.PI);
-         textX = -textX;
       }
-
-      ctx.fillText(this.getEdgeText(edge), textX, -10 * zoom);
 
       ctx.restore();
 
