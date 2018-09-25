@@ -27,7 +27,12 @@ export default class WSRender extends Component {
       this.clear();
 
       this.getGraph().getEdges().forEach((edge) => { 
-         this.drowEdge(edge);
+         if (edge.v1 !== edge.v2) { 
+            this.drowEdge(edge, 0);
+         
+         } else {
+            this.drowLoopEdge(edge, 0); 
+         }
       });
 
       this.getGraph().getVertices().forEach((vertex) => { 
@@ -104,12 +109,6 @@ export default class WSRender extends Component {
       ctx.font = `${targE.style.fontVariant} 
          ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
 
-      if (edge.v1 === edge.v2) { 
-         this.drowLoopEdge(edge, 0); 
-         this.drowLoopEdge(edge, 1); 
-         return;
-      }
-
       let xy1 = this.converter.toDisplay(targV1.coords);
       let xy2 = this.converter.toDisplay(targV2.coords);
 
@@ -120,25 +119,29 @@ export default class WSRender extends Component {
       ctx.lineTo(xy2.x, xy2.y);
       ctx.stroke();
 
-      //Текст
-      let offsetX = 0; (xy1.x < xy2.x) ? 10 : -10;
-      let offsetY = (xy1.y < xy2.y) ? 10 : -10;
+      //Переносим начало координат в конец ребра
+      ctx.translate(xy2.x, xy2.y);
 
-      ctx.fillText(this.getEdgeText(edge),
-         (xy1.x + xy2.x) / 2 + offsetX * zoom,
-         (xy1.y + xy2.y) / 2 + offsetY * zoom
-      );
+      //Поворачиваем ребро горизонтально
+      ctx.rotate(Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x));
+
+      //Текст
+      ctx.save();
+      let textX = -Math.hypot(xy1.x - xy2.x, xy1.y - xy2.y) / 2;
+
+      if (xy1.x > xy2.x) { 
+         ctx.rotate(Math.PI);
+         textX = -textX;
+      }
+
+      ctx.fillText(this.getEdgeText(edge), textX, -10 * zoom);
+
+      ctx.restore();
 
       //Стрелка для ориентировоного ребра (не петли)
       if (edge.type === 'uni' && targV1 !== targV2) { 
          ctx.save();
          ctx.beginPath();
-
-         //Переносим начало координат в конец ребра
-         ctx.translate(xy2.x, xy2.y);
-
-         //Поворачиваем ребро горизонтально
-         ctx.rotate(Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x));
 
          //Смещаем сисему координат в начало конечной вершины
          ctx.translate(-targV2.radius.x * zoom, 0);
@@ -172,6 +175,12 @@ export default class WSRender extends Component {
       let zoom = Math.max(this.data.zoom.x, this.data.zoom.y);
       let targE: WSEdge = edge.targ; 
       let targV: WSVertex = edge.v1.targ;
+
+      ctx.fillStyle = targE.style.color;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      ctx.font = `${targE.style.fontVariant} 
+         ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
 
       ctx.lineWidth = targE.style.loopWidth;
 

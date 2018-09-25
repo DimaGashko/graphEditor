@@ -24,7 +24,7 @@ export default class WSEdge {
 
       loopArrowSize: 10,
       loopWidth: 1,
-      loopFontSize: 10
+      loopFontSize: 12
    }
 
    constructor(public name: string = 'e') { 
