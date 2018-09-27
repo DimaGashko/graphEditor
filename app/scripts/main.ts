@@ -10,7 +10,7 @@ import GraphEditor from "./graph-editor";
       return;
    }
    
-   let graphEditor = new GraphEditor(root);
+   let graphEditor = new GraphEditor(root); 
 
    graphEditor.projectManager.createNewProject();
    graphEditor.projectManager.createNewProject();
@@ -18,4 +18,4 @@ import GraphEditor from "./graph-editor";
    console.timeEnd('GraphEditor');
 
    (<any>window).ge = graphEditor;
-}());
+}());      

@@ -144,4 +144,11 @@ export default class Graph {
       return graph;
    }
 
+   static isMultipleEdges(e1: Edge, e2: Edge): boolean { 
+      return (
+         (e1.v1 === e2.v1 && e1.v2 === e2.v2) ||
+         (e1.v1 === e2.v2 && e1.v2 === e2.v1)
+      );
+   }
+
 }

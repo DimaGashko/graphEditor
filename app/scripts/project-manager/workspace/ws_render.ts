@@ -7,6 +7,7 @@ import Vertex from "../../math/graph/vertex";
 import Edge from "../../math/graph/edge";
 import WSEdge from "./ws_graph/ws_edge";
 import { getBezieCoords } from "../../math/geometry/geometry";
+import Graph from "../../math/graph/graph";
 
 export default class WSRender extends Component {
    private ctx: CanvasRenderingContext2D = (<CanvasRenderingContext2D>{});
@@ -27,33 +28,48 @@ export default class WSRender extends Component {
    public render(): void {
       this.clear();
 
-      let drewEdges: Edge[] = [];
+      this.getMultipleGroups().forEach((group) => { 
+         const multipleStart: number = (group.length % 2 === 0) ? 1 : 0;
 
-      this.getGraph().getEdges().forEach((edge) => {
-         let multipleCount = drewEdges.reduce((count, drew) => { 
-            let v11 = drew.v1.targ, v12 = drew.v2.targ;
-            let v21 = edge.v1.targ, v22 = edge.v2.targ;
-
-            if ((v11 === v21 && v12 === v22) || (v11 === v22 && v12 === v21)) { 
-               return count + 1;
+         group.forEach((edge, index) => { 
+            if (edge.v1 !== edge.v2) { 
+               this.drowEdge(edge, multipleStart + index, group.length);
+            
+            } else {
+               this.drowLoopEdge(edge, index); 
             }
-
-            return count;
-         }, 0);
-
-         if (edge.v1 !== edge.v2) { 
-            this.drowEdge(edge, multipleCount);
-         
-         } else {
-            this.drowLoopEdge(edge, multipleCount); 
-         }
-
-         drewEdges.push(edge);
+         });
       });
       
       this.getGraph().getVertices().forEach((vertex) => { 
          this.drowVertex(vertex);
       });
+   }
+
+   /**
+    * Возвращает ребер разбитых по кратности
+    */
+   getMultipleGroups(): Edge[][] { 
+      let groups: Edge[][] = [];
+
+      this.getGraph().getEdges().forEach((edge) => {
+         let groupIndex: number = -1;
+
+         for (let i = groups.length - 1; i >= 0; i--) {
+            if (groups[i] && Graph.isMultipleEdges(groups[i][0], edge)) { 
+               groupIndex = i;
+            }
+         }
+
+         if (groupIndex !== -1) {
+            groups[groupIndex].push(edge);
+         
+         } else { 
+            groups.push([edge]);
+         }
+      });
+
+      return groups;
    }
 
    private getGraph() { 
@@ -106,10 +122,13 @@ export default class WSRender extends Component {
     * Рисует ребро графа
     * 
     * @param {Edge} egde верниша
-    * @param {number} multipleCount кратность этого ребра (если есть кратные 
+    * @param {number} multiple кратность этого ребра (если есть кратные 
     * ребра, то первое из кратных ребер - 0, второе - 1)
+    * @param {number} edgesCount количество кратных ребер
     */
-   private drowEdge(edge: Edge, multipleCount: number = 0) { 
+   private drowEdge(edge: Edge, multiple: number = 0, edgesCount: number) { 
+      if (multiple < 0) multiple = -multiple;
+
       let ctx = this.ctx;
       ctx.save();
 
@@ -126,7 +145,6 @@ export default class WSRender extends Component {
       let xy1 = this.converter.toDisplay(targV1.coords);
       let xy2 = this.converter.toDisplay(targV2.coords);
       let edgeW = Math.hypot(xy1.x - xy2.x, xy1.y - xy2.y);
-      let r1 = targV1.radius.x * zoom;
       let r2 = targV2.radius.x * zoom;
 
       ctx.beginPath();
@@ -138,28 +156,32 @@ export default class WSRender extends Component {
       //Поворачиваем ребро горизонтально
       ctx.rotate(Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x));
 
-      //Смещаем сисему координат в начало конечной вершины
-      //ctx.translate(-targV2.radius.x * zoom, 0);
-
       let centerX = -edgeW / 2;
 
+      //Вычисляем степерь изгиба ребра
       let controllY = 0;
+      let offset = (edgesCount % 2 === 0) ? -20 : 0;
 
-      if (multipleCount === 0) { 
+      if (multiple === 0) { 
          controllY = 0;
       
-      } else if (multipleCount % 2 === 0) {
-         controllY = (-40 * zoom) * (multipleCount - 1);
-      
+      } else if (multiple % 2 === 0) {
+         controllY = -((multiple - 2) * 20 + 40 + offset) * zoom;
+       
       } else { 
-         controllY = 40 * zoom * multipleCount;
-      } 
-      
+         controllY = ((multiple - 1) * 20 + 40 + offset) * zoom;
+      }
+
+      if (xy1.y < xy2.y) { 
+         controllY = -controllY;
+      }
+
       let begin = new Vector(0, 0);
       let controll = new Vector(centerX, controllY);
       let end = new Vector(-edgeW, 0);
  
       ctx.strokeStyle = targE.style.lineColor;
+
       ctx.moveTo(begin.x, begin.y);
       ctx.quadraticCurveTo(controll.x, controll.y, end.x, end.y);
       ctx.stroke();
@@ -211,10 +233,10 @@ export default class WSRender extends Component {
     * Рисует ребро-петлю графа
     * 
     * @param {Edge} egde верниша
-    * @param {number} multipleCount кратность этого ребра (если есть кратные 
+    * @param {number} multiple кратность этого ребра (если есть кратные 
     * ребра, то первое из кратных ребер - 0, второе - 1)
     */
-   private drowLoopEdge(edge: Edge, multipleCount: number = 0) { 
+   private drowLoopEdge(edge: Edge, multiple: number = 0) { 
       let ctx = this.ctx;
       ctx.save();
 
@@ -232,7 +254,7 @@ export default class WSRender extends Component {
       let xy = this.converter.toDisplay(targV.coords);
 
       //Радиус окружности ребра-петли
-      let r = (Math.min(targV.radius.x, 20) + multipleCount * 10) * zoom;
+      let r = (Math.min(targV.radius.x, 20) + multiple * 10) * zoom;
       
       ctx.beginPath();
 

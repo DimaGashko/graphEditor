@@ -28,6 +28,11 @@ export default class WSGraph {
       this.graph.addEdge(new Edge(v3, v3, 'uni', 3, new WSEdge('e8')));
       this.graph.addEdge(new Edge(v1, v3, 'uni', 1, new WSEdge('e9')));
       this.graph.addEdge(new Edge(v4, v3, 'uni', 1, new WSEdge('e10')));
+      this.graph.addEdge(new Edge(v3, v4, 'uni', 1, new WSEdge('e11')));
+      
+     /* this.graph = Graph.parseAdjacencyMatrix([
+         [],
+      ]);*/
    }
 
 }
