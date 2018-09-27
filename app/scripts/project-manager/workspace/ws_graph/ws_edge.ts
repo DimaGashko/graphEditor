@@ -20,14 +20,14 @@ export default class WSEdge {
 
    public style: IEdgeStyle = {
       lineWidth: 2,
-      fontFamily: 'Arial',
+      fontFamily: '"Arial Black", Gadget, sans-serif',
       fontSize: 14,
       fontVariant: 'normal',
       color: '#000',
       lineColor: '#000',
       arrowSize: 10,
       loopArrowSize: 10,
-      loopWidth: 1,
+      loopWidth: 1.5,
       loopFontSize: 12
    }
 

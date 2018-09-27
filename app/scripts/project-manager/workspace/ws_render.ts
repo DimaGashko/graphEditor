@@ -254,7 +254,7 @@ export default class WSRender extends Component {
       let xy = this.converter.toDisplay(targV.coords);
 
       //Радиус окружности ребра-петли
-      let r = (Math.min(targV.radius.x, 20) + multiple * 10) * zoom;
+      let r = (Math.min(targV.radius.x, 30) + multiple * 10) * zoom;
       
       ctx.beginPath();
 

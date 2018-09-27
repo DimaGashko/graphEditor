@@ -12,7 +12,7 @@ interface IVertextStyle {
 }
 
 export default class WSVertex { 
-   public radius: Vector = new Vector(20, 20);
+   public radius: Vector = new Vector(22, 22);
 
    constructor(
       public name: string = 'v',
@@ -23,9 +23,9 @@ export default class WSVertex {
 
    public style: IVertextStyle = {
       background: '#fff',
-      borderWidth: 2, 
+      borderWidth: 3, 
       borderColor: '#000',
-      fontFamily: 'Arial',
+      fontFamily: '"Arial Black", Gadget, sans-serif',
       fontSize: 14,
       fontVariant: 'normal',
       lineColor: '#000',
