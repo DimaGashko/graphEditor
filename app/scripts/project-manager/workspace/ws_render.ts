@@ -85,10 +85,10 @@ export default class WSRender extends Component {
       let ctx = this.ctx;
       ctx.save();
 
-      let zoom = Math.max(this.data.zoom.x, this.data.zoom.y);
+      let zoom = this.data.zoom.getScalarZoom();
       let targ: WSVertex = vertex.targ;
       let xy = this.converter.toDisplay(targ.coords);
-      let r = targ.radius.scale(this.data.zoom);
+      let r = targ.radius.scale(this.data.zoom.get());
 
       ctx.beginPath();
 
@@ -132,7 +132,7 @@ export default class WSRender extends Component {
       let ctx = this.ctx;
       ctx.save();
 
-      let zoom = Math.max(this.data.zoom.x, this.data.zoom.y);
+      let zoom = this.data.zoom.getScalarZoom();
       let targE: WSEdge = edge.targ; 
       let targV1: WSVertex = edge.v1.targ;
       let targV2: WSVertex = edge.v2.targ;
@@ -240,7 +240,7 @@ export default class WSRender extends Component {
       let ctx = this.ctx;
       ctx.save();
 
-      let zoom = Math.max(this.data.zoom.x, this.data.zoom.y);
+      let zoom = this.data.zoom.getScalarZoom();
       let targE: WSEdge = edge.targ; 
       let targV: WSVertex = edge.v1.targ;
 

@@ -1,10 +1,13 @@
 import Vector from "../../math/vector/vector";
 import WSGraph from "./ws_graph/ws_graph";
+import WSZoom from "./zoom";
 
 
 export default class WSData {
-   public camera: Vector = new Vector(0, 0);
-   public zoom: Vector = new Vector(1, 1);
+   private defCamera: Vector = new Vector(0, 0); 
+
+   public camera: Vector = this.defCamera.copy();
+   public zoom: WSZoom = new WSZoom();
    public wsSize: Vector = new Vector(150, 150); 
 
    public wsGraph: WSGraph = new WSGraph();

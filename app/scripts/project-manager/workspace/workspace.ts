@@ -3,6 +3,7 @@ import WSRender from "./ws_render";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
 import WSEvents from "./ws_events";
+import KEYS from "../../keys";
 
 export default class Workspace extends Component {
    private playing: boolean = false;
@@ -12,6 +13,11 @@ export default class Workspace extends Component {
    private converter: WSConverter = new WSConverter(this.data);
    private render: WSRender = new WSRender(this.data, this.converter);
    private events: WSEvents = new WSEvents(this.data, this.converter);
+
+   //Наведена ли мыш на Workspace
+   //По уполнчают true, на случай, 
+   //Если у при загрузке страницы мишь уже наведена
+   private isHover: boolean = true;
 
    constructor() { 
       super();
@@ -68,6 +74,43 @@ export default class Workspace extends Component {
 
       this.addEvent('resize', () => { 
          this.onresize();
+      });
+
+      (<Element>this.els.root).addEventListener('mouseenter', () => { 
+         this.isHover = true;
+      });
+
+      (<Element>this.els.root).addEventListener('mouseleave', () => { 
+         this.isHover = false;
+      });
+
+      document.addEventListener('keydown', (event) => { 
+         let check = this.playing && this.isHover && (event.keyCode in KEYS);
+
+         if (!check) return;
+
+         if (event.ctrlKey || event.metaKey) {
+            event.preventDefault();
+            
+            switch (KEYS[event.keyCode]) {
+               case 'zoomAdd':
+                  this.data.zoom.add();
+                  break;
+               case 'zoomSub':
+                  this.data.zoom.sub();
+                  break;
+               case 'zoomDef':
+                  this.data.zoom.reset();
+                  break;
+            }
+         }
+      });
+
+      document.addEventListener('keydown', (event) => { 
+         let check = this.playing && this.isHover && (event.keyCode in KEYS)
+      
+         if (!check) return;
+         event.preventDefault();
       });
    }
 

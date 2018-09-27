@@ -1,4 +1,5 @@
 import GraphEditor from "./graph-editor";
+import KEYS from "./keys";
 
 (function () {
    console.time('GraphEditor');
@@ -18,4 +19,4 @@ import GraphEditor from "./graph-editor";
    console.timeEnd('GraphEditor');
 
    (<any>window).ge = graphEditor;
-}());      
+}());   
