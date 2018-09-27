@@ -2,6 +2,7 @@ import Component from "../../framework/component";
 import WSRender from "./ws_render";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
+import WSEvents from "./ws_events";
 
 export default class Workspace extends Component {
    private playing: boolean = false;
@@ -10,6 +11,7 @@ export default class Workspace extends Component {
    private data: WSData = new WSData();
    private converter: WSConverter = new WSConverter(this.data);
    private render: WSRender = new WSRender(this.data, this.converter);
+   private events: WSEvents = new WSEvents(this.data, this.converter);
 
    constructor() { 
       super();

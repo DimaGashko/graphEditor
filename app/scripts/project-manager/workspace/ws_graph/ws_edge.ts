@@ -3,6 +3,7 @@ interface IEdgeStyle {
    fontFamily: string,
    fontVariant: string,
    fontSize: number,
+   lineColor: string,
    color: string,
    arrowSize: number
    loopArrowSize: number
@@ -23,6 +24,7 @@ export default class WSEdge {
       fontSize: 14,
       fontVariant: 'normal',
       color: '#000',
+      lineColor: '#000',
       arrowSize: 10,
       loopArrowSize: 10,
       loopWidth: 1,

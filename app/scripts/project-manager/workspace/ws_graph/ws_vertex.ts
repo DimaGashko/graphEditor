@@ -7,7 +7,7 @@ interface IVertextStyle {
    fontFamily: string,
    fontVariant: string,
    fontSize: number,
-
+   lineColor: string,
    color: string;
 }
 
@@ -28,6 +28,7 @@ export default class WSVertex {
       fontFamily: 'Arial',
       fontSize: 14,
       fontVariant: 'normal',
+      lineColor: '#000',
       color: '#000',
    }
 }

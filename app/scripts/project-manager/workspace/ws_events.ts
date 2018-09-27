@@ -4,7 +4,7 @@ import WSConverter from "./ws_converter";
 
 export default class WSEvents extends Component {
 
-   constructor(private data: WSData, private camera: WSConverter) { 
+   constructor(private data: WSData, private converter: WSConverter) { 
       super();
    }
 

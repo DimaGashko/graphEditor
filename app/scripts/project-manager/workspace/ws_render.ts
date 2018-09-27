@@ -27,19 +27,28 @@ export default class WSRender extends Component {
    public render(): void {
       this.clear();
 
-      this.getGraph().getEdges().forEach((edge) => { 
-         if (edge.v1 !== edge.v2) {
-            this.drowEdge(edge, 0);
-            this.drowEdge(edge, 1);
-            this.drowEdge(edge, 2);
-            this.drowEdge(edge, 3);
-            this.drowEdge(edge, 4);
-            this.drowEdge(edge, 5);
-            this.drowEdge(edge, 6);
+      let drewEdges: Edge[] = [];
+
+      this.getGraph().getEdges().forEach((edge) => {
+         let multipleCount = drewEdges.reduce((count, drew) => { 
+            let v11 = drew.v1.targ, v12 = drew.v2.targ;
+            let v21 = edge.v1.targ, v22 = edge.v2.targ;
+
+            if ((v11 === v21 && v12 === v22) || (v11 === v22 && v12 === v21)) { 
+               return count + 1;
+            }
+
+            return count;
+         }, 0);
+
+         if (edge.v1 !== edge.v2) { 
+            this.drowEdge(edge, multipleCount);
          
          } else {
-            this.drowLoopEdge(edge, 0); 
+            this.drowLoopEdge(edge, multipleCount); 
          }
+
+         drewEdges.push(edge);
       });
       
       this.getGraph().getVertices().forEach((vertex) => { 
@@ -75,7 +84,7 @@ export default class WSRender extends Component {
 
       //Граница
       ctx.lineWidth = targ.style.borderWidth * zoom;
-      ctx.strokeStyle = targ.style.borderColor;
+      ctx.strokeStyle = targ.style.lineColor;
       
       ctx.arc(xy.x, xy.y, r.x, 0, Math.PI * 2);
       ctx.stroke();
@@ -109,7 +118,6 @@ export default class WSRender extends Component {
       let targV1: WSVertex = edge.v1.targ;
       let targV2: WSVertex = edge.v2.targ;
 
-      ctx.fillStyle = targE.style.color;
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
       ctx.font = `${targE.style.fontVariant} 
@@ -150,7 +158,8 @@ export default class WSRender extends Component {
       let begin = new Vector(0, 0);
       let controll = new Vector(centerX, controllY);
       let end = new Vector(-edgeW, 0);
-
+ 
+      ctx.strokeStyle = targE.style.lineColor;
       ctx.moveTo(begin.x, begin.y);
       ctx.quadraticCurveTo(controll.x, controll.y, end.x, end.y);
       ctx.stroke();
@@ -182,7 +191,8 @@ export default class WSRender extends Component {
 
       //Текст
       ctx.save();
-      
+      ctx.fillStyle = targE.style.color;
+
       let textCoords = getBezieCoords(begin, controll, end, 0.5);
       ctx.translate(textCoords.x, textCoords.y);
 
@@ -212,7 +222,6 @@ export default class WSRender extends Component {
       let targE: WSEdge = edge.targ; 
       let targV: WSVertex = edge.v1.targ;
 
-      ctx.fillStyle = targE.style.color;
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
       ctx.font = `${targE.style.fontVariant} 
