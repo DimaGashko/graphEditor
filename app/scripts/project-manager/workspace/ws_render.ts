@@ -303,7 +303,10 @@ export default class WSRender extends Component {
    }
 
    private clear() {
-      this.ctx.clearRect(0, 0, this.data.wsSize.x, this.data.wsSize.y);
+      this.ctx.save();
+      this.ctx.fillStyle = this.data.background;
+      this.ctx.fillRect(0, 0, this.data.wsSize.x, this.data.wsSize.y);
+      this.ctx.restore();
    }
 
 }

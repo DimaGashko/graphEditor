@@ -12,6 +12,8 @@ export default class WSData {
 
    public wsGraph: WSGraph = new WSGraph();
 
+   public background: string = '#f8f8f8';
+
    constructor() {
       
    }
