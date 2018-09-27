@@ -1,6 +1,9 @@
 import Vector from "../../math/vector/vector";
+import FPS from "../../helpers/fps";
 
 export default class WSZoom { 
+   private animateFrame: number = 0;
+   
    private min: Vector = new Vector(0.1, 0.1);
    private max: Vector = new Vector(5, 5);
    private def: Vector = new Vector(1, 1);
@@ -20,16 +23,51 @@ export default class WSZoom {
       this.val = this.correct(val);
    }
 
-   public add(): void { 
-      this.set(this.val.add(this.step));
+   public add(val: Vector = this.step): void { 
+      this.set(this.get().add(val));
    }
 
-   public sub(): void { 
-      this.set(this.val.sub(this.step));
+   public sub(val: Vector = this.step): void { 
+      this.set(this.get().sub(val));
    }
 
-   public reset(): void { 
-      this.set(this.def.copy());
+   public reset(animate: boolean = true, time: number = 300): void { 
+      if (animate) { 
+         this.animateTo(this.def.copy(), time);
+      } else {
+         this.set(this.def.copy());
+      }
+   }
+
+   public animateTo(val: Vector, time: number): void { 
+      val = val.copy();
+
+      if (this.animateFrame) {
+         cancelAnimationFrame(this.animateFrame);
+      }
+
+      let cadrs = time / FPS.get();
+
+      let step = new Vector(
+         (val.x - this.get().x) / cadrs,
+         (val.y - this.get().y) / cadrs
+      );
+
+      let zoom = this;
+
+      requestAnimationFrame(function tik() {
+         cadrs--
+
+         zoom.add(step);
+
+         if (cadrs <= 0) { 
+            zoom.set(val);
+            return;
+         };
+
+         requestAnimationFrame(tik);
+      });
+
    }
 
    private correct(val: Vector): Vector { 

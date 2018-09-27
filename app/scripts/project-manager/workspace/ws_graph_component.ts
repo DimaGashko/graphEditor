@@ -20,7 +20,6 @@ export default class WSGraphComponent {
       }
 
       this.name = name.slice(0, this.maxNameLen + 1);
-      console.log(this.getName())
    }
 
 }
