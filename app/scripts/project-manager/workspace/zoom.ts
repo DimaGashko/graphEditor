@@ -1,7 +1,8 @@
 import Vector from "../../math/vector/vector";
 import FPS from "../../helpers/fps";
+import Component from "../../framework/component";
 
-export default class WSZoom { 
+export default class WSZoom extends Component { 
    private animateFrame: number = 0;
    
    private min: Vector = new Vector(0.1, 0.1);
@@ -16,7 +17,7 @@ export default class WSZoom {
    }
 
    public getScalarZoom(): number { 
-      return Math.max(this.val.x, this.val.y);
+      return Math.min(this.val.x, this.val.y);
    }
 
    public set(val: Vector) { 
@@ -31,7 +32,7 @@ export default class WSZoom {
       this.set(this.get().sub(val));
    }
 
-   public reset(animate: boolean = true, time: number = 300): void { 
+   public reset(animate: boolean = true, time: number = 450): void { 
       if (animate) { 
          this.animateTo(this.def.copy(), time);
       } else {
@@ -62,6 +63,7 @@ export default class WSZoom {
 
          if (cadrs <= 0) { 
             zoom.set(val);
+            zoom.trigger('animateEnd')
             return;
          };
 

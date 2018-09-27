@@ -1,6 +1,4 @@
 import GraphEditor from "./graph-editor";
-import KEYS from "./keys";
-import FPS from "./helpers/fps";
 
 (function () {
    console.time('GraphEditor');
@@ -18,10 +16,6 @@ import FPS from "./helpers/fps";
    graphEditor.projectManager.createNewProject();
 
    console.timeEnd('GraphEditor');
-
-   setInterval(() => { 
-      console.log(FPS.get());
-   }, 1000);
 
    (<any>window).ge = graphEditor;
 }());   

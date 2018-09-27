@@ -7,6 +7,7 @@ import KEYS from "../../keys";
 
 export default class Workspace extends Component {
    private playing: boolean = false;
+   private animRedy: boolean = true;
    private animateFrameId: number = 0;
    
    private data: WSData = new WSData();
@@ -90,17 +91,33 @@ export default class Workspace extends Component {
          if (!check) return;
 
          if (event.ctrlKey || event.metaKey) {
+            
+            requestAnimationFrame(() => { 
+               switch (KEYS[event.keyCode]) {
+                  case 'zoomAdd':
+                     this.addZoom();
+                     break;
+                  case 'zoomSub':
+                     this.subZoom();
+                     break;
+               }
+            });   
+
+         }
+
+      });
+
+      document.addEventListener('keyup', (event) => {  
+         let check = this.playing && this.isHover && (event.keyCode in KEYS);
+
+         if (!check) return; 
+
+         if (event.ctrlKey || event.metaKey) {
             event.preventDefault();
             
             switch (KEYS[event.keyCode]) {
-               case 'zoomAdd':
-                  this.data.zoom.add();
-                  break;
-               case 'zoomSub':
-                  this.data.zoom.sub();
-                  break;
                case 'zoomDef':
-                  this.data.zoom.reset();
+                  this.resetZoom();
                   break;
             }
          }
@@ -112,6 +129,27 @@ export default class Workspace extends Component {
          if (!check) return;
          event.preventDefault();
       });
+
+      this.data.zoom.addEvent('animateEnd', () => {
+         this.animRedy = true;
+      });
+   }
+
+   public subZoom(): void {
+      this.data.zoom.sub();
+   }
+
+   public addZoom(): void { 
+      this.data.zoom.add();
+   }
+
+   public resetZoom(): void {
+      if (!this.animRedy) return;
+
+      //Возвращается в true в событиях
+      this.animRedy = false;
+
+      this.data.zoom.reset();
    }
 
    private onresize() { 
