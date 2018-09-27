@@ -13,10 +13,10 @@ export default class WSGraph {
    }
 
    private create() {
-      let v1 = new Vertex(new WSVertex('v1', new Vector(-200, 100)));
-      let v2 = new Vertex(new WSVertex('v2', new Vector(0, 100)));
-      let v3 = new Vertex(new WSVertex('v3', new Vector(130, -70)));
-      let v4 = new Vertex(new WSVertex('v4', new Vector(150, 200)));
+      let v1 = new Vertex(new WSVertex(new Vector(-200, 100), 'v1'));
+      let v2 = new Vertex(new WSVertex(new Vector(0, 100), 'v2'));
+      let v3 = new Vertex(new WSVertex(new Vector(130, -70), 'v3'));
+      let v4 = new Vertex(new WSVertex(new Vector(150, 200), 'v4'));
 
       this.graph.addEdge(new Edge(v2, v1, 'uni', 1, new WSEdge('e1')));
       this.graph.addEdge(new Edge(v2, v3, 'uni', 1, new WSEdge('e2')));

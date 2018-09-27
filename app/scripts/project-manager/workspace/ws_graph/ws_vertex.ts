@@ -1,6 +1,7 @@
 import Vector from "../../../math/vector/vector";
+import WSGraphComponent from "../ws_graph_component";
 
-interface IVertextStyle { 
+export interface IVertextStyle { 
    background: string;
    borderWidth: number;
    borderColor: string;
@@ -11,14 +12,14 @@ interface IVertextStyle {
    color: string;
 }
 
-export default class WSVertex { 
+export default class WSVertex extends WSGraphComponent {
    public radius: Vector = new Vector(22, 22);
 
    constructor(
-      public name: string = 'v',
-      public coords: Vector = new Vector()
+      public coords: Vector = new Vector(),
+      name?: string
    ) {
-
+      super(name || 'v');
    }
 
    public style: IVertextStyle = {
@@ -31,4 +32,5 @@ export default class WSVertex {
       lineColor: '#000',
       color: '#000',
    }
+
 }

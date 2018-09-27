@@ -113,10 +113,10 @@ export default class WSRender extends Component {
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
 
-      ctx.fillText(targ.name, xy.x, xy.y, 100 * zoom);
+      ctx.fillText(targ.getName(), xy.x, xy.y, 100 * zoom);
 
       ctx.restore();
-   }
+   } 
 
    /**
     * Рисует ребро графа
@@ -287,7 +287,7 @@ export default class WSRender extends Component {
    }
 
    private getEdgeText(edge: Edge): string { 
-      return `${edge.targ.name}${(edge.weight !== 1) ? ` (${edge.weight})` : ''}`
+      return `${(<WSEdge>edge.targ).getName()}${(edge.weight !== 1) ? ` (${edge.weight})` : ''}`
    }
 
    public updateMetrix(): void { 

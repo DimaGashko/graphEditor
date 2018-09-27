@@ -1,4 +1,6 @@
-interface IEdgeStyle { 
+import WSGraphComponent from "../ws_graph_component";
+
+export interface IEdgeStyle { 
    lineWidth: number,
    fontFamily: string,
    fontVariant: string,
@@ -11,11 +13,9 @@ interface IEdgeStyle {
    loopFontSize: number,
 }
 
-export default class WSEdge {
-   public = 15;
-   
-   constructor(public name: string = 'e') { 
-      
+export default class WSEdge extends WSGraphComponent { 
+   constructor(name?: string) { 
+      super(name || 'e');
    }
 
    public style: IEdgeStyle = {
