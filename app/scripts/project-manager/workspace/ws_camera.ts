@@ -11,6 +11,7 @@ export default class WSCamera extends Component {
 
    public set(val: Vector) { 
       this.val = val.copy();
+      this.trigger('change');
    }
 
    public goTo(val: Vector): void { 

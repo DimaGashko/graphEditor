@@ -27,8 +27,8 @@ export default class WSRender extends Component {
       this.initCtxes();
    }
 
-   public render(): void {
-      this.clear();
+   public renderGraph(): void {
+      this.clearFor(this.ctxes.graph);
 
       this.getMultipleGroups().forEach((group) => { 
          const multipleStart: number = (group.length % 2 === 0) ? 1 : 0;
@@ -286,6 +286,67 @@ export default class WSRender extends Component {
       ctx.stroke();
 
       ctx.restore();
+   }
+
+   public renderGrid(): void { 
+      this.clearFor(this.ctxes.grid);
+      let ctx = this.ctxes.grid;
+
+      let c = this.converter.toDisplay(new Vector(0, 0));
+      console.log(c)
+      ctx.fillRect(c.x - 5, c.y - 5, 10, 10);
+
+      ctx.save();
+
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 0.1;
+      this.drowGrid(new Vector(10, 10));
+
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 0.2;
+      this.drowGrid(new Vector(100, 100));
+
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 0.2;
+      this.drowGrid(new Vector(1000, 1000));
+
+      ctx.restore();
+   }
+
+   private drowGrid(step: Vector): void { 
+      let ctx = this.ctxes.grid;
+
+      let begin = this.converter.toReal(new Vector(0, 0));
+      let end = this.converter.toReal(this.data.wsSize);
+      step = step.scale(this.data.zoom.get());
+      
+      begin = new Vector(
+         begin.x - begin.x % step.x - step.x,
+         begin.y - begin.y % step.y - step.x,
+      );
+
+      let lines = new Vector(
+         Math.abs(end.x - begin.x) / step.x + 2,
+         Math.abs(end.y - begin.y) / step.y + 2,
+      );
+
+      ctx.beginPath();
+
+      for (let i = 0; i < lines.x; i++) { 
+         let x = this.converter.toDisplay(new Vector(begin.x + i * step.x, 0)).x;
+
+         ctx.moveTo(x, 0);
+         ctx.lineTo(x, this.data.wsSize.y);
+      }
+
+      for (let i = 0; i < lines.x; i++) { 
+         let y = this.converter.toDisplay(new Vector(0, begin.y + i * step.y)).y;
+
+         ctx.moveTo(0, y);
+         ctx.lineTo(this.data.wsSize.x, y);
+      }
+
+      ctx.stroke();
    }
 
    private getEdgeText(edge: Edge): string { 

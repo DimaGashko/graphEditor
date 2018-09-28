@@ -22,6 +22,7 @@ export default class WSZoom extends Component {
 
    public set(val: Vector) { 
       this.val = this.correct(val);
+      this.trigger('change');
    }
 
    public add(val: Vector = this.step): void { 

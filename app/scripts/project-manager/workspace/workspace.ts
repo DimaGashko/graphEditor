@@ -63,12 +63,13 @@ export default class Workspace extends Component {
    }
 
    private tik() { 
-      this.onresize();
-      this.render.render();
+      this.render.renderGraph();
    }
 
    private initRender(): void { 
       this.render.init(this.els.root);
+
+      this.onresize();
    }
 
    private initEvents(): void {
@@ -82,6 +83,14 @@ export default class Workspace extends Component {
 
       this.addEvent('resize', () => { 
          this.onresize();
+      });
+
+      this.data.zoom.addEvent('change', () => { 
+         this.render.renderGrid();
+      });
+
+      this.data.camera.addEvent('change', () => { 
+         this.render.renderGrid();
       });
 
       (<Element>this.els.root).addEventListener('mouseenter', () => { 
@@ -116,7 +125,6 @@ export default class Workspace extends Component {
 
       document.addEventListener('keyup', (event) => {  
          let check = this.isActive() && (event.keyCode in KEYS);
-
          if (!check) return; 
 
          if (event.ctrlKey || event.metaKey) {
@@ -124,6 +132,7 @@ export default class Workspace extends Component {
             
             switch (KEYS[event.keyCode]) {
                case 'zoomDef':
+                  console.log('zoom res')
                   this.resetZoom();
                   break;
             }
@@ -208,6 +217,9 @@ export default class Workspace extends Component {
    private onresize() { 
       this.render.updateMetrix(); 
       this.render.updateSize();
+
+      this.render.renderGraph();
+      this.render.renderGrid();
    }
 
    private getElements(root: Element): void { 
