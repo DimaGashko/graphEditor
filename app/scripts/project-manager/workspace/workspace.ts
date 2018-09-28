@@ -2,7 +2,7 @@ import Component from "../../framework/component";
 import WSRender from "./ws_render";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
-import WSEvents from "./ws_events";
+import WSEvents, { IWSEvent } from "./ws_events";
 import KEYS from "../../keys";
 import Vector from "../../math/vector/vector";
 
@@ -67,13 +67,13 @@ export default class Workspace extends Component {
    }
 
    private initRender(): void { 
-      this.render.init(this.els.root);
+      this.render.init(this.els.canvases);
 
       this.onresize();
    }
 
    private initEvents(): void {
-      window.addEventListener('resize', (event) => {
+      window.addEventListener('resize', () => {
          this.onresize();
       });
 
@@ -101,6 +101,16 @@ export default class Workspace extends Component {
          this.isHover = false;
       });
 
+      this.data.zoom.addEvent('animateEnd', () => {
+         this.animRedy = true;
+      });
+
+      this.initWSEvents();
+      this.initCameraMove();
+      this.initZoom();
+   }
+
+   private initZoom() { 
       document.addEventListener('keydown', (event) => { 
          let check = this.isActive() && (event.keyCode in KEYS);
 
@@ -157,6 +167,9 @@ export default class Workspace extends Component {
          });
       });
 
+   }
+
+   private initCameraMove() { 
       (<HTMLElement>this.els.root).addEventListener('mousedown', (event) => { 
          if (!this.isActive() || event.which !== 1) return;
          this.moveStart = new Vector(event.clientX, event.clientY);
@@ -187,9 +200,21 @@ export default class Workspace extends Component {
       window.addEventListener('blur', () => { 
          this.moving = false;
       }); 
+   }
 
-      this.data.zoom.addEvent('animateEnd', () => {
-         this.animRedy = true;
+   private initWSEvents(): void { 
+      this.events.init(this.els.canvases);
+
+      this.events.addEvent('mousedown', (event: IWSEvent) => { 
+         console.log(event.targ);
+      });
+
+      this.events.addEvent('mouseup', (event: IWSEvent) => { 
+         //console.log(event);
+      });
+
+      this.events.addEvent('mousemove', (event: IWSEvent) => { 
+         //console.log(event);
       });
    }
 
@@ -224,5 +249,6 @@ export default class Workspace extends Component {
 
    private getElements(root: Element): void { 
       this.els.root = root;
+      this.els.canvases = root.querySelector('.workspace__canvases');
    }
 }
