@@ -5,14 +5,13 @@ import Vector from "../../math/vector/vector";
 import WSVertex from "./ws_graph/ws_vertex";
 
 export interface IWSEvent { 
-   type: eventType,
    targ: WSVertex,
 }
 
-type eventType = 'mousedown' | 'mouseup' | 'mousemove';
 type CanvEl = HTMLCanvasElement;
 
 export default class WSEvents extends Component {
+   private enterObj: WSVertex | null = null;
 
    constructor(private data: WSData, private converter: WSConverter) {
       super();
@@ -25,7 +24,7 @@ export default class WSEvents extends Component {
 
    private initEvents(): void { 
       (<CanvEl>this.els.root).addEventListener('mouseup', (event) => {
-        // this.process('mouseup', event);
+         this.process('mouseup', event);
       });
 
       (<CanvEl>this.els.root).addEventListener('mousedown', (event) => {
@@ -33,20 +32,49 @@ export default class WSEvents extends Component {
       });
 
       (<CanvEl>this.els.root).addEventListener('mousemove', (event) => {
-        // this.process('mousemove', event);
+        this.process('mousemove', event);
+      });
+
+      (<CanvEl>this.els.root).addEventListener('mouseleave', (event) => {
+         this.triggerLeave(event);
       });
    }
 
-   private process(type: eventType, event: MouseEvent): void { 
+   private process(type: string, event: MouseEvent): void { 
       let targ = this.getObjOn(this.getCoords(event));
-      if (!targ) return;
+      if (!targ) { 
+         this.triggerLeave(event);
+         return;
+      };
 
       let wsEvent: IWSEvent = {
-         type: type,
          targ: targ,
       }
 
-      this.trigger(type, wsEvent);
+      this.trigger(type, wsEvent, event);
+
+      if (targ !== this.enterObj) { 
+         this.triggerLeave(event);
+
+         this.enterObj = targ;
+         this.trigger('mouseenter', wsEvent, event);
+      }
+   }
+
+   private triggerLeave(event: MouseEvent): void { 
+      if (!this.enterObj) return;
+
+      let wsEvent: IWSEvent = {
+         targ: this.enterObj,
+      }
+      
+      this.enterObj = null;
+      this.trigger('mouseleave', wsEvent, event);
+   }
+
+   public trigger(type: string, wsEvent: IWSEvent, event: MouseEvent) { 
+      super.trigger(type, wsEvent);
+      event.stopPropagation();
    }
 
    private getObjOn(coords: Vector): WSVertex | null {
@@ -56,7 +84,7 @@ export default class WSEvents extends Component {
       for (let i = verteces.length - 1; i >= 0; i--) { 
          let targ: WSVertex = verteces[i].targ;
 
-         if (targ.checkContainPoint(coords)) { 
+         if (targ.checkContainPoint(coords)) {
             return targ;
          }
       }

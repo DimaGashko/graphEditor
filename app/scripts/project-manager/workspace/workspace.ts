@@ -5,6 +5,7 @@ import WSConverter from "./ws_converter";
 import WSEvents, { IWSEvent } from "./ws_events";
 import KEYS from "../../keys";
 import Vector from "../../math/vector/vector";
+import WSVertex from "./ws_graph/ws_vertex";
 
 export default class Workspace extends Component {
    private playing: boolean = false; //запущена ли перерисовка Workspace
@@ -204,6 +205,18 @@ export default class Workspace extends Component {
 
    private initWSEvents(): void { 
       this.events.init(this.els.canvases);
+
+      this.events.addEvent('mouseenter', (event: IWSEvent) => { 
+         event.targ.style.lineColor = 'green';
+         event.targ.style.color = 'green';
+         this.els.root.classList.add('workspace-vertex_move');
+      });
+
+      this.events.addEvent('mouseleave', (event: IWSEvent) => { 
+         event.targ.style.lineColor = '#000';
+         event.targ.style.color = '#000';
+         this.els.root.classList.remove('workspace-vertex_move');
+      });
 
       this.events.addEvent('mousedown', (event: IWSEvent) => { 
          console.log(event.targ);

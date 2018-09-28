@@ -4,7 +4,6 @@ import WSGraphComponent from "../ws_graph_component";
 export interface IVertextStyle { 
    background: string;
    borderWidth: number;
-   borderColor: string;
    fontFamily: string,
    fontVariant: string,
    fontSize: number,
@@ -25,7 +24,6 @@ export default class WSVertex extends WSGraphComponent {
    public style: IVertextStyle = {
       background: '#fff',
       borderWidth: 3, 
-      borderColor: '#000',
       fontFamily: '"Arial Black", Gadget, sans-serif',
       fontSize: 14,
       fontVariant: 'normal',
@@ -39,7 +37,7 @@ export default class WSVertex extends WSGraphComponent {
    public checkContainPoint(point: Vector) { 
       let a = point.x - this.coords.x;
       let b = point.y - this.coords.y;
-      
+
       return (a * a + b * b <= this.radius.x * this.radius.x);
    }
 
