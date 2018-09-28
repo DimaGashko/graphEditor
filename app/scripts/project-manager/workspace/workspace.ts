@@ -12,6 +12,7 @@ export default class Workspace extends Component {
    private moving: boolean = false; //перемещают ли сейчас Workspace
    private animRedy: boolean = true; 
    private animateFrameId: number = 0;
+   private minTimeInterval: number = 16;
    
    private data: WSData = new WSData();
    private converter: WSConverter = new WSConverter(this.data);
@@ -156,9 +157,14 @@ export default class Workspace extends Component {
          if (!check) return;
          event.preventDefault();
       });
+
+      let prevTime = Date.now();
          
       window.addEventListener('wheel', (event) => { 
          if (!this.isActive()) return;
+
+         let now = Date.now();
+         if (now - prevTime < this.minTimeInterval) return;
 
          requestAnimationFrame(() => {
             const delta = event.deltaY / 1000;
@@ -166,6 +172,8 @@ export default class Workspace extends Component {
             if (delta < 0) this.data.zoom.add(new Vector(delta, delta));
             else this.data.zoom.sub(new Vector(-delta, -delta));
          });
+
+         prevTime = now;
       });
 
    }
@@ -173,6 +181,7 @@ export default class Workspace extends Component {
    private initCameraMove() { 
       let moveStart: Vector = new Vector(); //Начало перемещения камеры
       let cameraOnStartMoving: Vector = new Vector();
+      let prevTime = Date.now();
 
       (<HTMLElement>this.els.root).addEventListener('mousedown', (event) => { 
          if (!this.isActive() || event.which !== 1) return;
@@ -190,6 +199,9 @@ export default class Workspace extends Component {
          //что бы оно пролжало работать и без наведения мыши
          if (!this.playing || !this.moving) return;
 
+         let now = Date.now();
+         if (now - prevTime < this.minTimeInterval) return;
+
          let coords = new Vector(event.clientX, event.clientY);
          let offset = coords.sub(moveStart);
 
@@ -199,6 +211,8 @@ export default class Workspace extends Component {
 
          let realOffset = offset.diScale(this.data.zoom.get());
          this.data.camera.goTo(cameraOnStartMoving.sub(realOffset));
+
+         prevTime = now;
       });
 
       window.addEventListener('blur', () => { 
@@ -212,6 +226,7 @@ export default class Workspace extends Component {
       let moveStart: Vector = new Vector(0, 0);
       let moving: boolean = false;
       let targ: WSVertex | null = null;
+      let prevTime: number = Date.now();
 
       this.events.addEvent('mousedown', (event: IWSEvent) => { 
          moveStart = event.cursorXY;
@@ -227,6 +242,9 @@ export default class Workspace extends Component {
       this.events.addEvent('mousemove', (event: IWSEvent) => { 
          if (!moving || !targ) return;
 
+         let now: number = Date.now();
+         if (now - prevTime < this.minTimeInterval) return;
+
          let coords = event.cursorXY;
          let offset = coords.sub(moveStart);
          let minOffset = 25 * this.data.zoom.getScalarZoom(); 
@@ -240,6 +258,8 @@ export default class Workspace extends Component {
          if (1 || this.checkVertexCoords(targ, newCoords)) {
             targ.coords = newCoords;
          }
+
+         prevTime = now;
       });
 
       this.events.addEvent('mouseenter', (event: IWSEvent) => { 
