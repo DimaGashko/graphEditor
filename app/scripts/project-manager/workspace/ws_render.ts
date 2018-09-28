@@ -302,11 +302,11 @@ export default class WSRender extends Component {
 
       let scalarZoom = this.data.zoom.getScalarZoom();
 
-      if (scalarZoom > 0.75) { 
+      if (scalarZoom > 0.5) { 
          this.drowGrid(new Vector(10, 10));
       }
 
-      if (scalarZoom > 0.25) {
+      if (scalarZoom > 0) {
          this.drowGrid(new Vector(100, 100));
       }
 

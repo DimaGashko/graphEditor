@@ -1,6 +1,6 @@
 import Vector from "../../math/vector/vector";
 import WSGraph from "./ws_graph/ws_graph";
-import WSZoom from "./zoom";
+import WSZoom from "./ws_zoom";
 import WSCamera from "./ws_camera";
 
 
