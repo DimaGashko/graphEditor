@@ -7,9 +7,15 @@ import KEYS from "../../keys";
 import Vector from "../../math/vector/vector";
 
 export default class Workspace extends Component {
-   private playing: boolean = false;
-   private animRedy: boolean = true;
+   private playing: boolean = false; //запущена ли перерисовка Workspace
+   private moving: boolean = false; //перемещают ли сейчас Workspace
+   private animRedy: boolean = true; 
    private animateFrameId: number = 0;
+
+   //Координаты начала перемещения камеры
+   private moveStart: Vector = new Vector();
+   private cameraOnStartMoving: Vector = new Vector();
+
    
    private data: WSData = new WSData();
    private converter: WSConverter = new WSConverter(this.data);
@@ -141,6 +147,37 @@ export default class Workspace extends Component {
             else this.data.zoom.sub(new Vector(-delta, -delta));
          });
       });
+
+      (<HTMLElement>this.els.root).addEventListener('mousedown', (event) => { 
+         if (!this.isActive() || event.which !== 1) return;
+         this.moveStart = new Vector(event.clientX, event.clientY);
+         this.cameraOnStartMoving = this.data.camera.get();
+         this.moving = true;
+      });
+
+      window.addEventListener('mouseup', (event) => { 
+         this.moving = false;
+      });
+
+      window.addEventListener('mousemove', (event) => { 
+         //this.isHover проверять не нужно, так как нужно 
+         //что бы оно пролжало работать и без наведения мыши
+         if (!this.playing || !this.moving) return;
+
+         let coords = new Vector(event.clientX, event.clientY);
+         let offset = coords.sub(this.moveStart);
+
+         if (offset.x * offset.x + offset.y * offset.y < 25) { 
+            return;
+         }
+
+         let realOffset = offset.diScale(this.data.zoom.get());
+         this.data.camera.goTo(this.cameraOnStartMoving.sub(realOffset));
+      });
+
+      window.addEventListener('blur', () => { 
+         this.moving = false;
+      }); 
 
       this.data.zoom.addEvent('animateEnd', () => {
          this.animRedy = true;

@@ -10,11 +10,11 @@ export default class WSConverter {
    public toReal(display: Vector): Vector { 
       return display.sub(this.data.wsSize.div(2))
          .diScale(this.data.zoom.get())
-         .sub(this.data.camera);
+         .sub(this.data.camera.get());
    }
 
    public toDisplay(real: Vector): Vector { 
-      return real.sub(this.data.camera)
+      return real.sub(this.data.camera.get())
          .scale(this.data.zoom.get())
          .add(this.data.wsSize.div(2));
    }
