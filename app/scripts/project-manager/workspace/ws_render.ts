@@ -30,7 +30,7 @@ export default class WSRender extends Component {
    public renderGraph(): void {
       this.clearFor(this.ctxes.graph);
 
-      this.getMultipleGroups().forEach((group) => { 
+      /*this.getMultipleGroups().forEach((group) => { 
          const multipleStart: number = (group.length % 2 === 0) ? 1 : 0;
 
          group.forEach((edge, index) => { 
@@ -41,7 +41,7 @@ export default class WSRender extends Component {
                this.drowLoopEdge(edge, index); 
             }
          });
-      });
+      });*/
       
       this.getGraph().getVertices().forEach((vertex) => { 
          this.drowVertex(vertex);

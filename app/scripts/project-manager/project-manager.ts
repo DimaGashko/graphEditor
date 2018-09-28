@@ -119,7 +119,7 @@ export default class ProjectManager extends Component {
    }
 
    private initProjects(): void {
-      this.createNewProject();
+      
    }
 
    private getElements(): void { 

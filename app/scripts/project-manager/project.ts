@@ -16,6 +16,10 @@ export default class Project extends Component {
       super();      
    }
 
+   public getWorkspace(): Workspace { 
+      return this.workspace;
+   }
+
    public init(parent: Element) { 
       this.create(parent);
       this.getElements();

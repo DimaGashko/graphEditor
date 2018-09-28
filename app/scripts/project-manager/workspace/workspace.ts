@@ -27,6 +27,10 @@ export default class Workspace extends Component {
       super();
    }
 
+   public getData(): WSData {
+      return this.data;
+   }
+
    public init(root: Element) { 
       this.getElements(root);
       this.initEvents();
@@ -231,7 +235,11 @@ export default class Workspace extends Component {
             return;
          }
 
-         targ.coords = moveStart.add(offset);
+         let newCoords = moveStart.add(offset);
+
+         if (1 || this.checkVertexCoords(targ, newCoords)) {
+            targ.coords = newCoords;
+         }
       });
 
       this.events.addEvent('mouseenter', (event: IWSEvent) => { 
@@ -262,6 +270,19 @@ export default class Workspace extends Component {
       this.animRedy = false;
 
       this.data.zoom.reset();
+   }
+
+   private checkVertexCoords(v1: WSVertex, newCoords: Vector): boolean { 
+      return this.data.wsGraph.graph.getVertices().every((vertex) => { 
+         let v2 = <WSVertex>vertex.targ;
+         if (v1 === v2) return true;
+
+         let a = v2.coords.x - newCoords.x;
+         let b = v2.coords.y - newCoords.y;
+         let minD = (v1.radius.x + v1.radius.x) + 40;
+
+         return (a * a + b * b > minD * minD);
+      });
    }
 
    private onresize() { 

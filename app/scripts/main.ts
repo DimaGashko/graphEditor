@@ -1,4 +1,5 @@
 import GraphEditor from "./graph-editor";
+import { getRandomInt } from "./math/geometry/geometry";
 
 (function () {
    console.time('GraphEditor');
@@ -12,8 +13,42 @@ import GraphEditor from "./graph-editor";
    
    let graphEditor = new GraphEditor(root); 
 
-   graphEditor.projectManager.createNewProject();
-   graphEditor.projectManager.createNewProject();
+   let project1 = graphEditor.projectManager.createNewProject();
+   let project2 = graphEditor.projectManager.createNewProject();
+   let project3 = graphEditor.projectManager.createNewProject();
+
+   project1.rename('Demo Graph');
+   project2.rename('Из матрицы смежности');
+   project3.rename('Случайный граф');
+
+   project1.getWorkspace().getData().wsGraph.createDemo();
+
+   project2.getWorkspace().getData().wsGraph.createByAdjacencyMatrix([
+      [0, 1, 0, 1, 0],  
+      [0, 0, 0, 0, 0],
+      [1, 1, 0, 1, 1],
+      [0, 1, 0, 1, 0],
+      [0, 0, 1, 0, 0],
+   ]);
+
+   project3.getWorkspace().getData().wsGraph.createByAdjacencyMatrix(
+      createRandomAdjacencyMatrix()
+   );
+
+   function createRandomAdjacencyMatrix(): number[][] { 
+      let matrix: number[][] = [];
+      let len = getRandomInt(2, 80);
+
+      for (let i = 0; i < len; i++) { 
+         matrix[i] = [];
+
+         for (let j = 0; j < len; j++) { 
+            matrix[i][j] = (Math.random() > 0.99) ? 1 : 0;
+         }
+      }
+      
+      return matrix;
+   }
 
    console.timeEnd('GraphEditor');
 

@@ -4,16 +4,16 @@ import Vector from "../../../math/vector/vector";
 import Vertex from "../../../math/graph/vertex";
 import Edge from "../../../math/graph/edge";
 import WSEdge from "./ws_edge";
-import WSGraphComponent from "../ws_graph_component";
+import { getRandomVector } from "../../../math/geometry/geometry";
 
 export default class WSGraph {
    public graph: Graph = new Graph();
 
    constructor() {
-      this.create();
+
    }
 
-   private create() {
+   public createDemo() {
       let v1 = new Vertex(new WSVertex(new Vector(-200, 100), 'v1'));
       let v2 = new Vertex(new WSVertex(new Vector(0, 100), 'v2'));
       let v3 = new Vertex(new WSVertex(new Vector(130, -70), 'v3'));
@@ -30,10 +30,18 @@ export default class WSGraph {
       this.graph.addEdge(new Edge(v1, v3, 'uni', 1, new WSEdge('e9')));
       this.graph.addEdge(new Edge(v4, v3, 'uni', 1, new WSEdge('e10')));
       this.graph.addEdge(new Edge(v3, v4, 'uni', 1, new WSEdge('e11')));
+   }
 
-      /* this.graph = Graph.parseAdjacencyMatrix([
-          [],
-       ]);*/
+   public createByAdjacencyMatrix(matrix: number[][]): void { 
+      this.graph = Graph.parseAdjacencyMatrix(matrix);
+
+      this.graph.getEdges().forEach((edge, i) => { 
+         edge.targ = new WSEdge(`e${i + 1}`);
+      });
+
+      this.graph.getVertices().forEach((vertex, i) => { 
+         vertex.targ = new WSVertex(getRandomVector(-300, 300), `v${i + 1}`);
+      });
    }
 
 }
