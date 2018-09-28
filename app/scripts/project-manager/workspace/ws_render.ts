@@ -322,7 +322,6 @@ export default class WSRender extends Component {
 
       let begin = this.converter.toReal(new Vector(0, 0));
       let end = this.converter.toReal(this.data.wsSize);
-      step = step.scale(this.data.zoom.get());
       
       begin = new Vector(
          begin.x - begin.x % step.x - step.x,
