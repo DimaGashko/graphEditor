@@ -9,20 +9,22 @@ import WSEdge from "./ws_graph/ws_edge";
 import { getBezieCoords } from "../../math/geometry/geometry";
 import Graph from "../../math/graph/graph";
 
+type CanvEl = HTMLCanvasElement;
+type Context = CanvasRenderingContext2D;
+
 export default class WSRender extends Component {
-   private ctx: CanvasRenderingContext2D = (<CanvasRenderingContext2D>{});
+   private canvases: { [item: string]: CanvEl } = {};
+   private ctxes: { [item: string]: Context } = {};
 
    constructor(private data: WSData, private converter: WSConverter) { 
       super();
    }
 
-   public init(canvas: HTMLCanvasElement, root: Element) { 
+   public init(root: Element) { 
       this.els.root = root;
 
-      this.els.canvas = canvas;
-      const ctx = canvas.getContext('2d');
-
-      if (ctx) this.ctx = ctx;
+      this.initCanvases();
+      this.initCtxes();
    }
 
    public render(): void {
@@ -82,7 +84,7 @@ export default class WSRender extends Component {
     * @param {Vertex} vertex верниша
     */
    private drowVertex(vertex: Vertex) { 
-      let ctx = this.ctx;
+      let ctx = this.ctxes.graph;
       ctx.save();
 
       let zoom = this.data.zoom.getScalarZoom();
@@ -129,7 +131,7 @@ export default class WSRender extends Component {
    private drowEdge(edge: Edge, multiple: number = 0, edgesCount: number) { 
       if (multiple < 0) multiple = -multiple;
 
-      let ctx = this.ctx;
+      let ctx = this.ctxes.graph;
       ctx.save();
 
       let zoom = this.data.zoom.getScalarZoom();
@@ -237,7 +239,7 @@ export default class WSRender extends Component {
     * ребра, то первое из кратных ребер - 0, второе - 1)
     */
    private drowLoopEdge(edge: Edge, multiple: number = 0) { 
-      let ctx = this.ctx;
+      let ctx = this.ctxes.graph;
       ctx.save();
 
       let zoom = this.data.zoom.getScalarZoom();
@@ -290,6 +292,18 @@ export default class WSRender extends Component {
       return `${(<WSEdge>edge.targ).getName()}${(edge.weight !== 1) ? ` (${edge.weight})` : ''}`
    }
 
+   private initCanvases(): void { 
+      const r: Element = this.els.root;
+
+      this.canvases.graph = <CanvEl>r.querySelector('.workspace__graph_canvas');
+      this.canvases.grid = <CanvEl>r.querySelector('.workspace__grid_canvas');
+   }
+
+   private initCtxes(): void {
+      this.ctxes.graph = <Context>this.canvases.graph.getContext('2d');
+      this.ctxes.grid = <Context>this.canvases.grid.getContext('2d');
+   }
+
    public updateMetrix(): void { 
       this.data.wsSize = new Vector(
          this.els.root.clientWidth,
@@ -298,15 +312,22 @@ export default class WSRender extends Component {
    }
 
    public updateSize(): void {
-      this.els.canvas.width = this.data.wsSize.x;
-      this.els.canvas.height = this.data.wsSize.y;
+      this.updateSizeFor(this.canvases.graph);
+      this.updateSizeFor(this.canvases.grid);
    }
 
    private clear() {
-      this.ctx.save();
-      this.ctx.fillStyle = this.data.background;
-      this.ctx.fillRect(0, 0, this.data.wsSize.x, this.data.wsSize.y);
-      this.ctx.restore();
+      this.clearFor(this.ctxes.graph);
+      this.clearFor(this.ctxes.grid);
+   }
+
+   public updateSizeFor(canv: CanvEl): void {
+      canv.width = this.data.wsSize.x;
+      canv.height = this.data.wsSize.y;
+   }
+
+   private clearFor(ctx: Context) {
+      ctx.clearRect(0, 0, this.data.wsSize.x, this.data.wsSize.y);
    }
 
 }

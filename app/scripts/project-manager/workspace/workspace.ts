@@ -68,7 +68,7 @@ export default class Workspace extends Component {
    }
 
    private initRender(): void { 
-      this.render.init(this.els.canvas, this.els.root);
+      this.render.init(this.els.root);
    }
 
    private initEvents(): void {
@@ -212,6 +212,5 @@ export default class Workspace extends Component {
 
    private getElements(root: Element): void { 
       this.els.root = root;
-      this.els.canvas = root.querySelector('.workspace__canvas');
    }
 }

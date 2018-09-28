@@ -5,7 +5,7 @@ import WSCamera from "./ws_camera";
 
 
 export default class WSData {
-   public wsSize: Vector = new Vector(150, 150); 
+   public wsSize: Vector = new Vector(0, 0); 
    public background: string = '#f8f8f8';
 
    public wsGraph: WSGraph = new WSGraph();
