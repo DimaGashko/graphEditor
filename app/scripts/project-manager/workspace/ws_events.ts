@@ -5,7 +5,7 @@ import Vector from "../../math/vector/vector";
 import WSVertex from "./ws_graph/ws_vertex";
 
 export interface IWSEvent { 
-   targ: WSVertex,
+   targ: WSVertex | null,
    cursorXY: Vector,
 }
 
@@ -45,12 +45,11 @@ export default class WSEvents extends Component {
       let targ = this.getObjOn(this.getCoords(event));
       if (!targ) { 
          this.triggerLeave(event);
-         return;
       };
 
       this.trigger(type, targ, event);
 
-      if (targ !== this.enterObj) { 
+      if (targ && targ !== this.enterObj) { 
          this.triggerLeave(event);
 
          this.enterObj = targ;
@@ -65,14 +64,14 @@ export default class WSEvents extends Component {
       this.enterObj = null;
    }
 
-   public trigger(type: string, targ: WSVertex, event: MouseEvent) { 
+   public trigger(type: string, targ: WSVertex | null, event: MouseEvent) { 
       let wsEvent: IWSEvent = {
          targ: targ,
          cursorXY: this.getCoords(event),
       }
 
       super.trigger(type, wsEvent);
-      event.stopPropagation();
+      if (targ) event.stopPropagation();
    }
 
    private getObjOn(coords: Vector): WSVertex | null {

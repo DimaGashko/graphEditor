@@ -5,6 +5,7 @@ import WSConverter from "./ws_converter";
 import WSEvents, { IWSEvent } from "./ws_events";
 import KEYS from "../../keys";
 import Vector from "../../math/vector/vector";
+import WSVertex from "./ws_graph/ws_vertex";
 
 export default class Workspace extends Component {
    private playing: boolean = false; //запущена ли перерисовка Workspace
@@ -166,7 +167,7 @@ export default class Workspace extends Component {
    }
 
    private initCameraMove() { 
-      let moveStart: Vector = new Vector(); //Координаты начала перемещения камеры
+      let moveStart: Vector = new Vector(); //Начало перемещения камеры
       let cameraOnStartMoving: Vector = new Vector();
 
       (<HTMLElement>this.els.root).addEventListener('mousedown', (event) => { 
@@ -202,9 +203,36 @@ export default class Workspace extends Component {
    }
 
    private initWSEvents(): void { 
-
-
       this.events.init(this.els.canvases);
+
+      let moveStart: Vector = new Vector(0, 0);
+      let moving: boolean = false;
+      let targ: WSVertex | null = null;
+
+      this.events.addEvent('mousedown', (event: IWSEvent) => { 
+         moveStart = event.cursorXY;
+         targ = event.targ;
+         moving = true;
+      });
+
+      this.events.addEvent('mouseup', (event: IWSEvent) => { 
+         moving = false;
+         targ = null;
+      });
+
+      this.events.addEvent('mousemove', (event: IWSEvent) => { 
+         if (!moving || !targ) return;
+
+         let coords = event.cursorXY;
+         let offset = coords.sub(moveStart);
+         let minOffset = 25 * this.data.zoom.getScalarZoom(); 
+
+         if (offset.x * offset.x + offset.y * offset.y < minOffset) { 
+            return;
+         }
+
+         targ.coords = moveStart.add(offset);
+      });
 
       this.events.addEvent('mouseenter', (event: IWSEvent) => { 
          this.els.root.classList.add('workspace-vertex_move');
@@ -212,18 +240,6 @@ export default class Workspace extends Component {
 
       this.events.addEvent('mouseleave', (event: IWSEvent) => { 
          this.els.root.classList.remove('workspace-vertex_move');
-      });
-
-      this.events.addEvent('mousedown', (event: IWSEvent) => { 
-         
-      });
-
-      this.events.addEvent('mouseup', (event: IWSEvent) => { 
-         //console.log(event);
-      });
-
-      this.events.addEvent('mousemove', (event: IWSEvent) => { 
-         //console.log(event);
       });
    }
 
