@@ -37,13 +37,13 @@ import { getRandomInt } from "./math/geometry/geometry";
 
    function createRandomAdjacencyMatrix(): number[][] { 
       let matrix: number[][] = [];
-      let len = getRandomInt(2, 80);
+      let len = getRandomInt(2, 10);
 
       for (let i = 0; i < len; i++) { 
          matrix[i] = [];
 
          for (let j = 0; j < len; j++) { 
-            matrix[i][j] = (Math.random() > 0.99) ? 1 : 0;
+            matrix[i][j] = (Math.random() > 0.8) ? 1 : 0;
          }
       }
       
