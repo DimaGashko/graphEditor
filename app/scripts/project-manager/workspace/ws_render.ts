@@ -293,22 +293,26 @@ export default class WSRender extends Component {
       let ctx = this.ctxes.grid;
 
       let c = this.converter.toDisplay(new Vector(0, 0));
-      console.log(c)
-      ctx.fillRect(c.x - 5, c.y - 5, 10, 10);
+      //console.log(c)
+      //ctx.fillRect(c.x - 5, c.y - 5, 10, 10);
 
       ctx.save();
-
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 0.1;
-      this.drowGrid(new Vector(10, 10));
 
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 0.2;
-      this.drowGrid(new Vector(100, 100));
+      let scalarZoom = this.data.zoom.getScalarZoom();
 
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 0.2;
-      this.drowGrid(new Vector(1000, 1000));
+      if (scalarZoom > 0.75) { 
+         this.drowGrid(new Vector(10, 10));
+      }
+
+      if (scalarZoom > 0.25) {
+         this.drowGrid(new Vector(100, 100));
+      }
+
+      if (scalarZoom < 0.75) {
+         this.drowGrid(new Vector(1000, 1000));
+      }
 
       ctx.restore();
    }

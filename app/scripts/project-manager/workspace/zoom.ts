@@ -6,9 +6,9 @@ export default class WSZoom extends Component {
    private animateFrame: number = 0;
    
    private min: Vector = new Vector(0.1, 0.1);
-   private max: Vector = new Vector(5, 5);
+   private max: Vector = new Vector(3, 3);
    private def: Vector = new Vector(1, 1);
-   private step: Vector = new Vector(0.05, 0.05);
+   private step: Vector = new Vector(0.04, 0.04);
 
    private val: Vector = this.def.copy();
 
