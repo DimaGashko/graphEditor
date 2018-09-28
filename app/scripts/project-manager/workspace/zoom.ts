@@ -36,7 +36,7 @@ export default class WSZoom extends Component {
       if (animate) { 
          this.animateTo(this.def.copy(), time);
       } else {
-         this.set(this.def.copy());
+         this.set(this.def.copy());  
       }
    }
 

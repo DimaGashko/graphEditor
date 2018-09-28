@@ -4,6 +4,7 @@ import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
 import WSEvents from "./ws_events";
 import KEYS from "../../keys";
+import Vector from "../../math/vector/vector";
 
 export default class Workspace extends Component {
    private playing: boolean = false;
@@ -86,7 +87,7 @@ export default class Workspace extends Component {
       });
 
       document.addEventListener('keydown', (event) => { 
-         let check = this.playing && this.isHover && (event.keyCode in KEYS);
+         let check = this.isActive() && (event.keyCode in KEYS);
 
          if (!check) return;
 
@@ -108,7 +109,7 @@ export default class Workspace extends Component {
       });
 
       document.addEventListener('keyup', (event) => {  
-         let check = this.playing && this.isHover && (event.keyCode in KEYS);
+         let check = this.isActive() && (event.keyCode in KEYS);
 
          if (!check) return; 
 
@@ -124,15 +125,30 @@ export default class Workspace extends Component {
       });
 
       document.addEventListener('keydown', (event) => { 
-         let check = this.playing && this.isHover && (event.keyCode in KEYS)
+         let check = this.isActive() && (event.keyCode in KEYS)
       
          if (!check) return;
          event.preventDefault();
+      });
+         
+      window.addEventListener('wheel', (event) => { 
+         if (!this.isActive()) return;
+
+         requestAnimationFrame(() => {
+            const delta = event.deltaY / 1000;
+         
+            if (delta < 0) this.data.zoom.add(new Vector(delta, delta));
+            else this.data.zoom.sub(new Vector(-delta, -delta));
+         });
       });
 
       this.data.zoom.addEvent('animateEnd', () => {
          this.animRedy = true;
       });
+   }
+
+   public isActive(): boolean {
+      return this.playing && this.isHover;
    }
 
    public subZoom(): void {
