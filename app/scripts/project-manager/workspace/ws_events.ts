@@ -6,6 +6,7 @@ import WSVertex from "./ws_graph/ws_vertex";
 
 export interface IWSEvent { 
    targ: WSVertex,
+   cursorXY: Vector,
 }
 
 type CanvEl = HTMLCanvasElement;
@@ -47,32 +48,29 @@ export default class WSEvents extends Component {
          return;
       };
 
-      let wsEvent: IWSEvent = {
-         targ: targ,
-      }
-
-      this.trigger(type, wsEvent, event);
+      this.trigger(type, targ, event);
 
       if (targ !== this.enterObj) { 
          this.triggerLeave(event);
 
          this.enterObj = targ;
-         this.trigger('mouseenter', wsEvent, event);
+         this.trigger('mouseenter', targ, event);
       }
    }
 
    private triggerLeave(event: MouseEvent): void { 
       if (!this.enterObj) return;
-
-      let wsEvent: IWSEvent = {
-         targ: this.enterObj,
-      }
-      
+   
+      this.trigger('mouseleave', this.enterObj, event);
       this.enterObj = null;
-      this.trigger('mouseleave', wsEvent, event);
    }
 
-   public trigger(type: string, wsEvent: IWSEvent, event: MouseEvent) { 
+   public trigger(type: string, targ: WSVertex, event: MouseEvent) { 
+      let wsEvent: IWSEvent = {
+         targ: targ,
+         cursorXY: this.getCoords(event),
+      }
+
       super.trigger(type, wsEvent);
       event.stopPropagation();
    }

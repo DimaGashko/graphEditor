@@ -5,18 +5,12 @@ import WSConverter from "./ws_converter";
 import WSEvents, { IWSEvent } from "./ws_events";
 import KEYS from "../../keys";
 import Vector from "../../math/vector/vector";
-import WSVertex from "./ws_graph/ws_vertex";
 
 export default class Workspace extends Component {
    private playing: boolean = false; //запущена ли перерисовка Workspace
    private moving: boolean = false; //перемещают ли сейчас Workspace
    private animRedy: boolean = true; 
    private animateFrameId: number = 0;
-
-   //Координаты начала перемещения камеры
-   private moveStart: Vector = new Vector();
-   private cameraOnStartMoving: Vector = new Vector();
-
    
    private data: WSData = new WSData();
    private converter: WSConverter = new WSConverter(this.data);
@@ -42,6 +36,7 @@ export default class Workspace extends Component {
       if (this.playing) return;
       this.playing = true;
 
+      this.onresize();
       this.trigger('start');
 
       let workspace: Workspace = this;
@@ -171,10 +166,13 @@ export default class Workspace extends Component {
    }
 
    private initCameraMove() { 
+      let moveStart: Vector = new Vector(); //Координаты начала перемещения камеры
+      let cameraOnStartMoving: Vector = new Vector();
+
       (<HTMLElement>this.els.root).addEventListener('mousedown', (event) => { 
          if (!this.isActive() || event.which !== 1) return;
-         this.moveStart = new Vector(event.clientX, event.clientY);
-         this.cameraOnStartMoving = this.data.camera.get();
+         moveStart = new Vector(event.clientX, event.clientY);
+         cameraOnStartMoving = this.data.camera.get();
          this.moving = true;
       });
 
@@ -188,14 +186,14 @@ export default class Workspace extends Component {
          if (!this.playing || !this.moving) return;
 
          let coords = new Vector(event.clientX, event.clientY);
-         let offset = coords.sub(this.moveStart);
+         let offset = coords.sub(moveStart);
 
          if (offset.x * offset.x + offset.y * offset.y < 25) { 
             return;
          }
 
          let realOffset = offset.diScale(this.data.zoom.get());
-         this.data.camera.goTo(this.cameraOnStartMoving.sub(realOffset));
+         this.data.camera.goTo(cameraOnStartMoving.sub(realOffset));
       });
 
       window.addEventListener('blur', () => { 
@@ -204,22 +202,20 @@ export default class Workspace extends Component {
    }
 
    private initWSEvents(): void { 
+
+
       this.events.init(this.els.canvases);
 
       this.events.addEvent('mouseenter', (event: IWSEvent) => { 
-         event.targ.style.lineColor = 'green';
-         event.targ.style.color = 'green';
          this.els.root.classList.add('workspace-vertex_move');
       });
 
       this.events.addEvent('mouseleave', (event: IWSEvent) => { 
-         event.targ.style.lineColor = '#000';
-         event.targ.style.color = '#000';
          this.els.root.classList.remove('workspace-vertex_move');
       });
 
       this.events.addEvent('mousedown', (event: IWSEvent) => { 
-         console.log(event.targ);
+         
       });
 
       this.events.addEvent('mouseup', (event: IWSEvent) => { 
