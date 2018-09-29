@@ -4,7 +4,7 @@ import Vector from "../../../math/vector/vector";
 import Vertex from "../../../math/graph/vertex";
 import Edge from "../../../math/graph/edge";
 import WSEdge from "./ws_edge";
-import { getRandomVector } from "../../../math/geometry/geometry";
+import { getRandomVector } from "../../../math/math";
 
 export default class WSGraph {
    public graph: Graph = new Graph();
