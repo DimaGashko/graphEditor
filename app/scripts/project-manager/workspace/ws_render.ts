@@ -6,7 +6,7 @@ import WSVertex from "./ws_graph/ws_vertex";
 import Vertex from "../../math/graph/vertex";
 import Edge from "../../math/graph/edge";
 import WSEdge from "./ws_graph/ws_edge";
-import { getBezieCoords } from "../../math/geometry/geometry";
+import { getBezieCoords } from "../../math/math";
 import Graph from "../../math/graph/graph";
 
 type CanvEl = HTMLCanvasElement;
@@ -256,7 +256,7 @@ export default class WSRender extends Component {
       ctx.font = `${targE.style.fontVariant} 
          ${(targE.style.fontSize * zoom)^0}px ${targE.style.fontFamily}`;
 
-      ctx.lineWidth = targE.style.loopWidth;
+      ctx.lineWidth = targE.style.loopWidth * zoom;
 
       let xy = this.converter.toDisplay(targV.coords);
 

@@ -1,9 +1,10 @@
 import GraphEditor from "./graph-editor";
-import { getRandomInt } from "./math/geometry/geometry";
+import { getRandomInt } from "./math/math";
 import Graph from "./math/graph/graph";
+import mulptiple_test from "./configs/matrix/mulptiple_test";
 
 (function () {
-   console.time('GraphEditor');
+   console.time('GraphEditor'); 
 
    let root: Element|null = document.querySelector('.graph_editor');
    if (!root) {
@@ -54,92 +55,15 @@ import Graph from "./math/graph/graph";
    );
 
    project2.getWorkspace().getData().wsGraph.createByGraph(
-      Graph.parseIncidenceMatrix([
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [0, 1, 1, 0, 0, 0],
-
-         [0, 0, 0, 1, 1, 0],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [0, 1, 1, 0, 0, 0],
-         
-         [0, 0, 0, 1, 1, 0],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [0, 1, 1, 0, 0, 0],
-         
-         [0, 0, 0, 1, 1, 0],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [0, 1, 1, 0, 0, 0],
-         
-         [0, 0, 0, 1, 1, 0],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [0, 1, 1, 0, 0, 0],
-         
-         [0, 0, 0, 1, 1, 0],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [0, 1, 1, 0, 0, 0],
-         
-         [0, 0, 0, 1, 1, 0],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [1, 1, 0, 0, 0, 0],
-         [0, 1, 1, 0, 0, 0],
-         
-         [0, 0, 0, 1, 1, 0],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-         [0, 0, 0, 0, 1, 1],
-      ])
+      Graph.parseIncidenceMatrix(mulptiple_test)
    );
+
+   for (let i = 0; i <= -1; i++) { 
+      let project = projectManager.createNewProject(`Случайный ${i + 1}`);
+      project.getWorkspace().getData().wsGraph.createByGraph(
+         Graph.parseAdjacencyMatrix(createRandomAdjacencyMatrix())
+      );
+   }
 
    function createRandomAdjacencyMatrix(): number[][] { 
       let matrix: number[][] = [];

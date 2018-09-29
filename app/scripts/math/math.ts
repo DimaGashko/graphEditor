@@ -1,4 +1,4 @@
-import Vector from "../vector/vector";
+import Vector from "./vector/vector";
 
 export function getBezieCoords(p1: Vector, p2: Vector, p3: Vector, t: number) {
    return new Vector((1 - t) * (1 - t), (1 - t) * (1 - t)).scale(p1)

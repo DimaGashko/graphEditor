@@ -41,7 +41,6 @@ export default class WSGraph {
          vertex.targ = new WSVertex(getRandomVector(-300, 300), `v${i + 1}`);
       });
 
-      console.log(graph)
       this.graph = graph;
    }
 
