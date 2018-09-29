@@ -185,7 +185,12 @@ export default class WSRender extends Component {
       ctx.strokeStyle = targE.style.lineColor;
 
       ctx.moveTo(begin.x, begin.y);
-      ctx.quadraticCurveTo(controll.x, controll.y, end.x, end.y);
+      if (controllY === 0) { 
+         ctx.lineTo(end.x, end.y);
+      } else {
+         ctx.quadraticCurveTo(controll.x, controll.y, end.x, end.y);
+      }
+      
       ctx.stroke();
 
       //Стрелка
