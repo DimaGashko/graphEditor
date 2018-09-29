@@ -1,27 +1,46 @@
-.project_manager
-   $header-h: 30px; 
-
+.project_manager   
    height: 100%
+   position: relative
+
    
    &__header
-      user-select: none
-      height: $header-h
+      position: absolute
+      left: 0
+      top: 0
+      width: 100%
       background: $color1
       border-bottom: 1px solid $blocks-border-color
       overflow: auto
       box-sizing: border-box
+      user-select: none
+      z-index: 8
 
-   &__project_list 
-      height: 100%
 
    &__project_list
       font-size: 0
+      white-space: nowrap
+      overflow: auto
+
+      &::-webkit-scrollbar-track 
+         background-color: $color3
+
+      &::-webkit-scrollbar-thumb 
+         background-color: #aaa
+
+      &::-webkit-scrollbar-thumb:hover
+         background-color: #56999f
+
+      &::-webkit-scrollbar
+         width: 5px
+         height: 5px
 
    &__new_project
 
    &__content
-      height: calc(100% - #{$header-h})
+      height: 100%
       background: $color0
+      position: relative
+      z-index: 7
 
    &__projects
       height: 100%
@@ -36,8 +55,6 @@
    display: inline-block
    vertical-align: middle
    line-height: 1
-   height: 100%
-   line-height: 
    font-size: 0
    background: $color1
    border-right: 1px solid rgba(0,0,0,.1)
@@ -56,7 +73,6 @@
       vertical-align: middle
       border: none
       background: none
-      height: 100%
       font-size: 14px 
       cursor: default
       opacity: 0.7
@@ -66,7 +82,7 @@
       overflow: hidden
       text-overflow: ellipsis
       max-width: 150px
-      padding-right: 0 5px
+      padding: 7px 5px
 
       &:focus
          opacity: 1
@@ -86,6 +102,10 @@
       opacity: 0.4
       transition: opacity .3s
       outline: none
+      width: 14px
+      height: 14px
+      padding: 5px 0
+
 
       &:hover, &:focus
          opacity: 1
