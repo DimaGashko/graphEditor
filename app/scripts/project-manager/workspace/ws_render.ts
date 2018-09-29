@@ -97,25 +97,25 @@ export default class WSRender extends Component {
       //Круг фона
       ctx.fillStyle = targ.style.background,
       
-      ctx.arc(xy.x, xy.y, r.x, 0, Math.PI * 2);
+      ctx.arc(xy.x^0, xy.y^0, r.x^0, 0, Math.PI * 2);
       ctx.fill();
 
       //Граница
       ctx.lineWidth = targ.style.borderWidth * zoom;
       ctx.strokeStyle = targ.style.lineColor;
       
-      ctx.arc(xy.x, xy.y, r.x, 0, Math.PI * 2);
+      ctx.arc(xy.x^0, xy.y^0, r.x^0, 0, Math.PI * 2);
       ctx.stroke();
 
       //Название
       ctx.font = `${targ.style.fontVariant} 
-         ${targ.style.fontSize * zoom}px ${targ.style.fontFamily}`;
+         ${(targ.style.fontSize * zoom)^0}px ${targ.style.fontFamily}`;
       
       ctx.fillStyle = targ.style.color;
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
 
-      ctx.fillText(targ.getName(), xy.x, xy.y, 100 * zoom);
+      ctx.fillText(targ.getName(), xy.x^0, xy.y^0, 100 * zoom^0);
 
       ctx.restore();
    } 
@@ -142,7 +142,7 @@ export default class WSRender extends Component {
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
       ctx.font = `${targE.style.fontVariant} 
-         ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
+         ${(targE.style.fontSize * zoom)^0}px ${targE.style.fontFamily}`;
 
       let xy1 = this.converter.toDisplay(targV1.coords);
       let xy2 = this.converter.toDisplay(targV2.coords);
@@ -153,7 +153,7 @@ export default class WSRender extends Component {
       ctx.lineWidth = targE.style.lineWidth * zoom;
 
       //Переносим начало координат в конец ребра
-      ctx.translate(xy2.x, xy2.y);
+      ctx.translate(xy2.x^0, xy2.y^0);
 
       //Поворачиваем ребро горизонтально
       ctx.rotate(Math.atan2(xy2.y - xy1.y, xy2.x - xy1.x));
@@ -186,9 +186,9 @@ export default class WSRender extends Component {
 
       ctx.moveTo(begin.x, begin.y);
       if (controllY === 0) { 
-         ctx.lineTo(end.x, end.y);
+         ctx.lineTo(end.x^0, end.y^0);
       } else {
-         ctx.quadraticCurveTo(controll.x, controll.y, end.x, end.y);
+         ctx.quadraticCurveTo(controll.x^0, controll.y^0, end.x^0, end.y^0);
       }
       
       ctx.stroke();
@@ -210,9 +210,9 @@ export default class WSRender extends Component {
          //Рисуем стрелочку
          ctx.beginPath();
          ctx.moveTo(0, 0);
-         ctx.lineTo(targE.style.arrowSize * zoom, -5 * zoom);
+         ctx.lineTo((targE.style.arrowSize * zoom)^0, (-5 * zoom)^0);
          ctx.moveTo(0, 0);
-         ctx.lineTo(targE.style.arrowSize * zoom, 5 * zoom);
+         ctx.lineTo((targE.style.arrowSize * zoom)^0, (5 * zoom)^0);
 
          ctx.stroke();
          ctx.restore();
@@ -223,13 +223,13 @@ export default class WSRender extends Component {
       ctx.fillStyle = targE.style.color;
 
       let textCoords = getBezieCoords(begin, controll, end, 0.5);
-      ctx.translate(textCoords.x, textCoords.y);
+      ctx.translate(textCoords.x^0, textCoords.y^0);
 
       if (xy1.x > xy2.x) { 
          ctx.rotate(Math.PI);
       }
 
-      ctx.fillText(this.getEdgeText(edge), 0, -10 * zoom);
+      ctx.fillText(this.getEdgeText(edge), 0, (-10 * zoom)^0);
 
       ctx.restore();
 
@@ -254,7 +254,7 @@ export default class WSRender extends Component {
       ctx.textBaseline = "middle";
       ctx.textAlign = "center";
       ctx.font = `${targE.style.fontVariant} 
-         ${targE.style.fontSize * zoom}px ${targE.style.fontFamily}`;
+         ${(targE.style.fontSize * zoom)^0}px ${targE.style.fontFamily}`;
 
       ctx.lineWidth = targE.style.loopWidth;
 
@@ -266,28 +266,28 @@ export default class WSRender extends Component {
       ctx.beginPath();
 
       //Рисуем ребро-перлю
-      ctx.arc(xy.x - r / Math.SQRT2, xy.y - r / Math.SQRT2, r, 0, Math.PI * 2);
+      ctx.arc((xy.x - r / Math.SQRT2)^0, (xy.y - r / Math.SQRT2)^0, r, 0, Math.PI * 2);
       ctx.stroke();  
       
       //Переносим СК на круг петли (под углом 45)
       let rx = xy.x - r / Math.SQRT2 * 2;
       let ry = xy.y - r / Math.SQRT2 * 2;
 
-      ctx.translate(rx, ry);
+      ctx.translate(rx^0, ry^0);
       ctx.rotate(-Math.PI / 4);
    
       //Текст
       ctx.font = `${targE.style.fontVariant} 
-         ${targE.style.loopFontSize * zoom}px ${targE.style.fontFamily}`;
+         ${(targE.style.loopFontSize * zoom)^0}px ${targE.style.fontFamily}`;
       
-      ctx.fillText(this.getEdgeText(edge), 0, -10 * zoom);
+      ctx.fillText(this.getEdgeText(edge), 0, (-10 * zoom)^0);
       
       //Arrow
       ctx.rotate(Math.PI / 30);
       ctx.moveTo(0, 0);
-      ctx.lineTo(targE.style.loopArrowSize * zoom, 5 * zoom);
+      ctx.lineTo((targE.style.loopArrowSize * zoom)^0, (5 * zoom)^0);
       ctx.moveTo(0, 0);
-      ctx.lineTo(targE.style.loopArrowSize * zoom, -5 * zoom);
+      ctx.lineTo((targE.style.loopArrowSize * zoom)^0, (-5 * zoom)^0);
       ctx.stroke();
 
       ctx.restore();
@@ -343,15 +343,15 @@ export default class WSRender extends Component {
       for (let i = 0; i < lines.x; i++) { 
          let x = this.converter.toDisplay(new Vector(begin.x + i * step.x, 0)).x;
 
-         ctx.moveTo(x, 0);
-         ctx.lineTo(x, this.data.wsSize.y);
+         ctx.moveTo(x^0, 0);
+         ctx.lineTo(x^0, this.data.wsSize.y^0);
       }
 
       for (let i = 0; i < lines.x; i++) { 
          let y = this.converter.toDisplay(new Vector(0, begin.y + i * step.y)).y;
 
-         ctx.moveTo(0, y);
-         ctx.lineTo(this.data.wsSize.x, y);
+         ctx.moveTo(0, y^0);
+         ctx.lineTo(this.data.wsSize.x^0, y^0);
       }
 
       ctx.stroke();

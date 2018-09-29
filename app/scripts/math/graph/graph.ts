@@ -62,6 +62,7 @@ export default class Graph {
    /**
     * Возвращает граф в виде матрицы смежности
     * Если в графе есть кратные ребра, то они "склеиваются"
+    * (Кратные ребра остаются, если они имеют разные направление)
     */
    public toAdjacencyMatrix(): number[][] { 
       let matrix: number[][] = [];
@@ -91,9 +92,30 @@ export default class Graph {
 
    /**
     * Возвращает граф в виде матрицы инцидентности
+    * 
+    * Ряды матрицы представляют ребра, столбцы - вершины
+    * Вес ребер игнорируется 
     */
    public toIncidenceMatrix(): number[][] { 
-      return [[]];
+      let matrix: number[][] = [];
+
+      this.edges.forEach((edge, i) => { 
+         matrix[i] = new Array(this.vertices.length).fill(0);
+
+         let v1 = this.vertices.indexOf(edge.v1);
+         let v2 = this.vertices.indexOf(edge.v2);
+         if (v1 === -1 || v2 === -1) return;
+
+         if (v1 === v2) {
+            matrix[i][v1] += 2;
+
+         } else {
+            matrix[i][v1] = (edge.type === "bi") ? 1 : -1;
+            matrix[i][v2] = 1;
+         }
+      });
+
+      return matrix;
    }
 
    /**

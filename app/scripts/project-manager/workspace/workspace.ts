@@ -165,6 +165,8 @@ export default class Workspace extends Component {
 
          let now = Date.now();
          if (now - prevTime < this.minTimeInterval) return;
+         
+         event.preventDefault();
 
          requestAnimationFrame(() => {
             const delta = event.deltaY / 1000;

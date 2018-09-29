@@ -24,12 +24,14 @@ import { getRandomInt } from "./math/geometry/geometry";
    project1.getWorkspace().getData().wsGraph.createDemo();
 
    project2.getWorkspace().getData().wsGraph.createByAdjacencyMatrix([
-      [0, 1, 0, 1, 0],  
-      [0, 0, 0, 0, 0],
+      [0, 5, 0, 1, 0],  
+      [5, 0, 0, 0, 0],
       [1, 1, 0, 1, 1],
       [0, 1, 0, 1, 0],
       [0, 0, 1, 0, 0],
    ]);
+
+   console.log(project2.getWorkspace().getData().wsGraph.graph.toIncidenceMatrix())
 
    project3.getWorkspace().getData().wsGraph.createByAdjacencyMatrix(
       createRandomAdjacencyMatrix()
