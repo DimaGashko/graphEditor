@@ -1,5 +1,6 @@
 import GraphEditor from "./graph-editor";
 import { getRandomInt } from "./math/geometry/geometry";
+import Graph from "./math/graph/graph";
 
 (function () {
    console.time('GraphEditor');
@@ -56,3 +57,15 @@ import { getRandomInt } from "./math/geometry/geometry";
 
    (<any>window).ge = graphEditor;
 }());   
+
+
+console.log(Graph.parseIncidenceMatrix([
+   [-1, 0, 0, 1, 0],
+   [1, 1, 0, 0, 0],
+   [1, 0, -1, 0, 0],
+   [0, 1, -1, 0, 0],
+   [0, 0, -1, 1, 0],
+   [0, 1, 0, -1, 0],
+   [0, 0, 0, 2, 0],
+   [0, 0, 1, 0, 1],
+]).toAdjacencyMatrix());

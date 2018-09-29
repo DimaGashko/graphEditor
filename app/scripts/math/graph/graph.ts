@@ -166,6 +166,65 @@ export default class Graph {
       return graph;
    }
 
+   /**
+    * На основании переданной матрицы смежности возвращает граф
+    * 
+    * @param {number[][]} matrix матрица смежности
+    * @returns Graph
+    */
+   static parseIncidenceMatrix(matrix: number[][]): Graph { 
+      if (!matrix.length) return new Graph();
+
+      let graph = new Graph();
+      let vertices: Vertex[] = [];
+
+      let verticesLen = matrix[0].length;
+      let edgesLen = matrix.length;
+
+      //Cоздаем все вершины и добавляем их в граф
+      //Что бы их последовательность была правильной, 
+      //Добавть их нужно перед добавлением ребер
+      for (let i = 0; i < verticesLen; i++) { 
+         let v: Vertex = new Vertex();
+         vertices.push(v);
+         graph.addVertex(v);
+      }
+
+      for (let i = 0; i < edgesLen; i++) {
+         let incidence: {val: number, index: number}[] = [];
+
+         matrix[i].forEach((val, i) => { 
+            if (val === 0) return;
+            incidence.push({val: val, index: i});
+         });
+
+         if (incidence.length === 0) continue;
+
+         else if (incidence.length === 1) {
+            //Петля
+            let v = vertices[incidence[0].index];
+            graph.addEdge(new Edge(v, v));
+
+         } else { 
+            let v1 = vertices[incidence[0].index];
+            let v2 = vertices[incidence[1].index];
+
+            if (incidence[0].val === incidence[1].val) {
+               graph.addEdge(new Edge(v1, v2, 'bi'));
+            
+            } else if (incidence[0].val < 0) {
+               graph.addEdge(new Edge(v1, v2, 'uni'));
+
+            } else { 
+               graph.addEdge(new Edge(v2, v1, 'uni'));
+            }
+
+         }
+      }
+
+      return graph;
+   }
+
    static isMultipleEdges(e1: Edge, e2: Edge): boolean { 
       return (
          (e1.v1 === e2.v1 && e1.v2 === e2.v2) ||
