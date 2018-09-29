@@ -17,10 +17,11 @@ export default class ProjectManager extends Component {
       this.initProjects();
    }
 
-   public createNewProject(): Project { 
+   public createNewProject(name?: string): Project { 
       let project = new Project();
       project.init(this.els.projects);
 
+      if (name) project.rename(name);
       this.projects.push(project);
 
       this.initProjectEvents(project);

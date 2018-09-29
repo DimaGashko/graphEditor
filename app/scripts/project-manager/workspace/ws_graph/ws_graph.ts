@@ -32,16 +32,17 @@ export default class WSGraph {
       this.graph.addEdge(new Edge(v3, v4, 'uni', 1, new WSEdge('e11')));
    }
 
-   public createByAdjacencyMatrix(matrix: number[][]): void { 
-      this.graph = Graph.parseAdjacencyMatrix(matrix);
-
-      this.graph.getEdges().forEach((edge, i) => { 
+   public createByGraph(graph: Graph): void {
+      graph.getEdges().forEach((edge, i) => { 
          edge.targ = new WSEdge(`e${i + 1}`);
       });
 
-      this.graph.getVertices().forEach((vertex, i) => { 
+      graph.getVertices().forEach((vertex, i) => { 
          vertex.targ = new WSVertex(getRandomVector(-300, 300), `v${i + 1}`);
       });
+
+      console.log(graph)
+      this.graph = graph;
    }
 
 }

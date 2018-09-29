@@ -12,30 +12,133 @@ import Graph from "./math/graph/graph";
       return;
    }
    
-   let graphEditor = new GraphEditor(root); 
+   let editor = new GraphEditor(root); 
+   let projectManager = editor.projectManager;
 
-   let project1 = graphEditor.projectManager.createNewProject();
-   let project2 = graphEditor.projectManager.createNewProject();
-   let project3 = graphEditor.projectManager.createNewProject();
+   let project1 = projectManager.createNewProject('Случайный');
+   let project2 = projectManager.createNewProject('Кратные ребра');
+   let project3 = projectManager.createNewProject('Мартица смежности');
+   let project4 = projectManager.createNewProject('Матрица инцедентности');
+   let project5 = projectManager.createNewProject('Demo Graph');
 
-   project1.rename('Demo Graph');
-   project2.rename('Из матрицы смежности');
-   project3.rename('Случайный граф');
+   project5.getWorkspace().getData().wsGraph.createDemo();
 
-   project1.getWorkspace().getData().wsGraph.createDemo();
+   project4.getWorkspace().getData().wsGraph.createByGraph(
+      Graph.parseIncidenceMatrix([
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+      ])
+   );
 
-   project2.getWorkspace().getData().wsGraph.createByAdjacencyMatrix([
-      [0, 5, 0, 1, 0],  
-      [5, 0, 0, 0, 0],
-      [1, 1, 0, 1, 1],
-      [0, 1, 0, 1, 0],
-      [0, 0, 1, 0, 0],
-   ]);
+   project3.getWorkspace().getData().wsGraph.createByGraph(
+      Graph.parseAdjacencyMatrix([
+         [0, 5, 0, 1, 0],  
+         [5, 0, 0, 0, 0],
+         [1, 1, 0, 1, 1],
+         [0, 1, 0, 1, 0],
+         [0, 0, 1, 0, 0],
+      ])
+   );
 
-   console.log(project2.getWorkspace().getData().wsGraph.graph.toIncidenceMatrix())
+   project1.getWorkspace().getData().wsGraph.createByGraph(
+      Graph.parseAdjacencyMatrix(createRandomAdjacencyMatrix())
+   );
 
-   project3.getWorkspace().getData().wsGraph.createByAdjacencyMatrix(
-      createRandomAdjacencyMatrix()
+   project2.getWorkspace().getData().wsGraph.createByGraph(
+      Graph.parseIncidenceMatrix([
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+         [0, 0, 0, 0, 1, 1],
+      ])
    );
 
    function createRandomAdjacencyMatrix(): number[][] { 
@@ -55,10 +158,10 @@ import Graph from "./math/graph/graph";
 
    console.timeEnd('GraphEditor');
 
-   (<any>window).ge = graphEditor;
+   (<any>window).ge = editor;
 }());   
 
-
+/*
 console.log(Graph.parseIncidenceMatrix([
    [-1, 0, 0, 1, 0],
    [1, 1, 0, 0, 0],
@@ -68,4 +171,4 @@ console.log(Graph.parseIncidenceMatrix([
    [0, 1, 0, -1, 0],
    [0, 0, 0, 2, 0],
    [0, 0, 1, 0, 1],
-]).toAdjacencyMatrix());
+]).toAdjacencyMatrix());*/
