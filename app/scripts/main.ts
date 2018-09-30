@@ -1,4 +1,4 @@
-import GraphEditor from "./graph-editor";
+   import GraphEditor from "./graph-editor";
 import { createRandomAdjacencyMatrix } from "./math/math";
 import Graph from "./math/graph/graph";
 import graphDemo1 from "./configs/exapmples/demo1";

@@ -1,8 +1,5 @@
 import Graph from "../../../math/graph/graph";
 import WSVertex from "./ws_vertex";
-import Vector from "../../../math/vector/vector";
-import Vertex from "../../../math/graph/vertex";
-import Edge from "../../../math/graph/edge";
 import WSEdge from "./ws_edge";
 import { getRandomVector } from "../../../math/math";
 

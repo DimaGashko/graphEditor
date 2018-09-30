@@ -66,7 +66,7 @@ gulp.task('doc', (cb) => {
    gulp.src('doc/gen', {read: false}).on('error', () => cb())
       .pipe($.clean());
       
-   return gulp.src(['README.md', 'app/scripts/**/*.js'], {read: false})
+   return gulp.src(['README.md', 'app/scripts/main.build.js'], {read: false})
       .pipe($.jsdoc3(cb));
 });
 
