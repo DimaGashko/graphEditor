@@ -1,4 +1,4 @@
-export default [
+export const multipleTest: number[][] = [
    [1, 1, 0, 0, 0, 0],
    [1, 1, 0, 0, 0, 0],
    [1, 1, 0, 0, 0, 0],

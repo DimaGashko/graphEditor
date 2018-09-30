@@ -1,12 +1,13 @@
 import GraphEditor from "./graph-editor";
-import { getRandomInt } from "./math/math";
+import { createRandomAdjacencyMatrix } from "./math/math";
 import Graph from "./math/graph/graph";
-import mulptiple_test from "./configs/matrix/mulptiple_test";
+import graphDemo1 from "./configs/exapmples/demo1";
+import { multipleTest } from "./configs/exapmples/mulptiple_test";
 
 (function () {
    console.time('GraphEditor'); 
 
-   let root: Element|null = document.querySelector('.graph_editor');
+   let root: Element | null = document.querySelector('.graph_editor');
    if (!root) {
       console.log('Не удалось получить элемент .graph_editor');
       alert('Error. Cannot create the Graph Editor');
@@ -22,7 +23,7 @@ import mulptiple_test from "./configs/matrix/mulptiple_test";
    let project4 = projectManager.createNewProject('Матрица инцедентности');
    let project5 = projectManager.createNewProject('Demo Graph');
 
-   project5.getWorkspace().getData().wsGraph.createDemo();
+   project5.getWorkspace().getData().wsGraph.createByGraph(graphDemo1);
 
    project4.getWorkspace().getData().wsGraph.createByGraph(
       Graph.parseIncidenceMatrix([
@@ -55,7 +56,7 @@ import mulptiple_test from "./configs/matrix/mulptiple_test";
    );
 
    project2.getWorkspace().getData().wsGraph.createByGraph(
-      Graph.parseIncidenceMatrix(mulptiple_test)
+      Graph.parseIncidenceMatrix(multipleTest)
    );
 
    for (let i = 0; i <= -1; i++) { 
@@ -65,34 +66,6 @@ import mulptiple_test from "./configs/matrix/mulptiple_test";
       );
    }
 
-   function createRandomAdjacencyMatrix(): number[][] { 
-      let matrix: number[][] = [];
-      let len = getRandomInt(2, 10);
-
-      for (let i = 0; i < len; i++) { 
-         matrix[i] = [];
-
-         for (let j = 0; j < len; j++) { 
-            matrix[i][j] = (Math.random() > 0.8) ? 1 : 0;
-         }
-      }
-      
-      return matrix;
-   }
-
    console.timeEnd('GraphEditor');
-
    (<any>window).ge = editor;
 }());   
-
-/*
-console.log(Graph.parseIncidenceMatrix([
-   [-1, 0, 0, 1, 0],
-   [1, 1, 0, 0, 0],
-   [1, 0, -1, 0, 0],
-   [0, 1, -1, 0, 0],
-   [0, 0, -1, 1, 0],
-   [0, 1, 0, -1, 0],
-   [0, 0, 0, 2, 0],
-   [0, 0, 1, 0, 1],
-]).toAdjacencyMatrix());*/

@@ -16,3 +16,18 @@ export function getRandomVector(min: number, max: number) {
       getRandomInt(min, max),
    );
 }
+
+export function createRandomAdjacencyMatrix(): number[][] { 
+      let matrix: number[][] = [];
+      let len = getRandomInt(2, 10);
+
+      for (let i = 0; i < len; i++) { 
+         matrix[i] = [];
+
+         for (let j = 0; j < len; j++) { 
+            matrix[i][j] = (Math.random() > 0.8) ? 1 : 0;
+         }
+      }
+      
+      return matrix;
+   }
