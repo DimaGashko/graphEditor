@@ -22,8 +22,20 @@ import { multipleTest } from "./configs/exapmples/mulptiple_test";
    let project3 = projectManager.createNewProject('Мартица смежности');
    let project4 = projectManager.createNewProject('Матрица инцедентности');
    let project5 = projectManager.createNewProject('Demo Graph');
+   let project6 = projectManager.createNewProject('Тестовый граф 1');
 
    project5.getWorkspace().getData().wsGraph.createByGraph(graphDemo1);
+
+   project6.getWorkspace().getData().wsGraph.createByGraph(
+      Graph.parseIncidenceMatrix([
+         [1, 1, 0, 0, 0, 0],
+         [1, 0, 1, 0, 0, 0],
+         [0, 1, 1, 0, 0, 0],
+         [0, 0, 1, 0, 1, 0],
+         [0, 0, 0, 1, 1, 0],
+         [0, 0, 0, 0, 1, 1],
+      ])
+   );
 
    project4.getWorkspace().getData().wsGraph.createByGraph(
       Graph.parseIncidenceMatrix([
@@ -32,7 +44,7 @@ import { multipleTest } from "./configs/exapmples/mulptiple_test";
          [1, 1, 0, 0, 0, 0],
          [1, 1, 0, 0, 0, 0],
          [0, 1, 1, 0, 0, 0],
-         
+
          [0, 0, 0, 1, 1, 0],
          [0, 0, 0, 0, 1, 1],
          [0, 0, 0, 0, 1, 1],
