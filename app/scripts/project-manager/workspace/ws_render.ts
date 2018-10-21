@@ -358,7 +358,9 @@ export default class WSRender extends Component {
    }
 
    private getEdgeText(edge: Edge): string { 
-      return `${(<WSEdge>edge.targ).getName()}${(edge.weight !== 1) ? ` (${edge.weight})` : ''}`
+      const weight = (<WSEdge>edge.targ).weight;
+
+      return `${(<WSEdge>edge.targ).getName()}${(weight !== 1) ? ` (${weight})` : ''}`
    }
 
    private initCanvases(): void { 

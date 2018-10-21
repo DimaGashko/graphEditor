@@ -23,6 +23,17 @@ import { multipleTest } from "./configs/exapmples/mulptiple_test";
    let project4 = projectManager.createNewProject('Матрица инцедентности');
    let project5 = projectManager.createNewProject('Demo Graph');
    let project6 = projectManager.createNewProject('Тестовый граф 1');
+   let project7 = projectManager.createNewProject('L2');
+
+   project7.getWorkspace().getData().wsGraph.createByGraph(
+      Graph.parseAdjacencyMatrix([
+         [0, 5, 0, 1, 0],  
+         [5, 0, 0, 0, 0],
+         [1, 1, 0, 1, 1],
+         [0, 1, 0, 1, 0],
+         [0, 0, 1, 0, 0],
+      ])
+   );
 
    project5.getWorkspace().getData().wsGraph.createByGraph(graphDemo1);
 

@@ -79,13 +79,13 @@ export default class Graph {
          if (v1 === -1 || v2 === -1) return;
 
          if (v1 === v2) {
-            matrix[v1][v2] += edge.weight;
+            matrix[v1][v2] += 1
 
          } else {
-            matrix[v1][v2] += edge.weight;
+            matrix[v1][v2] += 1
 
             if (edge.type === "bi") {
-               matrix[v2][v1] += edge.weight;
+               matrix[v2][v1] += 1
             }
          }
       });

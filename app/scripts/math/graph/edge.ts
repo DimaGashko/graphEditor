@@ -9,12 +9,10 @@ export default class Edge {
    constructor(
       public v1: Vertex,
       public v2: Vertex,
-      public type: 'uni' | 'bi' = 'bi', 
-      public weight: number = 1,
+      public type: 'uni' | 'bi' = 'bi',
       public targ?: any
    ) { 
-
-      
       
    }
+   
 }

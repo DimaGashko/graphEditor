@@ -13,9 +13,10 @@ export interface IEdgeStyle {
    loopFontSize: number,
 }
 
-export default class WSEdge extends WSGraphComponent { 
-   constructor(name?: string) { 
-      super(name || 'e');
+export default class WSEdge extends WSGraphComponent {
+
+   constructor(name: string = 'e', public weight: number = 1) { 
+      super(name);
    }
 
    public style: IEdgeStyle = {
