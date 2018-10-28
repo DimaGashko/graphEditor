@@ -1,6 +1,18 @@
 import Vertex from "./vertex";
 import Edge from "./edge";
-import Vector from "../../../../stable.10-28-2018/scripts/math/vector/vector";
+
+//Вспомогательная информация о вершинах
+interface IVerticesLog<ETarget, VTarget> { 
+   [vertextId: number]: {
+      //Ребра через которые можно пройти с данной вершины
+      edges: Edge<ETarget, VTarget>[],
+   },
+}
+
+//Вспомогательная информация о ребрах
+interface IEdgesLog<ETarget, VTarget> { 
+   [edgeId: number]: {},
+}
 
 /**
  * Представление графа
@@ -35,8 +47,8 @@ export class Graph<ETarget, VTarget> {
    private vertices: Vertex<VTarget>[] = [];
    private edges: Edge<ETarget, VTarget>[] = [];
 
-   //Ребра, через которые можно пройти с данной вершины
-   private verticesWays: { [id: number]: Edge<ETarget, VTarget>[] } = {};
+   private verticesLog: IVerticesLog<ETarget, VTarget> = {};
+   private edgesLog: IEdgesLog<ETarget, VTarget>
 
    /**
     * Возвращает копию(!) массива вершин
@@ -78,33 +90,72 @@ export class Graph<ETarget, VTarget> {
     * @param vertex вершина
     */
    public addVertex(vertex: Vertex<VTarget>) { 
-      
+      if (this.containsVertex(vertex)) return;
+
+      this.vertices.push(vertex);
+      this.verticesLog[vertex.id] = {
+         edges: [],
+      }
    }
 
    /**
     * Добавляет в граф ребро
+    * Если вершини ребра не доповлены в граф, то они добавляются
     * @param edge Ребро
     */
    public addEdge(edge: Edge<ETarget, VTarget>) { 
+      if (this.containsEdge(edge)) return;
 
+      this.edges.push(edge);
+      this.edgesLog[edge.id] = {};
+
+      this.addVertex(edge.v1);
+      this.addVertex(edge.v2);
+    
+      this.addEdgeToVertecisLog(edge);
+   }
+
+   //Добавляет информацию о ребре в verticesLog его вершин
+   //Если вершины не добавлены в граф, они добавляются
+   private addEdgeToVertecisLog(edge: Edge<ETarget, VTarget>) { 
+      //Check
+      if (!this.containsVertex(edge.v1)) { 
+         this.addVertex(edge.v1);
+      }
+
+      if (!this.containsVertex(edge.v2)) {
+         this.addVertex(edge.v2);
+      }
+
+      //Add
+      const v1Edges = this.verticesLog[edge.v1.id].edges;
+      const v2Edges = this.verticesLog[edge.v2.id].edges;
+
+      if (!v1Edges.some(e => e === edge)) {
+         v1Edges.push(edge);
+      }
+
+      if (edge.type === "bi" && !v2Edges.some(e => e === edge)) {
+         v2Edges.push(edge);
+      }
    }
 
    /**
     * Проверяет содержит ли граф вершину
-    * @param vertex 
+    * @param vertex проверяемая вершина
     * @returns содержит ли граф вершину
     */
-   public containVertex(vertex: Vertex<VTarget>): boolean { 
-
+   public containsVertex(vertex: Vertex<VTarget>): boolean { 
+      return vertex.id in this.verticesLog;
    }
 
    /**
     * Проверяет содержит ли граф ребро
-    * @param edge 
+    * @param edge проверяемое ребро
     * @returns содержит ли граф ребро
     */
-   public containEdge(edge: Edge<ETarget, VTarget>): boolean { 
-
+   public containsEdge(edge: Edge<ETarget, VTarget>): boolean { 
+      return edge.id in this.edgesLog;
    }
 
 }

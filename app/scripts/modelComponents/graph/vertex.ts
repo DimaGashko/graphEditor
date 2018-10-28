@@ -14,6 +14,7 @@ let curId = 0;
  * @class
  */
 export default class Vertex<Target> {
+   //Каждая вершина имеет уникальное id
    public readonly id = curId++;
 
    /**

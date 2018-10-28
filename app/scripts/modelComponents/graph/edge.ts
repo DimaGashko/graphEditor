@@ -18,6 +18,7 @@ let curId = 0;
  * @class
  */
 export default class Edge<Target, VTarget> {
+   //Каждое ребро имеет уникальное id
    public readonly id = curId++;
    
    /**
