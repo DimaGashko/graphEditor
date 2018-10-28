@@ -32,21 +32,24 @@ import Vector from "../../../../stable.10-28-2018/scripts/math/vector/vector";
  */
 
 export class Graph<ETarget, VTarget> {
-   private _vertices: Vertex<VTarget>[] = [];
-   private _edges: Edge<ETarget, VTarget>[] = [];
+   private vertices: Vertex<VTarget>[] = [];
+   private edges: Edge<ETarget, VTarget>[] = [];
+
+   //Ребра, через которые можно пройти с данной вершины
+   private verticesWays: { [id: number]: Edge<ETarget, VTarget>[] } = {};
 
    /**
     * Возвращает копию(!) массива вершин
     */
-   public get vertices(): Vertex<VTarget>[] {
-      return this._vertices.slice();
+   public getVertices(): Vertex<VTarget>[] {
+      return this.vertices.slice();
    }
 
    /**
     * Возвращает копию(!) массива ребер
     */
-   public get edges(): Edge<ETarget, VTarget>[] {
-      return this._edges.slice();
+   public getEdges(): Edge<ETarget, VTarget>[] {
+      return this.edges.slice();
    }
 
    constructor(vertices: Vertex<VTarget>[], edges: Edge<ETarget, VTarget>[]) {
@@ -54,19 +57,53 @@ export class Graph<ETarget, VTarget> {
       this.addAllEdges(edges);
    }
 
+   /**
+    * Добавляет в граф массив вершин
+    * @param vertices Вершини
+    */
    public addAllVertices(vertices: Vertex<VTarget>[]) { 
       vertices.forEach(vertex => this.addVertex(vertex));
    }
 
+   /**
+    * Добавляет в граф массив ребер
+    * @param Edges Ребра
+    */
    public addAllEdges(edges: Edge<ETarget, VTarget>[]) { 
       edges.forEach(edge => this.addEdge(edge));
    }
 
+   /**
+    * Добавляет в граф вершину
+    * @param vertex вершина
+    */
    public addVertex(vertex: Vertex<VTarget>) { 
       
    }
 
+   /**
+    * Добавляет в граф ребро
+    * @param edge Ребро
+    */
    public addEdge(edge: Edge<ETarget, VTarget>) { 
+
+   }
+
+   /**
+    * Проверяет содержит ли граф вершину
+    * @param vertex 
+    * @returns содержит ли граф вершину
+    */
+   public containVertex(vertex: Vertex<VTarget>): boolean { 
+
+   }
+
+   /**
+    * Проверяет содержит ли граф ребро
+    * @param edge 
+    * @returns содержит ли граф ребро
+    */
+   public containEdge(edge: Edge<ETarget, VTarget>): boolean { 
 
    }
 
