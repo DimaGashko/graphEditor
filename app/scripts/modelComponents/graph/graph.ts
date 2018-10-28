@@ -145,6 +145,15 @@ export default class Graph<ETarget, VTarget> {
    }
 
    /**
+    * Возвращает массив ребер графа по которым можно пройти из вершины
+    * @param vertex вершина графа
+    * @returns массив ребер графа по которым можно пройти из вершины
+    */
+   public getVEdges(vertex: Vertex<VTarget>): Edge<ETarget, VTarget>[] { 
+      return this.verticesLog[vertex.id].edges.slice();
+   }
+
+   /**
     * Проверяет содержит ли граф вершину
     * @param vertex проверяемая вершина
     * @returns содержит ли граф вершину
