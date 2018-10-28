@@ -60,20 +60,6 @@ export default class Graph<ETarget, VTarget> {
    private verticesLog: IVerticesLog<ETarget, VTarget> = {};
    private edgesLog: IEdgesLog<ETarget, VTarget> = {};
 
-   /**
-    * Возвращает копию массива вершин
-    */
-   public getVertices(): Vertex<VTarget>[] {
-      return this.vertices.slice();
-   }
-
-   /**
-    * Возвращает копию массива ребер
-    */
-   public getEdges(): Edge<ETarget, VTarget>[] {
-      return this.edges.slice();
-   }
-
    constructor(vertices?: Vertex<VTarget>[], edges?: Edge<ETarget, VTarget>[]) {
       if (vertices) this.addAllVertices(vertices);
       if (edges) this.addAllEdges(edges);
@@ -125,29 +111,18 @@ export default class Graph<ETarget, VTarget> {
       this.addEdgeToVertecisLog(edge);
    }
 
-   //Добавляет информацию о ребре в verticesLog его вершин
-   //Если вершины не добавлены в граф, они добавляются
-   private addEdgeToVertecisLog(edge: Edge<ETarget, VTarget>) { 
-      //Check
-      if (!this.containsVertex(edge.v1)) { 
-         this.addVertex(edge.v1);
-      }
+   /**
+    * Возвращает копию массива вершин
+    */
+   public getVertices(): Vertex<VTarget>[] {
+      return this.vertices.slice();
+   }
 
-      if (!this.containsVertex(edge.v2)) {
-         this.addVertex(edge.v2);
-      }
-
-      //Add
-      const v1Edges = this.verticesLog[edge.v1.id].edges;
-      const v2Edges = this.verticesLog[edge.v2.id].edges;
-
-      if (!v1Edges.some(e => e === edge)) {
-         v1Edges.push(edge);
-      }
-
-      if (edge.type === "bi" && !v2Edges.some(e => e === edge)) {
-         v2Edges.push(edge);
-      }
+   /**
+    * Возвращает копию массива ребер
+    */
+   public getEdges(): Edge<ETarget, VTarget>[] {
+      return this.edges.slice();
    }
 
    /**
@@ -175,6 +150,31 @@ export default class Graph<ETarget, VTarget> {
     */
    public containsEdge(edge: Edge<ETarget, VTarget>): boolean { 
       return edge.id in this.edgesLog;
+   }
+
+   //Добавляет информацию о ребре в verticesLog его вершин
+   //Если вершины не добавлены в граф, они добавляются
+   private addEdgeToVertecisLog(edge: Edge<ETarget, VTarget>) { 
+      //Check
+      if (!this.containsVertex(edge.v1)) { 
+         this.addVertex(edge.v1);
+      }
+
+      if (!this.containsVertex(edge.v2)) {
+         this.addVertex(edge.v2);
+      }
+
+      //Add
+      const v1Edges = this.verticesLog[edge.v1.id].edges;
+      const v2Edges = this.verticesLog[edge.v2.id].edges;
+
+      if (!v1Edges.some(e => e === edge)) {
+         v1Edges.push(edge);
+      }
+
+      if (edge.type === "bi" && !v2Edges.some(e => e === edge)) {
+         v2Edges.push(edge);
+      }
    }
 
    //Algorithms

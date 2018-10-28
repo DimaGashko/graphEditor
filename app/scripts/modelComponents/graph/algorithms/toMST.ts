@@ -15,7 +15,7 @@ import Vertex from "../vertex";
  */
 export default function toMST<E, V>(graph: Graph<E, V>): Graph<E, V> {
    const mst = new Graph<E, V>();
-   
+
    const vertices = graph.getVertices();
    if (!vertices) return mst;
 
@@ -25,21 +25,16 @@ export default function toMST<E, V>(graph: Graph<E, V>): Graph<E, V> {
    return mst;
 }
 
-function step<E, V>(
-   vertex: Vertex<V>,
-   vertices: Vertex<V>[],
-   graph: Graph<E, V>,
-   mst: Graph<E, V>
-) { 
+function step<E, V>(v: Vertex<V>, vs: Vertex<V>[], graph: Graph<E, V>, mst: Graph<E, V>) { 
    //Ребра, что инцидентны вершине, но еще не находятся в mst
-   const edges = graph.getVEdges(vertex).filter(e => !mst.containsEdge(e));
+   const edges = graph.getVEdges(v).filter(e => !mst.containsEdge(e));
    const minEdge = getMinEdge(edges);
 
    if (!minEdge) return;
    mst.addEdge(minEdge);
 
-   step(minEdge.v1, vertices, graph, mst);
-   step(minEdge.v2, vertices, graph, mst);
+   step(minEdge.v1, vs, graph, mst);
+   step(minEdge.v2, vs, graph, mst);
 }
 
 function getMinEdge<E, V>(edges: Edge<E, V>[]): Edge<E, V> {
