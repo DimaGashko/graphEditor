@@ -1,5 +1,6 @@
 import Vertex from "./modelComponents/graph/vertex";
 import Edge from "./modelComponents/graph/edge";
+import Graph from "./modelComponents/graph/graph";
 
 let vs = [
    new Vertex<Number>(1),
@@ -11,5 +12,13 @@ let vs = [
 ];
 
 let es = [
-   new Edge<Number, Number>(vs[0], vs[1], 0, 'bi'),
+   new Edge<Number, Number>(vs[0], vs[1], 1, 'bi'),
+   new Edge<Number, Number>(vs[1], vs[2], 2, 'bi'),
+   new Edge<Number, Number>(vs[2], vs[3], 3, 'bi'),
+   new Edge<Number, Number>(vs[4], vs[5], 4, 'bi'),
+   new Edge<Number, Number>(vs[5], vs[6], 5, 'bi'),
 ]
+
+let graph = new Graph(vs, es);
+
+(<any>window).g = graph;

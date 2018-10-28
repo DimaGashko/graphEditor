@@ -43,7 +43,7 @@ interface IEdgesLog<ETarget, VTarget> {
  * @class
  */
 
-export class Graph<ETarget, VTarget> {
+export default class Graph<ETarget, VTarget> {
    private vertices: Vertex<VTarget>[] = [];
    private edges: Edge<ETarget, VTarget>[] = [];
 
@@ -64,9 +64,9 @@ export class Graph<ETarget, VTarget> {
       return this.edges.slice();
    }
 
-   constructor(vertices: Vertex<VTarget>[], edges: Edge<ETarget, VTarget>[]) {
-      this.addAllVertices(vertices);
-      this.addAllEdges(edges);
+   constructor(vertices?: Vertex<VTarget>[], edges?: Edge<ETarget, VTarget>[]) {
+      if (vertices) this.addAllVertices(vertices);
+      if (edges) this.addAllEdges(edges);
    }
 
    /**
@@ -161,43 +161,12 @@ export class Graph<ETarget, VTarget> {
 }
 
 
-export class Graph_<ETarget, VTarget> { 
-   private vertices: Vertex<VTarget>[] = [];
-   private edges: Edge<ETarget, VTarget>[] = [];
-
-   constructor() { 
-
-   }
-
-   public addVertex(vertex: Vertex): void { 
-      if (this.vertices.indexOf(vertex) !== -1) return;
-
-      this.vertices.push(vertex);
-   }
-
-   public addEdge(edge: Edge): void { 
-      if (this.edges.indexOf(edge) !== -1) return;
-
-      this.edges.push(edge);
-
-      this.addVertex(edge.v1);
-      this.addVertex(edge.v2);
-   }
-
-   public getVertices(): Vertex[] { 
-      return this.vertices.slice();
-   }
-
-   public getEdges(): Edge[] { 
-      return this.edges.slice();
-   }
-
    /**
     * Возвращает граф в виде матрицы смежности
     * Если в графе есть кратные ребра, то они "склеиваются"
     * (Кратные ребра остаются, если они имеют разные направление)
     */
-   public toAdjacencyMatrix(): number[][] { 
+   /*public toAdjacencyMatrix(): number[][] { 
       let matrix: number[][] = [];
       this.vertices.forEach(() => { 
          matrix.push(new Array(this.vertices.length).fill(0));
@@ -221,7 +190,7 @@ export class Graph_<ETarget, VTarget> {
       });
 
       return matrix;
-   }
+   }*/
 
    /**
     * Возвращает граф в виде матрицы инцидентности
@@ -229,7 +198,7 @@ export class Graph_<ETarget, VTarget> {
     * Ряды матрицы представляют ребра, столбцы - вершины
     * Вес ребер игнорируется 
     */
-   public toIncidenceMatrix(): number[][] { 
+   /*public toIncidenceMatrix(): number[][] { 
       let matrix: number[][] = [];
 
       this.edges.forEach((edge, i) => { 
@@ -250,6 +219,7 @@ export class Graph_<ETarget, VTarget> {
 
       return matrix;
    }
+   */
 
    /**
     * На основании переданной матрицы смежности возвращает граф
@@ -257,7 +227,7 @@ export class Graph_<ETarget, VTarget> {
     * @param {number[][]} matrix матрица смежности
     * @returns Graph
     */
-   static parseAdjacencyMatrix(matrix: number[][]): Graph { 
+   /*static parseAdjacencyMatrix(matrix: number[][]): Graph { 
       let graph = new Graph();
       let vertices: Vertex[] = [];
 
@@ -298,14 +268,14 @@ export class Graph_<ETarget, VTarget> {
 
       return graph;
    }
-
+*/
    /**
     * На основании переданной матрицы инцидентности возвращает граф
     * 
     * @param {number[][]} matrix матрица смежности
     * @returns Graph
     */
-   static parseIncidenceMatrix(matrix: number[][]): Graph { 
+  /* static parseIncidenceMatrix(matrix: number[][]): Graph { 
       if (!matrix.length) return new Graph();
 
       let graph = new Graph();
@@ -357,18 +327,19 @@ export class Graph_<ETarget, VTarget> {
 
       return graph;
    }
-
+*/
    /**
     * Проверяет, являются ли переданные ребра кратными
     * 
     * @param e1 первое ребро
     * @param e2 второе ребро
     */
-   static isMultipleEdges(e1: Edge, e2: Edge): boolean { 
+  /* static isMultipleEdges(e1: Edge, e2: Edge): boolean { 
       return (
          (e1.v1 === e2.v1 && e1.v2 === e2.v2) ||
          (e1.v1 === e2.v2 && e1.v2 === e2.v1)
       );
    }
 
-}
+}*/
+
