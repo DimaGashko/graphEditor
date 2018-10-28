@@ -22,6 +22,12 @@ gulp.task('typescript', () => {
 gulp.task('browserify', () => { 
    return gulp.src('app/scripts/main.js')
       .pipe($.browserify())
+      .on('error', $.notify.onError((err) => {
+         return {
+            title: 'Browserify',
+            message: err.message,
+         }
+      }))
       .pipe($.rename('main.build.js'))
       .pipe($.connect.reload())
       .pipe($.notify("Scripts complete!"))
@@ -70,7 +76,7 @@ gulp.task('doc', (cb) => {
       .pipe($.jsdoc3(cb));
 });
 
-gulp.task('sprite', (cb) => {
+gulp.task('sprite', () => {
    var spriteData = gulp.src('app/img/icons/*.*')
       .pipe($.spritesmith({
          imgName: 'sprite.png',
@@ -81,9 +87,7 @@ gulp.task('sprite', (cb) => {
       }));
       
    spriteData.img.pipe(gulp.dest('app/img'));
-   spriteData.css.pipe(gulp.dest('app/styles'));
-
-   cb();
+   return spriteData.css.pipe(gulp.dest('app/styles'));
 });
 
 gulp.task('connect', () => {
@@ -115,16 +119,6 @@ gulp.task('build:img', () => {
    return gulp.src('app/**/*.{png,jpg,bmp,gif}')
       .pipe($.imagemin())
       .pipe(gulp.dest('dist/'))
-      .pipe($.connect.reload());
-});
-
-gulp.task('build:useref', () => {
-   return gulp.src('app/index.html')
-      .pipe($.useref())
-      .pipe($.if('*.js', $.uglify()))
-      .pipe($.if('*.css', $.minifyCss()))
-      .pipe(gulp.dest('dist/'))
-      .pipe($.connect.reload());
 });
 
 gulp.task('build:html', () => {
@@ -135,12 +129,33 @@ gulp.task('build:html', () => {
       .pipe(gulp.dest('dist/'))
 });
 
+gulp.task('build:js', () => {
+   return gulp.src('app/scripts/main.build.js')
+      .pipe($.uglify())
+      .pipe(gulp.dest('dist/scripts/'))
+});
+
+gulp.task('build:css', () => {
+   return gulp.src('app/styles/main.build.css')
+      .pipe($.minifyCss())
+      .pipe(gulp.dest('dist/styles/'))
+});
+
+gulp.task('build:json', () => {
+   return gulp.src('app/**/*.json')
+      .pipe($.jsonMinify())
+      .pipe(gulp.dest('dist'));
+});
+
 gulp.task('build', gulp.series(
    'build:clean',
    gulp.parallel(
-      gulp.series('build:useref', 'build:html'), 
+      'build:html',
       'build:img',
-      'build:move'
+      'build:move',
+      'build:css',
+      'build:js',
+      'build:json'
    ),
 ));
 
@@ -154,6 +169,10 @@ gulp.task('watch', () => {
 
 // - - - DEFAULT - - -
 gulp.task('default', gulp.series(
-   gulp.parallel('styles', 'html', 'scripts'),
+   gulp.parallel(
+      gulp.series('sprite', 'styles'),
+      'scripts',
+      'html',
+   ),
    gulp.parallel('connect', 'watch'),
 ));

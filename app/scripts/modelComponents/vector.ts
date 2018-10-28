@@ -8,12 +8,6 @@
     * 
     * Все методы возвращают новый вектор
     */
-
-let n = 0;
-(<any>window).f = () => {
-   return n;
-}
-
 export default class Vector {
    public x: number = 0;
    public y: number = 0;
@@ -21,8 +15,6 @@ export default class Vector {
    constructor(x: number = 0, y: number = 0) {
       this.x = x;
       this.y = y;
-
-      n++
    }
 
    /**
