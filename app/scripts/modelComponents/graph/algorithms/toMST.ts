@@ -20,14 +20,23 @@ export default function toMST<E, V>(graph: Graph<E, V>): Graph<E, V> {
    if (!vertices) return mst;
 
    mst.addVertex(vertices[0]);
-   step(vertices[0], vertices, graph, mst);
+   const firstE = getMinEdge(graph.getVEdges(vertices[0]));
+   
+   if (!firstE) return mst;
+   mst.addEdge(firstE);
+
+   step(firstE.v1, vertices, graph, mst);
+   step(firstE.v2, vertices, graph, mst);
 
    return mst;
 }
 
 function step<E, V>(v: Vertex<V>, vs: Vertex<V>[], graph: Graph<E, V>, mst: Graph<E, V>) { 
-   //Ребра, что инцидентны вершине, но еще не находятся в mst
-   const edges = graph.getVEdges(v).filter(e => !mst.containsEdge(e));
+   //Ребра, в которых только 1 вершина принадлежит mst
+   const edges = graph.getVEdges(v).filter((e) => {
+      return (mst.containsVertex(e.v1) !== mst.containsVertex(e.v2));
+   });
+
    const minEdge = getMinEdge(edges);
 
    if (!minEdge) return;
