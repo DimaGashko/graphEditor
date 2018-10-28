@@ -33,7 +33,10 @@ export default class Edge<Target, VTarget> {
       public readonly targ: Target,
       public readonly type: 'uni' | 'bi' = 'bi'
    ) { 
-      
+      if (!v1 || !v2) { 
+         throw "v1 or v2 is not a Vertex";
+      }
+
    }
    
 }

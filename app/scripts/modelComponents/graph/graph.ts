@@ -48,7 +48,7 @@ export default class Graph<ETarget, VTarget> {
    private edges: Edge<ETarget, VTarget>[] = [];
 
    private verticesLog: IVerticesLog<ETarget, VTarget> = {};
-   private edgesLog: IEdgesLog<ETarget, VTarget>
+   private edgesLog: IEdgesLog<ETarget, VTarget> = {};
 
    /**
     * Возвращает копию(!) массива вершин

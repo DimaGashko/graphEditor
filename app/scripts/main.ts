@@ -12,11 +12,11 @@ let vs = [
 ];
 
 let es = [
-   new Edge<Number, Number>(vs[0], vs[1], 1, 'bi'),
+   new Edge<Number, Number>(vs[1], vs[0], 1, 'uni'),
    new Edge<Number, Number>(vs[1], vs[2], 2, 'bi'),
    new Edge<Number, Number>(vs[2], vs[3], 3, 'bi'),
-   new Edge<Number, Number>(vs[4], vs[5], 4, 'bi'),
-   new Edge<Number, Number>(vs[5], vs[6], 5, 'bi'),
+   new Edge<Number, Number>(vs[3], vs[4], 4, 'bi'),
+   new Edge<Number, Number>(vs[4], vs[5], 5, 'bi'),
 ]
 
 let graph = new Graph(vs, es);
