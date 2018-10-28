@@ -1,9 +1,10 @@
 import Events from "./events";
 
 export default class Component extends Events {
-    protected els: any = {}; //HTML-elements
+   protected els: { [elem: string]: HTMLElement } = {}; //HTML-elements
 
-    constructor() { 
-        super();
-    }
+   constructor() { 
+      super();
+   }
+   
 }
