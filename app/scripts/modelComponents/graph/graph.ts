@@ -2,6 +2,8 @@ import Vertex from "./vertex";
 import Edge from "./edge";
 import toAdjacencyMatrix from "./algorithms/toAdjacencyMatrix";
 import toIncidenceMatrix from "./algorithms/toIncidenceMatrix";
+import parseAdjacencyMatrix from "./algorithms/parseAdjacencyMatrix";
+import parseIncidenceMatrix from "./algorithms/parseIncidenceMatrix";
 
 //Вспомогательная информация о вершинах
 interface IVerticesLog<ETarget, VTarget> { 
@@ -53,14 +55,14 @@ export default class Graph<ETarget, VTarget> {
    private edgesLog: IEdgesLog<ETarget, VTarget> = {};
 
    /**
-    * Возвращает копию(!) массива вершин
+    * Возвращает копию массива вершин
     */
    public getVertices(): Vertex<VTarget>[] {
       return this.vertices.slice();
    }
 
    /**
-    * Возвращает копию(!) массива ребер
+    * Возвращает копию массива ребер
     */
    public getEdges(): Edge<ETarget, VTarget>[] {
       return this.edges.slice();
@@ -170,11 +172,11 @@ export default class Graph<ETarget, VTarget> {
    }
 
    static parseAdjacencyMatrix<E, V>(matrix: number[][]): Graph<E, V> {
-      return this.parseAdjacencyMatrix(matrix);
+      return parseAdjacencyMatrix(matrix);
    }
 
    static parseIncidenceMatrix<E, V>(matrix: number[][]): Graph<E, V> {
-      return this.parseAdjacencyMatrix(matrix);
+      return parseIncidenceMatrix(matrix);
    }
 }
 
