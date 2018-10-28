@@ -1,21 +1,18 @@
 import Vertex from "./vertex";
 import Edge from "./edge";
+import Vector from "../../../../stable.10-28-2018/scripts/math/vector/vector";
 
 /**
  * Представление графа
  * 
  * Испльзование:
  *
- * let graph: Graph = new Graph();
+ * const graph: Graph = new Graph<Number, Number>();
  *
- * let v0 = new Vertex(0);
- * let v1 = new Vertex(1);
+ * const v1 = new Vertex<Number>(1);
+ * const v2 = new Vertex<Number>(2);
  * 
- * let e0 = new Edge(v0, v1, 'uni', 1);
- * 
- * graph.addVertex(v0);
- * graph.addVertex(v1);
- * 
+ * const e1 = new Edge<Number, Number>(v1, v2, 1, 'uni');
  * graph.addEdge(e1);
  * 
  * Получим граф вида:
@@ -24,16 +21,61 @@ import Edge from "./edge";
  * uni - одно-направленное ребро
  * bi - двунаправленное
  * 
- * p.s.при добавлении ребра, его вершины автоматически добавляются в граф, 
- * поэтому писать addVertex для вершин, которые указываются в 
- * ребрах - не обязательно (их можно передавать до добавления 
- * ребер, что бы сохранить последовательность)
+ * p.s. Что бы обеспечить нужный порядок вершин их нужно 
+ * добавить перед добавлением ребер:
+ * 
+ * graph.addVertex(v0);
+ * graph.addVertex(v1);
+ * graph.addEdge(e1);
  * 
  * @class
  */
-export default class Graph { 
-   private vertices: Vertex[] = [];
-   private edges: Edge[] = [];
+
+export class Graph<ETarget, VTarget> {
+   private _vertices: Vertex<VTarget>[] = [];
+   private _edges: Edge<ETarget, VTarget>[] = [];
+
+   /**
+    * Возвращает копию(!) массива вершин
+    */
+   public get vertices(): Vertex<VTarget>[] {
+      return this._vertices.slice();
+   }
+
+   /**
+    * Возвращает копию(!) массива ребер
+    */
+   public get edges(): Edge<ETarget, VTarget>[] {
+      return this._edges.slice();
+   }
+
+   constructor(vertices: Vertex<VTarget>[], edges: Edge<ETarget, VTarget>[]) {
+      this.addAllVertices(vertices);
+      this.addAllEdges(edges);
+   }
+
+   public addAllVertices(vertices: Vertex<VTarget>[]) { 
+      vertices.forEach(vertex => this.addVertex(vertex));
+   }
+
+   public addAllEdges(edges: Edge<ETarget, VTarget>[]) { 
+      edges.forEach(edge => this.addEdge(edge));
+   }
+
+   public addVertex(vertex: Vertex<VTarget>) { 
+      
+   }
+
+   public addEdge(edge: Edge<ETarget, VTarget>) { 
+
+   }
+
+}
+
+
+export class Graph_<ETarget, VTarget> { 
+   private vertices: Vertex<VTarget>[] = [];
+   private edges: Edge<ETarget, VTarget>[] = [];
 
    constructor() { 
 

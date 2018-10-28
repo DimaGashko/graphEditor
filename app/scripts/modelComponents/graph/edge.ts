@@ -1,16 +1,36 @@
 import Vertex from "./vertex";
 
+//Идинтификатор для следующего экземпляра
+let curId = 0;
+
 /**
  * Ребро графа
+ * Пример использования:
+ * 
+ * const v1 = new Vertex<Number>(1);
+ * const v2 = new Vertex<Number>(2);
+ * 
+ * const e1 = new Edge<Number, Number>(v1, v2, 1, 'bi'),
+ * Где <Number, Number> - соответственно типы представления ребра и его вершин
+ * 
+ * Класс иммутабельный
  * 
  * @class
  */
-export default class Edge { 
+export default class Edge<Target, VTarget> {
+   public readonly id = curId++;
+   
+   /**
+    * @param v1 Первая вершина 
+    * @param v2 Вторая вершина 
+    * @param targ Представление ребра
+    * @param type Тип ребра
+    */
    constructor(
-      public v1: Vertex,
-      public v2: Vertex,
-      public type: 'uni' | 'bi' = 'bi',
-      public targ?: any
+      public readonly v1: Vertex<VTarget>,
+      public readonly v2: Vertex<VTarget>,
+      public readonly targ: Target,
+      public readonly type: 'uni' | 'bi' = 'bi'
    ) { 
       
    }
