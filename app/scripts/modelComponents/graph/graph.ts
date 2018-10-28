@@ -1,5 +1,7 @@
 import Vertex from "./vertex";
 import Edge from "./edge";
+import toAdjacencyMatrix from "./algorithms/toAdjacencyMatrix";
+import toIncidenceMatrix from "./algorithms/toIncidenceMatrix";
 
 //Вспомогательная информация о вершинах
 interface IVerticesLog<ETarget, VTarget> { 
@@ -158,6 +160,22 @@ export default class Graph<ETarget, VTarget> {
       return edge.id in this.edgesLog;
    }
 
+   //Algorithms
+   public toAdjacencyMatrix(): number[][] { 
+      return toAdjacencyMatrix(this);
+   }
+
+   public toIncidenceMatrix(): number[][] { 
+      return toIncidenceMatrix(this);
+   }
+
+   static parseAdjacencyMatrix<E, V>(matrix: number[][]): Graph<E, V> {
+      return this.parseAdjacencyMatrix(matrix);
+   }
+
+   static parseIncidenceMatrix<E, V>(matrix: number[][]): Graph<E, V> {
+      return this.parseAdjacencyMatrix(matrix);
+   }
 }
 
 

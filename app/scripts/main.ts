@@ -12,13 +12,12 @@ let vs = [
 ];
 
 let es = [
-   new Edge<Number, Number>(vs[1], vs[0], 1, 'uni'),
-   new Edge<Number, Number>(vs[1], vs[2], 2, 'bi'),
-   new Edge<Number, Number>(vs[2], vs[3], 3, 'bi'),
-   new Edge<Number, Number>(vs[3], vs[4], 4, 'bi'),
-   new Edge<Number, Number>(vs[4], vs[5], 5, 'bi'),
+   new Edge<Number, Number>(vs[1], vs[0], 1),
+   new Edge<Number, Number>(vs[1], vs[2], 2),
+   new Edge<Number, Number>(vs[2], vs[3], 3),
+   new Edge<Number, Number>(vs[3], vs[4], 4),
+   new Edge<Number, Number>(vs[4], vs[5], 5),
 ]
 
 let graph = new Graph(vs, es);
-
 (<any>window).g = graph;
