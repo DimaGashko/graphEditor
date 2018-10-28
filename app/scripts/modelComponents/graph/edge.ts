@@ -5,12 +5,16 @@ let curId = 0;
 
 /**
  * Ребро графа
+ * 
  * Пример использования:
  * 
- * const v1 = new Vertex<Number>(1);
- * const v2 = new Vertex<Number>(2);
+  ``
+  const v1 = new Vertex<Number>(1);
+  const v2 = new Vertex<Number>(2);
+  
+  const e1 = new Edge<Number, Number>(v1, v2, 1, 'bi'),
+  ```
  * 
- * const e1 = new Edge<Number, Number>(v1, v2, 1, 'bi'),
  * Где <Number, Number> - соответственно типы представления ребра и его вершин
  * 
  * Класс иммутабельный

@@ -21,28 +21,34 @@ interface IEdgesLog<ETarget, VTarget> {
 /**
  * Представление графа
  * 
- * Испльзование:
- *
- * const graph: Graph = new Graph<Number, Number>();
- *
- * const v1 = new Vertex<Number>(1);
- * const v2 = new Vertex<Number>(2);
+ * Испoльзование:
  * 
- * const e1 = new Edge<Number, Number>(v1, v2, 1, 'uni');
- * graph.addEdge(e1);
+ ```
+  const graph: Graph = new Graph<Number, Number>();
+ 
+  const v1 = new Vertex<Number>(1);
+  const v2 = new Vertex<Number>(2);
+  
+  const e1 = new Edge<Number, Number>(v1, v2, 1, 'uni');
+  graph.addEdge(e1);
+  ```
  * 
  * Получим граф вида:
+ * 
  * (0) ---> (1)
  * 
  * uni - одно-направленное ребро
+ * 
  * bi - двунаправленное
  * 
  * p.s. Что бы обеспечить нужный порядок вершин их нужно 
  * добавить перед добавлением ребер:
  * 
- * graph.addVertex(v0);
- * graph.addVertex(v1);
- * graph.addEdge(e1);
+  ```
+  graph.addVertex(v0);
+  graph.addVertex(v1);
+  graph.addEdge(e1);
+  ```
  * 
  * @class
  */
