@@ -20,13 +20,7 @@ export default function toMST<E, V>(graph: Graph<E, V>): Graph<E, V> {
    if (!vertices) return mst;
 
    mst.addVertex(vertices[0]);
-   const firstE = getMinEdge(graph.getVEdges(vertices[0]));
-   
-   if (!firstE) return mst;
-   mst.addEdge(firstE);
-
-   step(firstE.v1, vertices, graph, mst);
-   step(firstE.v2, vertices, graph, mst);
+   step(vertices[0], vertices, graph, mst);
 
    return mst;
 }
