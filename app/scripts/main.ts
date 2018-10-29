@@ -1,46 +1,22 @@
-import Vertex from "./modelComponents/graph/vertex";
-import Edge from "./modelComponents/graph/edge";
-import Graph from "./modelComponents/graph/graph";
 import toMST from "./modelComponents/graph/algorithms/toMST";
 import Workspace from "./workspace/workspace";
-import WSVertex from "./workspace/ws_graph/ws_vertex";
-import Vector from "./modelComponents/vector";
-import WSEdge from "./workspace/ws_graph/ws_edge";
+import { graphDemo1 } from "./mstDemo";
 
-let vs = [
-   new Vertex(new WSVertex(new Vector(-200, -200), "v0")),
-   new Vertex(new WSVertex(new Vector(150, -150), "v1")),
-   new Vertex(new WSVertex(new Vector(200, 0), "v2")),
-   new Vertex(new WSVertex(new Vector(100, 150), "v3")),
-   new Vertex(new WSVertex(new Vector(-150, 150), "v4")),
-];
-
-let es = [
-   new Edge(vs[0], vs[1], new WSEdge("e0")),
-   new Edge(vs[1], vs[2], new WSEdge("e1")),
-   new Edge(vs[2], vs[3], new WSEdge("e2")),
-   new Edge(vs[3], vs[4], new WSEdge("e3")),
-   new Edge(vs[4], vs[0], new WSEdge("e4")),
-   new Edge(vs[4], vs[1], new WSEdge("e5")),
-   new Edge(vs[4], vs[2], new WSEdge("e6")),
-   new Edge(vs[3], vs[0], new WSEdge("e7")),
-   new Edge(vs[3], vs[1], new WSEdge("e8")),
-   new Edge(vs[2], vs[0], new WSEdge("e9")),
-];
-
-const ws = new Workspace();
-ws.init(document.querySelector('.workspace'));
-ws.start();
-
-let graph = new Graph(vs, es);
+let graph = graphDemo1;
 let mst = toMST(graph);
 
-ws.getData().wsGraph.graph = graph;
+const workspace = new Workspace(document.querySelector('.workspace'));
+workspace.getData().wsGraph.graph = graph;
+workspace.start();
 
+//Test CLI
 const global = <any>window;
 global.graph = graph;
 global.mst = mst;
 
-global.toMST = (() => { 
-   ws.getData().wsGraph.graph = mst;
-})
+global.toMST = (() => {
+   graph.getEdges().filter(e => !mst.containsEdge(e)).forEach(edge => {
+      edge.targ.style.lineColor = "rgba(0,0,0,.1)";
+      edge.targ.style.color = "rgba(0,0,0,.1)";
+   });
+});

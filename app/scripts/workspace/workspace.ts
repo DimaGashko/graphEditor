@@ -29,18 +29,16 @@ export default class Workspace extends Component {
    //Если у при загрузке страницы мишь уже наведена
    private isHover: boolean = true;
 
-   constructor() { 
+   constructor(root: HTMLElement) {
       super();
+
+      this.getElements(root);
+      this.initEvents();
+      this.initRender();
    }
 
    public getData(): WSData {
       return this.data;
-   }
-
-   public init(root: HTMLElement) { 
-      this.getElements(root);
-      this.initEvents();
-      this.initRender();
    }
  
    public start(): void { 
