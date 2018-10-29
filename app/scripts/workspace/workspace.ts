@@ -68,6 +68,7 @@ export default class Workspace extends Component {
    }
 
    private tik() { 
+      this.trigger('tik');
       this.render.renderGraph();
    }
 
