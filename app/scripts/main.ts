@@ -8,15 +8,15 @@ import Vector from "./modelComponents/vector";
 import WSEdge from "./workspace/ws_graph/ws_edge";
 
 let vs = [
-   new Vertex(new WSVertex(new Vector(0, 0), "v0")),
-   new Vertex(new WSVertex(new Vector(100, 100), "v1")),
-   new Vertex(new WSVertex(new Vector(120, 200), "v2")),
-   new Vertex(new WSVertex(new Vector(-40, -200), "v3")),
-   new Vertex(new WSVertex(new Vector(-250, 100), "v4")),
+   new Vertex(new WSVertex(new Vector(-200, -200), "v0")),
+   new Vertex(new WSVertex(new Vector(150, -150), "v1")),
+   new Vertex(new WSVertex(new Vector(200, 0), "v2")),
+   new Vertex(new WSVertex(new Vector(100, 150), "v3")),
+   new Vertex(new WSVertex(new Vector(-150, 150), "v4")),
 ];
 
 let es = [
-   new Edge(vs[0], vs[1], new WSEdge("e0", 5)),
+   new Edge(vs[0], vs[1], new WSEdge("e0")),
    new Edge(vs[1], vs[2], new WSEdge("e1")),
    new Edge(vs[2], vs[3], new WSEdge("e2")),
    new Edge(vs[3], vs[4], new WSEdge("e3")),
