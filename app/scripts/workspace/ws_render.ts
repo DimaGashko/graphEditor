@@ -7,6 +7,7 @@ import WSVertex from "./ws_graph/ws_vertex";
 import Vertex from "../modelComponents/graph/vertex";
 import Vector from "../modelComponents/vector";
 import { getBezieCoords } from "../modelComponents/math";
+import Graph from "../modelComponents/graph/graph";
 
 type CanvEl = HTMLCanvasElement;
 type Context = CanvasRenderingContext2D;
@@ -57,7 +58,7 @@ export default class WSRender extends Component {
          let groupIndex: number = -1;
 
          for (let i = groups.length - 1; i >= 0; i--) {
-            if (groups[i] && 1 /*Graph.isMultipleEdges(groups[i][0], edge)*/) { 
+            if (groups[i] && Graph.isMultipleEdges(groups[i][0], edge)) { 
                groupIndex = i;
             }
          }
@@ -297,8 +298,6 @@ export default class WSRender extends Component {
       let ctx = this.ctxes.grid;
 
       let c = this.converter.toDisplay(new Vector(0, 0));
-      //console.log(c)
-      //ctx.fillRect(c.x - 5, c.y - 5, 10, 10);
 
       ctx.save();
       ctx.strokeStyle = '#000';

@@ -4,6 +4,7 @@ import toAdjacencyMatrix from "./algorithms/toAdjacencyMatrix";
 import toIncidenceMatrix from "./algorithms/toIncidenceMatrix";
 import parseAdjacencyMatrix from "./algorithms/parseAdjacencyMatrix";
 import parseIncidenceMatrix from "./algorithms/parseIncidenceMatrix";
+import isMultipleEdges from "./algorithms/isMultipleEdges";
 
 //Вспомогательная информация о вершинах
 interface IVerticesLog<ETarget, VTarget> { 
@@ -193,6 +194,10 @@ export default class Graph<ETarget, VTarget> {
    static parseIncidenceMatrix<E, V>(matrix: number[][]): Graph<E, V> {
       return parseIncidenceMatrix(matrix);
    }
+
+   static isMultipleEdges<E, V>(e1: Edge<E, V>, e2: Edge<E, V>) { 
+      return isMultipleEdges(e1, e2);
+   }
 }
 
 
@@ -363,18 +368,4 @@ export default class Graph<ETarget, VTarget> {
       return graph;
    }
 */
-   /**
-    * Проверяет, являются ли переданные ребра кратными
-    * 
-    * @param e1 первое ребро
-    * @param e2 второе ребро
-    */
-  /* static isMultipleEdges(e1: Edge, e2: Edge): boolean { 
-      return (
-         (e1.v1 === e2.v1 && e1.v2 === e2.v2) ||
-         (e1.v1 === e2.v2 && e1.v2 === e2.v1)
-      );
-   }
-
-}*/
 
