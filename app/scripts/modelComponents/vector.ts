@@ -103,4 +103,14 @@ export default class Vector {
       );
    }
 
+   /**
+    * Возвращает квадрат расстояния между 2 переданными векторами
+    * @param v1 Первый вектор
+    * @param v2 Второй вектор
+    * @returns квадрат расстояния между 2 переданными векторами
+    */
+   static getSquareDistance(v1: Vector, v2: Vector): number { 
+      return (v1.x - v2.x)*(v1.x - v2.x) + (v1.y - v2.y)*(v1.y - v2.y)
+   }
+
 }

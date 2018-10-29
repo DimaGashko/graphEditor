@@ -15,8 +15,8 @@ export default class WSVertex extends WSGraphComponent {
    public radius: Vector = new Vector(22, 22);
 
    constructor(
-      public coords: Vector = new Vector(),
-      name?: string
+      name: string,
+      public coords: Vector = new Vector()
    ) {
       super(name || 'v');
    }

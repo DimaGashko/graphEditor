@@ -102,7 +102,7 @@ export default class WSRender extends Component {
 
       //Граница
       ctx.lineWidth = targ.style.borderWidth * zoom;
-      ctx.strokeStyle = targ.style.lineColor;
+      ctx.strokeStyle = targ.style.color;
       
       ctx.arc(xy.x^0, xy.y^0, r.x^0, 0, Math.PI * 2);
       ctx.stroke();
@@ -182,7 +182,7 @@ export default class WSRender extends Component {
       let controll = new Vector(centerX, controllY);
       let end = new Vector(-edgeW, 0);
  
-      ctx.strokeStyle = targE.style.lineColor;
+      ctx.strokeStyle = targE.style.color;
 
       ctx.moveTo(begin.x, begin.y);
       if (controllY === 0) { 

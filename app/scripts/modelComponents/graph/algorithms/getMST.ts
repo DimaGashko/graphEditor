@@ -10,6 +10,7 @@ import Edge from "../edge";
  * @param graph Связный неориентированный граф
  * @param selectEdge функция выбора минимального ребра
  * (по умолчанию выберает ребро с наименьшим весом)
+ * 
  * @returns минимальное остовное дерево графа
  */
 export default function getMST<E, V>(
@@ -70,7 +71,7 @@ function selectEdge<E, V>(edges: Edge<E, V>[], getWeight: any = defGetWeight): E
    return minEdge;
 };
 
-//Дефолтное сравнение ребер (по наименьшему весу)
+//Дефолтное определение веса ребер
 function defGetWeight <E, V>(edge: Edge<E, V>): number {
    return edge.getWeight();
 };
