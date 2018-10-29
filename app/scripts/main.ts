@@ -2,7 +2,7 @@ import toMST from "./modelComponents/graph/algorithms/toMST";
 import Workspace from "./workspace/workspace";
 import { graphDemo1, graphDemo2 } from "./mstDemo";
 
-let graph = graphDemo2;
+let graph = graphDemo1;
 let mst = toMST(graph);
 
 const workspace = new Workspace(document.querySelector('.workspace'));
