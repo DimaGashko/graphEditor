@@ -128,10 +128,12 @@ export default class Graph<ETarget, VTarget> {
 
    /**
     * Возвращает массив ребер графа по которым можно пройти из вершины
+    * Если вершины нет в графе - возвращается пустой массив
     * @param vertex вершина графа
     * @returns массив ребер графа по которым можно пройти из вершины
     */
-   public getVEdges(vertex: Vertex<VTarget>): Edge<ETarget, VTarget>[] { 
+   public getVEdges(vertex: Vertex<VTarget>): Edge<ETarget, VTarget>[] {
+      if (!this.verticesLog[vertex.id]) return [];
       return this.verticesLog[vertex.id].edges.slice();
    }
 
