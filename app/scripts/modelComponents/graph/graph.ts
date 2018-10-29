@@ -113,20 +113,6 @@ export default class Graph<ETarget, VTarget> {
    }
 
    /**
-    * Возвращает копию массива вершин
-    */
-   public getVertices(): Vertex<VTarget>[] {
-      return this.vertices.slice();
-   }
-
-   /**
-    * Возвращает копию массива ребер
-    */
-   public getEdges(): Edge<ETarget, VTarget>[] {
-      return this.edges.slice();
-   }
-
-   /**
     * Возвращает массив ребер графа по которым можно пройти из вершины
     * Если вершины нет в графе - возвращается пустой массив
     * @param vertex вершина графа
@@ -178,6 +164,36 @@ export default class Graph<ETarget, VTarget> {
       if (edge.type === "bi" && !v2Edges.some(e => e === edge)) {
          v2Edges.push(edge);
       }
+   }
+
+   //Additional methods
+
+   /**
+    * Возвращает копию массива вершин
+    */
+   public getVertices(): Vertex<VTarget>[] {
+      return this.vertices.slice();
+   }
+
+   /**
+    * Возвращает копию массива ребер
+    */
+   public getEdges(): Edge<ETarget, VTarget>[] {
+      return this.edges.slice();
+   }
+
+   /**
+    * Возвращает количество вершин
+    */
+   public getVSCount(): number { 
+      return this.vertices.length;
+   }
+
+   /**
+    * Возвращает количество ребер
+    */
+   public getESCount(): number { 
+      return this.edges.length
    }
 
    //Algorithms

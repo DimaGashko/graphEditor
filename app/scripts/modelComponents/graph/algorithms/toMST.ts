@@ -1,40 +1,50 @@
 import Graph from "../graph";
 import Edge from "../edge";
-import Vertex from "../vertex";
+
+//Интерфейс фукнций, что выбирает минимальное ребро
+interface ISelectEdge {
+   <E, V>(edges: Edge<E, V>[]): Edge<E, V> | null;
+}
 
 /**
  * Возвращает минимальное остовное дерево графа
  * 
  * Основан на алгоритме Ярника-Прима-Дейкстры
- * 
- * Вес ребра берется из свойства Edge.targ.weight
- * либо считается равным 1, если такого свойства нет.
+ * Получает связный неориентированный граф
  * 
  * @param graph Связный неориентированный граф
+ * @param selectEdge функция выбора минимального ребра
+ * (по умолчанию выберает ребро с наименьшим весом)
  * @returns минимальное остовное дерево графа
  */
-export default function toMST<E, V>(graph: Graph<E, V>): Graph<E, V> {
+export default function toMST<E, V>(
+   graph: Graph<E, V>,
+   selectEdge: ISelectEdge = selectMinEdge
+): Graph<E, V> {
    const mst = new Graph<E, V>();
 
    const vertices = graph.getVertices();
-   if (!vertices.length) return mst;
+   let vLen = vertices.length;
+
+   if (vLen <= 1) { 
+      mst.addAllVertices(vertices);
+      return mst;
+   }
 
    const edges = graph.getEdges();
 
    const v1 = vertices[0];
-   const e1 = getMinEdge(graph.getVEdges(v1));
+   const e1 = selectEdge(graph.getVEdges(v1));
 
-   if (!e1) { 
-      mst.addVertex(v1);
-      return mst;
-   }
+   mst.addEdge(e1);
+   vLen -= 2;
 
-   addEdge(e1, mst, vertices);
-
-   while (vertices.length) { 
-      const candidates = getCandidateEdges(edges, mst);
-      const nextEdge = getMinEdge(candidates);
-      addEdge(e1, mst, vertices);
+   while (vLen) { 
+      const nextEdge = selectEdge(getCandidateEdges(edges, mst));
+      if (!nextEdge) return mst;
+      
+      mst.addEdge(nextEdge);
+      vLen -= 1;
    }
 
    return mst;
@@ -47,37 +57,26 @@ function getCandidateEdges<E, V>(edges: Edge<E, V>[], mst: Graph<E, V>): Edge<E,
    });
 }
 
-function addEdge<E, V>(e1: Edge<E, V>, mst: Graph<E, V>, vertices: Vertex<V>[]) { 
-   mst.addEdge(e1);
-
-   //remove;
-}
-
-function getMinEdge<E, V>(edges: Edge<E, V>[]): Edge<E, V> {
+function selectMinEdge<E, V>(edges: Edge<E, V>[]): Edge<E, V> | null {
    if (!edges.length) return null;
    
    let minEdge = edges[0];
-   let minWeight = getEdgeWeight(minEdge);
+   let minWeight = (<any>edges[0].targ).weight || 1;
 
-   for (let i = 1; i < edges.length; i++) { 
-      const weight = getEdgeWeight(edges[i]);
+   for (let i = 1; i < edges.length; i++) {
+      const weight = (<any>edges[i].targ).weight || 1;
 
-      if (weight < minWeight) { 
+      if (weight < minWeight) {
          minWeight = weight;
          minEdge = edges[i];
       }
    }
 
    return minEdge;
-}
-
-function getEdgeWeight<E, V>(edge: Edge<E, V>) { 
-   return (edge.targ && (<any>edge.targ).weight)
-      ? (<any>edge.targ).weight : 1;
-}
+};
 
 // - - -
-export function _toMST<E, V>(graph: Graph<E, V>): Graph<E, V> {
+/*export function _toMST<E, V>(graph: Graph<E, V>): Graph<E, V> {
    const mst = new Graph<E, V>();
 
    const vertices = graph.getVertices();
@@ -102,4 +101,4 @@ function step<E, V>(v: Vertex<V>, vs: Vertex<V>[], graph: Graph<E, V>, mst: Grap
 
    step(minEdge.v1, vs, graph, mst);
    step(minEdge.v2, vs, graph, mst);
-}
+}*/
