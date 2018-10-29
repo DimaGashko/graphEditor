@@ -42,5 +42,12 @@ export default class Edge<Target, VTarget> {
       }
 
    }
+
+   /**
+    * Возвращает вес ребра
+    */
+   public getWeight(): number {
+      return (<any>this.targ).weight || 1;
+   }
    
 }
