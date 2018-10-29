@@ -1,11 +1,16 @@
-import Component from "../../framework/component";
 import WSRender from "./ws_render";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
 import WSEvents, { IWSEvent } from "./ws_events";
-import KEYS from "../../keys";
-import Vector from "../../math/vector/vector";
 import WSVertex from "./ws_graph/ws_vertex";
+import Component from "../framework/component";
+import Vector from "../modelComponents/vector";
+
+const KEYS: {[key: number]: string} = {
+   107: 'zoomAdd',
+   109: 'zoomSub',
+   96: 'zoomDef',
+}
 
 export default class Workspace extends Component {
    private playing: boolean = false; //запущена ли перерисовка Workspace
@@ -32,12 +37,12 @@ export default class Workspace extends Component {
       return this.data;
    }
 
-   public init(root: Element) { 
+   public init(root: HTMLElement) { 
       this.getElements(root);
       this.initEvents();
       this.initRender();
    }
-
+ 
    public start(): void { 
       if (this.playing) return;
       this.playing = true;
@@ -223,7 +228,7 @@ export default class Workspace extends Component {
    }
 
    private initWSEvents(): void { 
-      this.events.init(this.els.canvases);
+      this.events.init(<HTMLCanvasElement>this.els.canvases);
 
       let moveStart: Vector = new Vector(0, 0);
       let moving: boolean = false;
@@ -315,7 +320,7 @@ export default class Workspace extends Component {
       this.render.renderGrid();
    }
 
-   private getElements(root: Element): void { 
+   private getElements(root: HTMLElement): void { 
       this.els.root = root;
       this.els.canvases = root.querySelector('.workspace__canvases');
    }

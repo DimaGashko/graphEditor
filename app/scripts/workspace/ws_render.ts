@@ -1,13 +1,12 @@
-import Component from "../../framework/component";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
-import Vector from "../../math/vector/vector";
-import WSVertex from "./ws_graph/ws_vertex";
-import Vertex from "../../math/graph/vertex";
-import Edge from "../../math/graph/edge";
+import Component from "../framework/component";
+import Edge from "../modelComponents/graph/edge";
 import WSEdge from "./ws_graph/ws_edge";
-import { getBezieCoords } from "../../math/math";
-import Graph from "../../math/graph/graph";
+import WSVertex from "./ws_graph/ws_vertex";
+import Vertex from "../modelComponents/graph/vertex";
+import Vector from "../modelComponents/vector";
+import { getBezieCoords } from "../modelComponents/math";
 
 type CanvEl = HTMLCanvasElement;
 type Context = CanvasRenderingContext2D;
@@ -20,7 +19,7 @@ export default class WSRender extends Component {
       super();
    }
 
-   public init(root: Element) { 
+   public init(root: HTMLElement) { 
       this.els.root = root;
 
       this.initCanvases();
@@ -51,14 +50,14 @@ export default class WSRender extends Component {
    /**
     * Возвращает ребер разбитых по кратности
     */
-   getMultipleGroups(): Edge[][] { 
-      let groups: Edge[][] = [];
+   getMultipleGroups(): Edge<WSEdge, WSVertex>[][] { 
+      let groups: Edge<WSEdge, WSVertex>[][] = [];
 
       this.getGraph().getEdges().forEach((edge) => {
          let groupIndex: number = -1;
 
          for (let i = groups.length - 1; i >= 0; i--) {
-            if (groups[i] && Graph.isMultipleEdges(groups[i][0], edge)) { 
+            if (groups[i] && 1 /*Graph.isMultipleEdges(groups[i][0], edge)*/) { 
                groupIndex = i;
             }
          }
@@ -83,7 +82,7 @@ export default class WSRender extends Component {
     * 
     * @param {Vertex} vertex верниша
     */
-   private drowVertex(vertex: Vertex) { 
+   private drowVertex(vertex: Vertex<WSVertex>) { 
       let ctx = this.ctxes.graph;
       ctx.save();
 
@@ -128,7 +127,7 @@ export default class WSRender extends Component {
     * ребра, то первое из кратных ребер - 0, второе - 1)
     * @param {number} edgesCount количество кратных ребер
     */
-   private drowEdge(edge: Edge, multiple: number = 0, edgesCount: number) { 
+   private drowEdge(edge: Edge<WSEdge, WSVertex>, multiple: number = 0, edgesCount: number) { 
       if (multiple < 0) multiple = -multiple;
 
       let ctx = this.ctxes.graph;
@@ -243,7 +242,7 @@ export default class WSRender extends Component {
     * @param {number} multiple кратность этого ребра (если есть кратные 
     * ребра, то первое из кратных ребер - 0, второе - 1)
     */
-   private drowLoopEdge(edge: Edge, multiple: number = 0) { 
+   private drowLoopEdge(edge: Edge<WSEdge, WSVertex>, multiple: number = 0) { 
       let ctx = this.ctxes.graph;
       ctx.save();
 
@@ -357,7 +356,7 @@ export default class WSRender extends Component {
       ctx.stroke();
    }
 
-   private getEdgeText(edge: Edge): string { 
+   private getEdgeText(edge: Edge<WSEdge, WSVertex>): string { 
       const weight = (<WSEdge>edge.targ).weight;
 
       return `${(<WSEdge>edge.targ).getName()}${(weight !== 1) ? ` (${weight})` : ''}`

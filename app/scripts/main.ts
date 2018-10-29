@@ -2,30 +2,39 @@ import Vertex from "./modelComponents/graph/vertex";
 import Edge from "./modelComponents/graph/edge";
 import Graph from "./modelComponents/graph/graph";
 import toMST from "./modelComponents/graph/algorithms/toMST";
+import Workspace from "./workspace/workspace";
+import WSVertex from "./workspace/ws_graph/ws_vertex";
+import Vector from "./modelComponents/vector";
+import WSEdge from "./workspace/ws_graph/ws_edge";
 
 let vs = [
-   new Vertex<Number>(0),
-   new Vertex<Number>(1),
-   new Vertex<Number>(2),
-   new Vertex<Number>(3),
-   new Vertex<Number>(4),
+   new Vertex<WSVertex>(new WSVertex(new Vector(0, 0), "v0")),
+   new Vertex<WSVertex>(new WSVertex(new Vector(100, 100), "v1")),
+   new Vertex<WSVertex>(new WSVertex(new Vector(120, 200), "v2")),
+   new Vertex<WSVertex>(new WSVertex(new Vector(-40, 400), "v3")),
+   new Vertex<WSVertex>(new WSVertex(new Vector(-200, 100), "v4")),
 ];
 
 let es = [
-   new Edge<Number, Number>(vs[0], vs[1], 0),
-   new Edge<Number, Number>(vs[1], vs[2], 1),
-   new Edge<Number, Number>(vs[2], vs[3], 2),
-   new Edge<Number, Number>(vs[3], vs[4], 3),
-   new Edge<Number, Number>(vs[4], vs[0], 4),
-   new Edge<Number, Number>(vs[4], vs[1], 5),
-   new Edge<Number, Number>(vs[4], vs[2], 6),
-   new Edge<Number, Number>(vs[3], vs[0], 7),
-   new Edge<Number, Number>(vs[3], vs[1], 8),
-   new Edge<Number, Number>(vs[2], vs[0], 9),
-]
+   new Edge<WSEdge, WSVertex>(vs[0], vs[1], new WSEdge("e0")),
+   new Edge<WSEdge, WSVertex>(vs[1], vs[2], new WSEdge("e1")),
+   new Edge<WSEdge, WSVertex>(vs[2], vs[3], new WSEdge("e2")),
+   new Edge<WSEdge, WSVertex>(vs[3], vs[4], new WSEdge("e3")),
+   new Edge<WSEdge, WSVertex>(vs[4], vs[0], new WSEdge("e4")),
+   new Edge<WSEdge, WSVertex>(vs[4], vs[1], new WSEdge("e5")),
+   new Edge<WSEdge, WSVertex>(vs[4], vs[2], new WSEdge("e6")),
+   new Edge<WSEdge, WSVertex>(vs[3], vs[0], new WSEdge("e7")),
+   new Edge<WSEdge, WSVertex>(vs[3], vs[1], new WSEdge("e8")),
+   new Edge<WSEdge, WSVertex>(vs[2], vs[0], new WSEdge("e9")),
+];
+
+const ws = new Workspace();
+ws.init(document.querySelector('.workspace'));
 
 let graph = new Graph(vs, es);
 let mst = toMST(graph);
+
+ws.getData().wsGraph.graph = graph;
 
 const global = <any>window;
 global.graph = graph;

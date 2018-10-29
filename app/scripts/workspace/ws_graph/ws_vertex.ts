@@ -1,5 +1,5 @@
-import Vector from "../../../math/vector/vector";
 import WSGraphComponent from "../ws_graph_component";
+import Vector from "../../modelComponents/vector";
 
 export interface IVertextStyle { 
    background: string;

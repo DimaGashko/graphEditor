@@ -1,5 +1,3 @@
-import Vector from "../../math/vector/vector";
-
 export default class WSGraphComponent {
    private minNameLen: number = 1;
    private maxNameLen: number = 10;

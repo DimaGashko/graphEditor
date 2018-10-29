@@ -1,6 +1,5 @@
-import Vector from "../../math/vector/vector";
-import FPS from "../../helpers/fps";
-import Component from "../../framework/component";
+import Component from "../framework/component";
+import Vector from "../modelComponents/vector";
 
 export default class WSZoom extends Component { 
    private animateFrame: number = 0;
@@ -48,7 +47,7 @@ export default class WSZoom extends Component {
          cancelAnimationFrame(this.animateFrame);
       }
 
-      let cadrs = time / FPS.get();
+      let cadrs = time / 60;
 
       let step = new Vector(
          (val.x - this.get().x) / cadrs,

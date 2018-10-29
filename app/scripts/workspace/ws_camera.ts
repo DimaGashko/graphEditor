@@ -1,5 +1,5 @@
-import Vector from "../../math/vector/vector";
-import Component from "../../framework/component";
+import Component from "../framework/component";
+import Vector from "../modelComponents/vector";
 
 export default class WSCamera extends Component {    
    private def: Vector = new Vector(1, 1);

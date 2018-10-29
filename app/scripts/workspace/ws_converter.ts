@@ -1,5 +1,5 @@
 import WSData from "./ws_data";
-import Vector from "../../math/vector/vector"; 
+import Vector from "../modelComponents/vector";
 
 export default class WSConverter {
    

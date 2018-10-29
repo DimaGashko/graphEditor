@@ -1,8 +1,8 @@
-import Component from "../../framework/component";
 import WSData from "./ws_data";
 import WSConverter from "./ws_converter";
-import Vector from "../../math/vector/vector";
 import WSVertex from "./ws_graph/ws_vertex";
+import Component from "../framework/component";
+import Vector from "../modelComponents/vector";
 
 export interface IWSEvent {
    targ: WSVertex | null,
