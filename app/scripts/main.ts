@@ -30,6 +30,7 @@ let es = [
 
 const ws = new Workspace();
 ws.init(document.querySelector('.workspace'));
+ws.start();
 
 let graph = new Graph(vs, es);
 let mst = toMST(graph);
@@ -39,3 +40,7 @@ ws.getData().wsGraph.graph = graph;
 const global = <any>window;
 global.graph = graph;
 global.mst = mst;
+
+global.toMST = (() => { 
+   ws.getData().wsGraph.graph = mst;
+})
