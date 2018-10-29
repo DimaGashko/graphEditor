@@ -3,7 +3,7 @@ import Workspace from "./workspace/workspace";
 import { graphDemo1, graphDemo2 } from "./mstDemo";
 import Vector from "./modelComponents/vector";
 
-let graph = graphDemo1;
+let graph = graphDemo2;
 
 const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.getData().wsGraph.graph = graph;

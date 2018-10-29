@@ -122,7 +122,7 @@ gulp.task('build:img', () => {
 });
 
 gulp.task('build:html', () => {
-   return gulp.src('dist/**/*.html')
+   return gulp.src('app/**/*.html')
       .pipe($.htmlmin({
          collapseWhitespace: true
       }))
@@ -155,7 +155,7 @@ gulp.task('build', gulp.series(
       'build:move',
       'build:css',
       'build:js',
-      'build:json'
+      //'build:json'
    ),
 ));
 

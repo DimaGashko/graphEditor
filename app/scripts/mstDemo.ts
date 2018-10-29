@@ -39,12 +39,12 @@ export const graphDemo2 = (function () {
    ];
    
    const es = [
-      new Edge(vs[0], vs[1], new WSEdge('e0', 2)),
-      new Edge(vs[1], vs[2], new WSEdge('e1', 2)),
+      new Edge(vs[0], vs[1], new WSEdge('e0', 10)),
+      new Edge(vs[1], vs[2], new WSEdge('e1', 10)),
       new Edge(vs[2], vs[3], new WSEdge('e2', 1)),
       new Edge(vs[3], vs[0], new WSEdge('e3', 1)),
       new Edge(vs[3], vs[1], new WSEdge('e4', 1)),
-      new Edge(vs[0], vs[2], new WSEdge('e5', 2)),
+      new Edge(vs[0], vs[2], new WSEdge('e5', 10)),
    ];
 
    return new Graph(vs, es);
