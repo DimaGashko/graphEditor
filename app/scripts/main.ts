@@ -1,9 +1,9 @@
 import getMST from "./modelComponents/graph/algorithms/getMST";
 import Workspace from "./workspace/workspace";
-import { graphDemo1, graphDemo2 } from "./mstDemo";
+import { graphDemo1, graphDemo2, graphDemo3 } from "./mstDemo";
 import Vector from "./modelComponents/vector";
 
-let graph = graphDemo2;
+let graph = graphDemo3;
 
 const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.getData().wsGraph.graph = graph;

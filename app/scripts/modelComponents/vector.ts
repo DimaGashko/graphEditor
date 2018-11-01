@@ -94,6 +94,16 @@ export default class Vector {
    }
 
    /**
+    * Возвращает векторо состоящий из модулей осей даного вектора
+    */
+   absAxises(): Vector {
+      return new Vector(
+         Math.abs(this.x),
+         Math.abs(this.y)
+      );
+   }
+
+   /**
     * Копирует вектор
     */
    copy(): Vector {
