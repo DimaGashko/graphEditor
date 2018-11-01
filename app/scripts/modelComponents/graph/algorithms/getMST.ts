@@ -37,7 +37,7 @@ export default function getMST<E, V>(
 
    while (vLen) { 
       const nextEdge = selectEdge(getCandidateEdges(edges, mst), getWeight);
-      if (!nextEdge) return mst;
+      if (!nextEdge) return mst; //Например, если переданный граф не связный
 
       mst.addEdge(nextEdge);
       vLen -= 1;
@@ -46,7 +46,7 @@ export default function getMST<E, V>(
    return mst;
 }
 
-//Ребра, в которых только 1 вершина принадлежит mst
+//Возврщает ребра, в которых только 1 вершина принадлежит mst
 function getCandidateEdges<E, V>(edges: Edge<E, V>[], mst: Graph<E, V>): Edge<E, V>[] { 
    return edges.filter((e) => {
       return (mst.containsVertex(e.v1) !== mst.containsVertex(e.v2));
