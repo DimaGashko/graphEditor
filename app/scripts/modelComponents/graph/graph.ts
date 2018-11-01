@@ -87,7 +87,7 @@ export default class Graph<ETarget, VTarget> {
     * @param vertex вершина
     */
    public addVertex(vertex: Vertex<VTarget>) { 
-      if (this.containsVertex(vertex)) return;
+      if (!vertex || this.containsVertex(vertex)) return;
 
       this.vertices.push(vertex);
       this.verticesLog[vertex.id] = {
@@ -101,7 +101,7 @@ export default class Graph<ETarget, VTarget> {
     * @param edge Ребро
     */
    public addEdge(edge: Edge<ETarget, VTarget>) { 
-      if (this.containsEdge(edge)) return;
+      if (!edge || this.containsEdge(edge)) return;
 
       this.edges.push(edge);
       this.edgesLog[edge.id] = {};
@@ -129,7 +129,7 @@ export default class Graph<ETarget, VTarget> {
     * @returns содержит ли граф вершину
     */
    public containsVertex(vertex: Vertex<VTarget>): boolean { 
-      return vertex.id in this.verticesLog;
+      return vertex && vertex.id in this.verticesLog;
    }
 
    /**
@@ -138,7 +138,7 @@ export default class Graph<ETarget, VTarget> {
     * @returns содержит ли граф ребро
     */
    public containsEdge(edge: Edge<ETarget, VTarget>): boolean { 
-      return edge.id in this.edgesLog;
+      return edge && edge.id in this.edgesLog;
    }
 
    //Добавляет информацию о ребре в verticesLog его вершин
