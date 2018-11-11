@@ -1,9 +1,9 @@
-import Graph from "./modelComponents/graph/graph";
-import Edge from "./modelComponents/graph/edge";
-import WSEdge from "./workspace/ws_graph/ws_edge";
-import Vector from "./modelComponents/vector";
-import WSVertex from "./workspace/ws_graph/ws_vertex";
-import Vertex from "./modelComponents/graph/vertex";
+import Graph from "../modelComponents/graph/graph";
+import Edge from "../modelComponents/graph/edge";
+import WSEdge from "../workspace/ws_graph/ws_edge";
+import Vector from "../modelComponents/vector";
+import WSVertex from "../workspace/ws_graph/ws_vertex";
+import Vertex from "../modelComponents/graph/vertex";
 
 export const graphDemo1 = (function () { 
    const vs = [
