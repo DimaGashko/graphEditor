@@ -49,30 +49,3 @@ export const graphDemo2 = (function () {
 
    return new Graph(vs, es);
 }());
-
-export const graphDemo3 = (function () { 
-   const start = new Vector(-500, -500);
-   const end = new Vector(500, 500);
-   const interval = new Vector(150, 150);
-   const steps = end.sub(start).diScale(interval);
-
-   const vs:Vertex<WSVertex>[] = [];
-   const es:Edge<WSEdge, WSVertex>[] = [];
-
-   for (let i = 0; i < steps.y; i++) {
-      for (let j = 0; j < steps.x; j++) {
-         const coords = start.add(interval.scale(new Vector(j, i)));
-         vs.push(new Vertex(new WSVertex('', coords)));
-      }
-   }
- 
-   for (let i = 0; i < vs.length; i += 3) {
-      for (let j = 0; j < vs.length; j += 2) {
-         if (i === j) continue;
-         es.push(new Edge(vs[i], vs[j], new WSEdge('e')));
-      }
-   }
-
-   console.log(es)
-   return new Graph(vs, es);
-}());

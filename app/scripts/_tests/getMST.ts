@@ -16,6 +16,7 @@ export default function demoGetMST() {
             edge.v1.targ.coords, edge.v2.targ.coords
          ) * edge.getWeight();
       });
+      
 
       graph.getEdges().forEach(e => e.targ.style.color = "rgba(0,0,0,.15)");
       mst.getEdges().forEach(e => e.targ.style.color = "#000");
