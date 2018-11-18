@@ -1,4 +1,5 @@
 import Graph from "./graph/graph";
+import Vertex from "./graph/vertex";
 
 class Operator { 
    constructor(
@@ -31,13 +32,15 @@ export class NodeExp {
 export default class Expression { 
    private expTree: Graph<null, NodeExp> = null;
    private _res: number = null;
-
+   
    private pos: number = 0;
+   private strExp: string;
 
    /**
     * @param strExp Математическое выражение в виде строки 
     */
-   constructor(public readonly strExp: string) {     
+   constructor(strExp: string) { 
+      this.correctStrExp(strExp);
       this.parse();
       this.calc();
    }
@@ -56,68 +59,54 @@ export default class Expression {
       return this.expTree;
    }
 
-   private parse() {
-      let operand1 = this.getNumber();
-      let operator = this.getOperator();
-      let operand2 = this.getNumber();
+   private correctStrExp(strExp: string) {
+      return;
+      for (let pos = 0; pos < strExp.length; pos++) { 
+         //if (!(strExp[pos] in Expression.operators)) continue;
 
-      
-
-      console.log(operand1, operand2);
-   }
-
-   private isEnd(): boolean { 
-      return this.pos >= this.strExp.length;
-   }
-
-   private getNumber() {
-      const str = this.strExp.slice(this.pos);
-      const endNum = str.search(/[^\d\.]/);
-      const strNum = str.slice(0, endNum);
-      const num = +strNum;
-
-      if (isNaN(num)) {
-         throw new SyntaxError(`${strNum} is not a number`);
+         strExp = strExp.slice(0, pos) + ')' + strExp[pos] +
+            '(' + strExp.slice(pos + 1);
          
-      } else if (strNum.length === 0) {
-         throw new SyntaxError(`Operator expected (on position ${this.pos})`);
+         pos += 1;
       }
 
-      this.pos += endNum;
-      return num;
+      strExp = `(${strExp})`;
+
+      console.log(strExp);
    }
 
-   private getOperator(): Operator { 
-      const strOperator = this.strExp[this.pos];
+   private parse() {
+      let close1 = this.getCloseIndex(this.strExp, 1);
+      let operator = this.strExp[close1 + 1];
+      let close2 = this.getCloseIndex(this.strExp, close1 + 2);
+   }
 
-      if (strOperator in Expression.operators) { 
-         this.pos++;
-         return Expression.operators[strOperator];
+   private getCloseIndex(strExp: string, pos: number) { 
+      let open = 0;
+
+      for (pos; pos < strExp.length; pos++) { 
+         if (strExp[pos] === '(') open++;
+         else if (strExp[pos] === ')') { 
+            if (open === 0) return pos;
+            open--;
+         }
       }
 
-      throw new SyntaxError(`${strOperator} is not an operator`);
+      return -1;
    }
 
    private calc() { 
 
    }
 
-   private static operators: { [type: string]: Operator } = {
-      "+": new Operator('+', 13, (a, b) => { 
-         return a + b;
-      }),
-      "-": new Operator('-', 13, (a, b) => { 
-         return a - b;
-      }),
-      "*": new Operator('*', 14, (a, b) => { 
-         return a * b;
-      }),
-      "/": new Operator('/', 14, (a, b) => { 
-         return a / b;
-      }),
-      "%": new Operator('%', 14, (a, b) => { 
-         return a % b;
-      }),
-   }
+   private operators: Operator[] = [
+
+      new Operator('+', 13, (a, b) => a + b),
+      new Operator('-', 13, (a, b) => a - b),
+      new Operator('*', 14, (a, b) => a * b),
+      new Operator('/', 14, (a, b) => a / b),
+      new Operator('%', 14, (a, b) => a % b),
+
+   ].sort((a, b) => a.precedence - b.precedence);
 
 }
