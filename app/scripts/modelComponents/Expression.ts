@@ -7,13 +7,12 @@ import Graph from "./graph/graph";
  * ext.strExt //"2+3*6"
  * exp.res //20
  * exp.tree //дерево выражения
- * 
- * Если нужен, например, только резултат:
- * const res = new Expression("2+3*6").res;
  */
 export default class Expression { 
    private expTree: Graph<null, ExpNode> = null;
    private _res: number = null;
+
+   private pos = 0;
 
    /**
     * @param strExp Математическое выражение в виде строки 
@@ -37,8 +36,28 @@ export default class Expression {
       return this.expTree;
    }
 
-   private parse() { 
+   private parse() {
+      let len = this.strExp.length;
+   
+      let nextPos = this.getLastDigitIndex(this.strExp, this.pos);
+      let operand1 = this.strExp.slice(this.pos, nextPos);
+      this.pos = nextPos;
 
+      let operator = this.strExp[this.pos++];
+
+      nextPos = this.getLastDigitIndex(this.strExp, pos);
+      let operand2 = this.strExp.slice(pos, nextPos);
+      pos = nextPos;
+
+      console.log(operand1, operator, operand2);
+   }
+
+   private getLastDigitIndex(str: string, pos: number): number { 
+      for (pos; pos < str.length; pos++) { 
+         if (str[pos] !== '.' && isNaN(+str[pos])) return pos;
+      }
+
+      return pos;
    }
 
    private calc() { 

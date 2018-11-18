@@ -8,7 +8,7 @@ const global = (<any>window);
 
 const workspace = new Workspace(document.querySelector('.workspace'));
 
-export default function demoCalcEq() {
+export default function demoCalcExp() {
    global.Expression = Expression;
 
    global.setExp = ((exp: Expression) => { 
@@ -18,7 +18,7 @@ export default function demoCalcEq() {
 }
 
 function setExp(exp: Expression) { 
-   workspace.getData().wsGraph.graph = buildEpxGraph(exp.tree);
+   //workspace.getData().wsGraph.graph = buildEpxGraph(exp.tree);
 }
 
 function buildEpxGraph(expTree: Graph<null, ExpNode>): Graph<WSEdge, WSVertex> { 
