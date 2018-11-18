@@ -1,5 +1,25 @@
 import Graph from "./graph/graph";
 
+class Operator { 
+   constructor(
+      public readonly type: string,
+      public readonly precedence: number,
+      public readonly call: (a: number, b: number) => number
+   ) { 
+
+   }
+
+}
+
+export class NodeExp {
+   constructor(
+      public readonly type: 'operand' | 'operator',
+      public readonly val: number | Operator,
+   ) { 
+
+   }
+}
+
 /**
  * Математическое уравнение 
  * 
@@ -9,10 +29,10 @@ import Graph from "./graph/graph";
  * exp.tree //дерево выражения
  */
 export default class Expression { 
-   private expTree: Graph<null, ExpNode> = null;
+   private expTree: Graph<null, NodeExp> = null;
    private _res: number = null;
 
-   private pos = 0;
+   private pos: number = 0;
 
    /**
     * @param strExp Математическое выражение в виде строки 
@@ -37,34 +57,67 @@ export default class Expression {
    }
 
    private parse() {
-      let len = this.strExp.length;
-   
-      let nextPos = this.getLastDigitIndex(this.strExp, this.pos);
-      let operand1 = this.strExp.slice(this.pos, nextPos);
-      this.pos = nextPos;
+      let operand1 = this.getNumber();
+      let operator = this.getOperator();
+      let operand2 = this.getNumber();
 
-      let operator = this.strExp[this.pos++];
+      
 
-      nextPos = this.getLastDigitIndex(this.strExp, pos);
-      let operand2 = this.strExp.slice(pos, nextPos);
-      pos = nextPos;
-
-      console.log(operand1, operator, operand2);
+      console.log(operand1, operand2);
    }
 
-   private getLastDigitIndex(str: string, pos: number): number { 
-      for (pos; pos < str.length; pos++) { 
-         if (str[pos] !== '.' && isNaN(+str[pos])) return pos;
+   private isEnd(): boolean { 
+      return this.pos >= this.strExp.length;
+   }
+
+   private getNumber() {
+      const str = this.strExp.slice(this.pos);
+      const endNum = str.search(/[^\d\.]/);
+      const strNum = str.slice(0, endNum);
+      const num = +strNum;
+
+      if (isNaN(num)) {
+         throw new SyntaxError(`${strNum} is not a number`);
+         
+      } else if (strNum.length === 0) {
+         throw new SyntaxError(`Operator expected (on position ${this.pos})`);
       }
 
-      return pos;
+      this.pos += endNum;
+      return num;
+   }
+
+   private getOperator(): Operator { 
+      const strOperator = this.strExp[this.pos];
+
+      if (strOperator in Expression.operators) { 
+         this.pos++;
+         return Expression.operators[strOperator];
+      }
+
+      throw new SyntaxError(`${strOperator} is not an operator`);
    }
 
    private calc() { 
 
    }
-}
 
-export class ExpNode {
+   private static operators: { [type: string]: Operator } = {
+      "+": new Operator('+', 13, (a, b) => { 
+         return a + b;
+      }),
+      "-": new Operator('-', 13, (a, b) => { 
+         return a - b;
+      }),
+      "*": new Operator('*', 14, (a, b) => { 
+         return a * b;
+      }),
+      "/": new Operator('/', 14, (a, b) => { 
+         return a / b;
+      }),
+      "%": new Operator('%', 14, (a, b) => { 
+         return a % b;
+      }),
+   }
 
 }

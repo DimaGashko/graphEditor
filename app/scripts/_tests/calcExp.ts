@@ -1,4 +1,4 @@
-import Expression, { ExpNode } from "../modelComponents/Expression";
+import Expression, { NodeExp } from "../modelComponents/Expression";
 import Workspace from "../workspace/workspace";
 import Graph from "../modelComponents/graph/graph";
 import WSEdge from "../workspace/ws_graph/ws_edge";
@@ -21,6 +21,6 @@ function setExp(exp: Expression) {
    //workspace.getData().wsGraph.graph = buildEpxGraph(exp.tree);
 }
 
-function buildEpxGraph(expTree: Graph<null, ExpNode>): Graph<WSEdge, WSVertex> { 
+function buildEpxGraph(expTree: Graph<null, NodeExp>): Graph<WSEdge, WSVertex> { 
    return new Graph<WSEdge, WSVertex>();
 }
