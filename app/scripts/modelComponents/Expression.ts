@@ -13,6 +13,7 @@ class Operator {
 
    public toString() { 
       return this.name;
+      
    }
 
 }
@@ -141,7 +142,24 @@ export default class Expression {
    }
 
    private calc() { 
-      
+      this._res = this._calcNext(this._root);
+   }
+
+   private _calcNext(vertex: Vertex<NodeExp>): number { 
+      const node = vertex.targ;
+
+      if (node.type === 'operator') {
+         const nexts = this._tree.getVVertices(vertex);
+
+         return (<Operator>node.val).call(
+            this._calcNext(nexts[0]),
+            this._calcNext(nexts[1])
+         );
+
+      } else if (node.type === 'operand') { 
+         return <number>node.val;
+
+      }
    }
 
    private operators: Operator[] = [
