@@ -135,6 +135,11 @@ export default class Expression {
       let operand1 = strExp.slice(pos, op1End);
       pos = op1End;
 
+      if (pos === strExp.length) { 
+         console.log('isValue');
+         return;
+      }
+
       if (strExp[pos] in this.operatorsHash) { 
          operator = this.operatorsHash[strExp[pos]];
          pos += 1;
@@ -150,15 +155,12 @@ export default class Expression {
    }
 
    private getEndOperandIndex(strExp: string, pos: number): number { 
-      let operand: string;
-
       if (strExp[pos] === '(') {
          const close = this.getCloseIndex(strExp, pos + 1);
          if (close === -1) {
             throw new SyntaxError('Unexpected end of input');
          }
 
-         operand = strExp.slice(pos + 1, close);
          return close + 1;
 
       } else { 
@@ -166,7 +168,7 @@ export default class Expression {
          if (endNumber === pos) {
             throw SyntaxError(`Extected number at position ${pos}`);
          }
-         
+
          return endNumber;
       }
 
