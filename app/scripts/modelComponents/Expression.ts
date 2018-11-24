@@ -40,12 +40,12 @@ export class NodeExp {
  * exp.tree //дерево выражения
  */
 export default class Expression { 
-   private _tree: Graph<null, NodeExp> = null;
+   private _tree = new Graph<null, NodeExp>();
    private _root: Vertex<NodeExp> = null;
    private _res: number = null;
    
-   private pos: number = 0;
-   private strExp: string;
+   private _strExp: string;
+   private _fullStrExp: string;
 
    /**
     * @param strExp Математическое выражение в виде строки 
@@ -56,25 +56,28 @@ export default class Expression {
       this.calc();
    }
    
-   /**
-    * @returns результат выражения
-    */
+   /** @returns результат выражения */
+   public get stExp(): string { 
+      return this._strExp;
+   }
+
+   /** @returns результат выражения */
    public get res(): number { 
       return this._res;
    }
 
-   /**
-    * @returns представление графа в виде дерева
-    */
+   /** @returns представление графа в виде дерева */
    public get tree() { 
       return this._tree;
    }
 
-   /**
-    * @returns вершина дерева выражения
-    */
+   /** @returns вершина дерева выражения */
    public get root() { 
       return this._root;
+   }
+
+   public toString() { 
+      return `${this._strExp} = ${this._res}`;
    }
 
    private correctStrExp(strExp: string) {
@@ -94,8 +97,6 @@ export default class Expression {
    }
 
    private parse() {
-      this._tree = new Graph<null, NodeExp>();
-   
       const root = new Vertex(new NodeExp('operator', this.operatorsHesh['+']));
       this._root = root;
       
@@ -120,11 +121,6 @@ export default class Expression {
 
       this.tree.addEdge(new Edge(plus, _8, null, 'uni'));
       this.tree.addEdge(new Edge(plus, _9, null, 'uni'));
-
-      return;
-      let close1 = this.getCloseIndex(this.strExp, 1);
-      let operator = this.strExp[close1 + 1];
-      let close2 = this.getCloseIndex(this.strExp, close1 + 2);
    }
 
    private getCloseIndex(strExp: string, pos: number) { 
