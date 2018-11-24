@@ -1,13 +1,18 @@
 import Graph from "./graph/graph";
 import Vertex from "./graph/vertex";
+import Edge from "./graph/edge";
 
 class Operator { 
    constructor(
-      public readonly type: string,
+      public readonly name: string,
       public readonly precedence: number,
       public readonly call: (a: number, b: number) => number
    ) { 
 
+   }
+
+   public toString() { 
+      return this.name;
    }
 
 }
@@ -18,6 +23,10 @@ export class NodeExp {
       public readonly val: number | Operator,
    ) { 
 
+   }
+
+   public toString() { 
+      return this.val.toString();
    }
 }
 
@@ -30,7 +39,8 @@ export class NodeExp {
  * exp.tree //дерево выражения
  */
 export default class Expression { 
-   private expTree: Graph<null, NodeExp> = null;
+   private _tree: Graph<null, NodeExp> = null;
+   private _root: Vertex<NodeExp> = null;
    private _res: number = null;
    
    private pos: number = 0;
@@ -56,7 +66,14 @@ export default class Expression {
     * @returns представление графа в виде дерева
     */
    public get tree() { 
-      return this.expTree;
+      return this._tree;
+   }
+
+   /**
+    * @returns вершина дерева выражения
+    */
+   public get root() { 
+      return this._root;
    }
 
    private correctStrExp(strExp: string) {
@@ -76,6 +93,33 @@ export default class Expression {
    }
 
    private parse() {
+
+      const root = new Vertex(new NodeExp('operator', this.operatorsHesh['+']));
+      this._root = root;
+      
+      const _2 = new Vertex(new NodeExp('operand', 2));
+      const _6 = new Vertex(new NodeExp('operand', 6));
+      const _7 = new Vertex(new NodeExp('operand', 7));
+      const _8 = new Vertex(new NodeExp('operand', 8));
+      const _9 = new Vertex(new NodeExp('operand', 9));
+
+      const mul = new Vertex(new NodeExp('operator', this.operatorsHesh['*']));
+      const dev = new Vertex(new NodeExp('operator', this.operatorsHesh['/']));
+      const plus = new Vertex(new NodeExp('operator', this.operatorsHesh['+']));
+
+      this.tree.addEdge(new Edge(root, _2, null));
+      this.tree.addEdge(new Edge(root, mul, null));
+
+      this.tree.addEdge(new Edge(mul, _6, null));
+      this.tree.addEdge(new Edge(mul, dev, null));
+
+      this.tree.addEdge(new Edge(dev, _7, null));
+      this.tree.addEdge(new Edge(dev, plus, null));
+
+      this.tree.addEdge(new Edge(dev, _8, null));
+      this.tree.addEdge(new Edge(dev, _9, null));
+
+      return;
       let close1 = this.getCloseIndex(this.strExp, 1);
       let operator = this.strExp[close1 + 1];
       let close2 = this.getCloseIndex(this.strExp, close1 + 2);
@@ -109,4 +153,12 @@ export default class Expression {
 
    ].sort((a, b) => a.precedence - b.precedence);
 
+   private operatorsHesh = {
+      '+': new Operator('+', 13, (a, b) => a + b),
+      '-': new Operator('-', 13, (a, b) => a - b),
+      '*': new Operator('*', 14, (a, b) => a * b),
+      '/': new Operator('/', 14, (a, b) => a / b),
+      '%': new Operator('%', 14, (a, b) => a % b),
+   }
+   
 }
