@@ -131,9 +131,9 @@ export default class Expression {
       let pos = 0;
       let operator: Operator;
 
-      let op1Config = this.getOperand(this.stExp, pos);
-      let operand1 = op1Config.operand;
-      pos = op1Config.pos;
+      let op1End = this.getEndOperandIndex(this.stExp, pos);
+      let operand1 = strExp.slice(pos, op1End);
+      pos = op1End;
 
       if (strExp[pos] in this.operatorsHash) { 
          operator = this.operatorsHash[strExp[pos]];
@@ -142,27 +142,42 @@ export default class Expression {
          throw SyntaxError(`Extected operator at position ${pos}`);
       }
 
-      let op2Config = this.getOperand(this.stExp, pos);
-      let operand2 = op1Config.operand;
-      pos = op1Config.pos;
+      let op2End = this.getEndOperandIndex(this.stExp, pos);
+      let operand2 = strExp.slice(pos, op2End);
+      pos = op2End;
 
       console.log(operand1, operator.toString(), operand2);
    }
 
-   private getOperand(strExp: string, pos: number): { operand: string, pos: number } { 
+   private getEndOperandIndex(strExp: string, pos: number): number { 
       let operand: string;
 
       if (strExp[pos] === '(') {
          const close = this.getCloseIndex(strExp, pos + 1);
-         if (close === -1) throw new SyntaxError('Unexpected end of input');
+         if (close === -1) {
+            throw new SyntaxError('Unexpected end of input');
+         }
 
          operand = strExp.slice(pos + 1, close);
-         pos = close + 1;
+         return close + 1;
+
       } else { 
-         //
+         let endNumber = this.getEndNumber(strExp, pos);
+         if (endNumber === pos) {
+            throw SyntaxError(`Extected number at position ${pos}`);
+         }
+         
+         return endNumber;
       }
 
-      return { operand, pos }
+   }
+
+   private getEndNumber(strExp: string, pos: number) { 
+      for (pos; pos < strExp.length; pos++) { 
+         if (strExp[pos] !== '.' && isNaN(+strExp[pos])) return pos;
+      }
+
+      return pos;
    }
 
    private getCloseIndex(strExp: string, pos: number) { 

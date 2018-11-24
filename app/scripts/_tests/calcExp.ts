@@ -13,7 +13,7 @@ const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.start();
 
 export default function demoCalcExp() {
-   global.exp = setExp(new Expression("(2*(3+6))*(6+4)"));
+   global.exp = setExp(new Expression("2*6"));
    global.Expression = Expression;
 
    global.setExp = ((exp: Expression) => { 
