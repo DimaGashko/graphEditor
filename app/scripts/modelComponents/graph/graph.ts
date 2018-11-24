@@ -129,7 +129,7 @@ export default class Graph<ETarget, VTarget> {
     * @param vertex вершина графа
     * @returns массив ребер графа по которым можно пройти из вершины
     */
-   public getVVertecis(vertex: Vertex<VTarget>): Vertex<VTarget>[] {
+   public getVVertices(vertex: Vertex<VTarget>): Vertex<VTarget>[] {
       if (!this.verticesLog[vertex.id]) return [];
       return this.verticesLog[vertex.id].edges.map((edge) => { 
          return (edge.v1 === vertex) ? edge.v2 : edge.v1;
