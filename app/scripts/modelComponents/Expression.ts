@@ -93,7 +93,8 @@ export default class Expression {
    }
 
    private parse() {
-
+      this._tree = new Graph<null, NodeExp>();
+   
       const root = new Vertex(new NodeExp('operator', this.operatorsHesh['+']));
       this._root = root;
       
@@ -101,23 +102,23 @@ export default class Expression {
       const _6 = new Vertex(new NodeExp('operand', 6));
       const _7 = new Vertex(new NodeExp('operand', 7));
       const _8 = new Vertex(new NodeExp('operand', 8));
-      const _9 = new Vertex(new NodeExp('operand', 9));
+      const _9 = new Vertex(new NodeExp('operand', 9)); 
 
       const mul = new Vertex(new NodeExp('operator', this.operatorsHesh['*']));
       const dev = new Vertex(new NodeExp('operator', this.operatorsHesh['/']));
       const plus = new Vertex(new NodeExp('operator', this.operatorsHesh['+']));
 
-      this.tree.addEdge(new Edge(root, _2, null));
-      this.tree.addEdge(new Edge(root, mul, null));
+      this.tree.addEdge(new Edge(root, _2, null, 'uni'));
+      this.tree.addEdge(new Edge(root, mul, null, 'uni'));
 
-      this.tree.addEdge(new Edge(mul, _6, null));
-      this.tree.addEdge(new Edge(mul, dev, null));
+      this.tree.addEdge(new Edge(mul, _6, null, 'uni'));
+      this.tree.addEdge(new Edge(mul, dev, null, 'uni'));
 
-      this.tree.addEdge(new Edge(dev, _7, null));
-      this.tree.addEdge(new Edge(dev, plus, null));
+      this.tree.addEdge(new Edge(dev, _7, null, 'uni'));
+      this.tree.addEdge(new Edge(dev, plus, null, 'uni'));
 
-      this.tree.addEdge(new Edge(dev, _8, null));
-      this.tree.addEdge(new Edge(dev, _9, null));
+      this.tree.addEdge(new Edge(plus, _8, null, 'uni'));
+      this.tree.addEdge(new Edge(plus, _9, null, 'uni'));
 
       return;
       let close1 = this.getCloseIndex(this.strExp, 1);

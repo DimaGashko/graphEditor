@@ -15,7 +15,7 @@ export interface IEdgeStyle {
 
 export default class WSEdge extends WSGraphComponent {
 
-   constructor(name: string = 'e', public weight: number = 1) { 
+   constructor(name?: string, public weight: number = 1) { 
       super(name);
    }
 

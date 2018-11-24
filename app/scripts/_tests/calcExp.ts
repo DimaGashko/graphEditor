@@ -5,10 +5,12 @@ import WSEdge from "../workspace/ws_graph/ws_edge";
 import WSVertex from "../workspace/ws_graph/ws_vertex";
 import Vector from "../modelComponents/vector";
 import Vertex from "../modelComponents/graph/vertex";
+import Edge from "../modelComponents/graph/edge";
 
 const global = (<any>window);
 
 const workspace = new Workspace(document.querySelector('.workspace'));
+workspace.start();
 
 export default function demoCalcExp() {
    global.Expression = Expression;
@@ -24,12 +26,12 @@ function setExp(exp: Expression) {
 }
 
 const buildEpxGraph = (function () {
-   const start = new Vector(0, -300);
+   const start = new Vector(0, -250);
    const step = new Vector(80, 80);
 
    let tree: Graph<null, NodeExp> = null;
    let builtGraph: Graph<WSEdge, WSVertex>;
-
+   
    return function buildEpxGraph(exp: Expression): Graph<WSEdge, WSVertex> {
       const root = exp.root;
 
@@ -39,20 +41,26 @@ const buildEpxGraph = (function () {
       addNextVertex(root, start);
       return builtGraph;
    }
-
-   function addNextVertex(vertex: Vertex<NodeExp>, coords: Vector) { 
+   
+   function addNextVertex(vertex: Vertex<NodeExp>, coords: Vector, prev?: Vertex<WSVertex>) { 
       const root = new Vertex(new WSVertex(vertex.targ.toString(), coords));
-      builtGraph.addVertex(root);
+
+      if (prev) {
+         builtGraph.addEdge(new Edge(root, prev, new WSEdge()));
+
+      } else { 
+         builtGraph.addVertex(root);
+      }
       
       tree.getVEdges(vertex).forEach((edge, i) => {
          const next = (edge.v1 === vertex) ? edge.v2 : edge.v1;
 
          const nextCoords = new Vector(
-            (i == 0) ? -coords.x : coords.x,
-            coords.y
+            (i == 0) ? coords.x - step.x : coords.x + step.x,
+            coords.y + step.y
          );
 
-         addNextVertex(next, nextCoords);
+         addNextVertex(next, nextCoords, root);
       });
 
    }

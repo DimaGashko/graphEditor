@@ -2,10 +2,10 @@ export default class WSGraphComponent {
    private minNameLen: number = 1;
    private maxNameLen: number = 10;
 
-   protected name: string = 'g';
+   protected name: string = '';
    
    constructor(name?: string) { 
-      if (name) this.setName(name);
+      if (name !== undefined) this.setName(name);
    }
 
    public getName(): string { 
