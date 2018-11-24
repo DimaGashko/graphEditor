@@ -1,6 +1,7 @@
 import Graph from "./graph/graph";
 import Vertex from "./graph/vertex";
 import Edge from "./graph/edge";
+import { stringLiteral } from "babel-types";
 
 class Operator { 
    constructor(
@@ -136,7 +137,8 @@ export default class Expression {
       pos = op1End;
 
       if (pos === strExp.length) { 
-         console.log('isValue');
+         let value = this.toNumber(operand1);
+         console.log('isValue', value);
          return;
       }
 
@@ -152,6 +154,15 @@ export default class Expression {
       pos = op2End;
 
       console.log(operand1, operator.toString(), operand2);
+   }
+
+   private toNumber(str: string): number { 
+      let res = +str;
+      if (isNaN(res)) {
+         throw new SyntaxError(`"${str} is not a number"`);
+      }
+
+      return res;
    }
 
    private getEndOperandIndex(strExp: string, pos: number): number { 
