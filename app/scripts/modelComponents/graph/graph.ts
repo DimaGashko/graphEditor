@@ -124,6 +124,19 @@ export default class Graph<ETarget, VTarget> {
    }
 
    /**
+    * Возвращает массив вершин графа на которые можно пройти из вершины
+    * Если вершины нет в графе - возвращается пустой массив
+    * @param vertex вершина графа
+    * @returns массив ребер графа по которым можно пройти из вершины
+    */
+   public getVVertecis(vertex: Vertex<VTarget>): Vertex<VTarget>[] {
+      if (!this.verticesLog[vertex.id]) return [];
+      return this.verticesLog[vertex.id].edges.map((edge) => { 
+         return (edge.v1 === vertex) ? edge.v2 : edge.v1;
+      });
+   }
+
+   /**
     * Проверяет содержит ли граф вершину
     * @param vertex проверяемая вершина
     * @returns содержит ли граф вершину

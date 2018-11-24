@@ -141,7 +141,7 @@ export default class Expression {
    }
 
    private calc() { 
-
+      
    }
 
    private operators: Operator[] = [

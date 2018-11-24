@@ -14,7 +14,6 @@ workspace.start();
 
 export default function demoCalcExp() {
    global.exp = setExp(new Expression("(2*(3+6))*(6+4)"));
-
    global.Expression = Expression;
 
    global.setExp = ((exp: Expression) => { 
@@ -48,15 +47,13 @@ const buildEpxGraph = (function () {
       const root = new Vertex(new WSVertex(vertex.targ.toString(), coords));
 
       if (prev) {
-         builtGraph.addEdge(new Edge(root, prev, new WSEdge()));
+         builtGraph.addEdge(new Edge(prev, root, new WSEdge()));
 
       } else { 
          builtGraph.addVertex(root);
       }
       
-      tree.getVEdges(vertex).forEach((edge, i) => {
-         const next = (edge.v1 === vertex) ? edge.v2 : edge.v1;
-
+      tree.getVVertecis(vertex).forEach((next, i) => {
          const nextCoords = new Vector(
             (i == 0) ? coords.x - step.x : coords.x + step.x,
             coords.y + step.y
