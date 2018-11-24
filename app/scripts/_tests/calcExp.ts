@@ -13,16 +13,18 @@ const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.start();
 
 export default function demoCalcExp() {
+   global.exp = setExp(new Expression("(2*(3+6))*(6+4)"));
+
    global.Expression = Expression;
 
    global.setExp = ((exp: Expression) => { 
-      setExp(exp);
-      global.exp = exp;
+      return global.exp = exp;
    });
 }
 
-function setExp(exp: Expression) { 
+function setExp(exp: Expression): Expression { 
    workspace.getData().wsGraph.graph = buildEpxGraph(exp);
+   return exp;
 }
 
 const buildEpxGraph = (function () {
