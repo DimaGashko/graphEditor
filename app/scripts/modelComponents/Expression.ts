@@ -97,7 +97,7 @@ export default class Expression {
    }
 
    private _parse() {
-      const root = new Vertex(new NodeExp('operator', this.operatorsHash['+']));
+      const root = new Vertex(new NodeExp('operator', Expression.operatorsHash['+']));
       this._root = root;
       
       const _2 = new Vertex(new NodeExp('operand', 2));
@@ -106,9 +106,9 @@ export default class Expression {
       const _8 = new Vertex(new NodeExp('operand', 8));
       const _9 = new Vertex(new NodeExp('operand', 9)); 
 
-      const mul = new Vertex(new NodeExp('operator', this.operatorsHash['*']));
-      const dev = new Vertex(new NodeExp('operator', this.operatorsHash['/']));
-      const plus = new Vertex(new NodeExp('operator', this.operatorsHash['+']));
+      const mul = new Vertex(new NodeExp('operator', Expression.operatorsHash['*']));
+      const dev = new Vertex(new NodeExp('operator', Expression.operatorsHash['/']));
+      const plus = new Vertex(new NodeExp('operator', Expression.operatorsHash['+']));
 
       this.tree.addEdge(new Edge(root, _2, null, 'uni'));
       this.tree.addEdge(new Edge(root, mul, null, 'uni'));
@@ -125,35 +125,55 @@ export default class Expression {
 
    private parse() { 
       this._fullStrExp = this._strExp;
-      this._parseNext(this._fullStrExp);
+
+      this._root = this._parseNext(this._fullStrExp);
+      this._tree.addVertex(this._root);
    }
 
-   private _parseNext(strExp: string) { 
+   private _parseNext(strExp: string, prev?: Vertex<NodeExp>): Vertex<NodeExp> { 
       let pos = 0;
-      let operator: Operator;
 
+      // Parse First Operand
       let op1End = this.getEndOperandIndex(this.stExp, pos);
-      let operand1 = strExp.slice(pos, op1End);
+      let operand1 = strExp.slice(pos + 1, op1End - 1);
       pos = op1End;
 
+      // It's only operand
       if (pos === strExp.length) { 
          let value = this.toNumber(operand1);
-         console.log('isValue', value);
-         return;
+         let newRoot = new Vertex(new NodeExp('operand', value));
+         return newRoot;
       }
 
-      if (strExp[pos] in this.operatorsHash) { 
-         operator = this.operatorsHash[strExp[pos]];
+      // Parse operator
+      let operator: Operator;
+
+      console.log(`|${strExp}|`, `|${operand1}|`, `|${strExp[pos]}|`);
+      if (strExp[pos] in Expression.operatorsHash) { 
+         operator = Expression.operatorsHash[strExp[pos]];
          pos += 1;
       } else {
          throw SyntaxError(`Extected operator at position ${pos}`);
       }
 
+      // Parse Second Operand
       let op2End = this.getEndOperandIndex(this.stExp, pos);
-      let operand2 = strExp.slice(pos, op2End);
+      let operand2 = strExp.slice(pos + 1, op2End - 1);
       pos = op2End;
 
-      console.log(operand1, operator.toString(), operand2);
+      // Next Step
+      let newRoot = new Vertex(new NodeExp('operator', operator));      
+      let left = this._parseNext(operand1, newRoot);
+      let right = this._parseNext(operand2, newRoot);
+
+      this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
+      this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
+
+      if (prev) {
+         this._tree.addEdge(new Edge(prev, newRoot, null, 'uni'));
+      } 
+
+      return newRoot;
    }
 
    private toNumber(str: string): number { 
@@ -228,7 +248,7 @@ export default class Expression {
       }
    }
 
-   private operators: Operator[] = [
+   private static operators: Operator[] = [
 
       new Operator('+', 13, (a, b) => a + b),
       new Operator('-', 13, (a, b) => a - b),
@@ -238,7 +258,7 @@ export default class Expression {
 
    ].sort((a, b) => a.precedence - b.precedence);
 
-   private operatorsHash: { [name: string]: Operator } = {
+   private static operatorsHash: { [name: string]: Operator } = {
       '+': new Operator('+', 13, (a, b) => a + b),
       '-': new Operator('-', 13, (a, b) => a - b),
       '*': new Operator('*', 14, (a, b) => a * b),
