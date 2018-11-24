@@ -139,22 +139,23 @@ export default class Expression {
       if (pos === strExp.length) { 
          let value = this.toNumber(operand1);
          let newRoot = new Vertex(new NodeExp('operand', value));
+
+         this._tree.addVertex(newRoot);
          return newRoot;
       }
 
-      console.log(`|${strExp}|`, `|${operand1}|`, `|${strExp[pos]}|`);
       const operator = this.getOperator(strExp, pos, (_pos => pos = _pos));
       const operand2 = this.getOperand(strExp, pos, (_pos => pos = _pos));
       
       // Next Step
       const newRoot = new Vertex(new NodeExp('operator', operator));      
-      if (a++ < 10) {
-         const left = this._parseNext(operand1, newRoot);
-         const right = this._parseNext(operand2, newRoot);
+      const left = this._parseNext(operand1, newRoot);
+      const right = this._parseNext(operand2, newRoot);
 
-         this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
-         this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
-      }
+      this._tree.addAllVertices([newRoot, left, right]);
+
+      this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
+      this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
 
       if (prev) {
          this._tree.addEdge(new Edge(prev, newRoot, null, 'uni'));
@@ -270,4 +271,3 @@ export default class Expression {
    }
    
 }
-let a = 0;
