@@ -57,7 +57,7 @@ export default class Expression {
    }
    
    /** @returns результат выражения */
-   public get stExp(): string { 
+   public get strExp(): string { 
       return this._strExp;
    }
 
@@ -133,10 +133,7 @@ export default class Expression {
    private _parseNext(strExp: string, prev?: Vertex<NodeExp>): Vertex<NodeExp> { 
       let pos = 0;
 
-      // Parse First Operand
-      let op1End = this.getEndOperandIndex(this.stExp, pos);
-      let operand1 = strExp.slice(pos + 1, op1End - 1);
-      pos = op1End;
+      const operand1 = this.getOperand(strExp, pos, (_pos => pos = _pos));
 
       // It's only operand
       if (pos === strExp.length) { 
@@ -145,29 +142,19 @@ export default class Expression {
          return newRoot;
       }
 
-      // Parse operator
-      let operator: Operator;
-
       console.log(`|${strExp}|`, `|${operand1}|`, `|${strExp[pos]}|`);
-      if (strExp[pos] in Expression.operatorsHash) { 
-         operator = Expression.operatorsHash[strExp[pos]];
-         pos += 1;
-      } else {
-         throw SyntaxError(`Extected operator at position ${pos}`);
-      }
-
-      // Parse Second Operand
-      let op2End = this.getEndOperandIndex(this.stExp, pos);
-      let operand2 = strExp.slice(pos + 1, op2End - 1);
-      pos = op2End;
-
+      const operator = this.getOperator(strExp, pos, (_pos => pos = _pos));
+      const operand2 = this.getOperand(strExp, pos, (_pos => pos = _pos));
+      
       // Next Step
-      let newRoot = new Vertex(new NodeExp('operator', operator));      
-      let left = this._parseNext(operand1, newRoot);
-      let right = this._parseNext(operand2, newRoot);
+      const newRoot = new Vertex(new NodeExp('operator', operator));      
+      if (a++ < 10) {
+         const left = this._parseNext(operand1, newRoot);
+         const right = this._parseNext(operand2, newRoot);
 
-      this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
-      this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
+         this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
+         this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
+      }
 
       if (prev) {
          this._tree.addEdge(new Edge(prev, newRoot, null, 'uni'));
@@ -176,23 +163,29 @@ export default class Expression {
       return newRoot;
    }
 
-   private toNumber(str: string): number { 
-      let res = +str;
-      if (isNaN(res)) {
-         throw new SyntaxError(`"${str} is not a number"`);
-      }
+   private getOperator(strExp: string, pos: number,
+      callback: (pos: number) => void): Operator {
+    
+      if (strExp[pos] in Expression.operatorsHash) { 
+         callback(pos + 1);
+         return Expression.operatorsHash[strExp[pos]];
 
-      return res;
+      } else {
+         throw new SyntaxError(`Extected operator at position ${pos}`);
+      }
    }
 
-   private getEndOperandIndex(strExp: string, pos: number): number { 
+   private getOperand(strExp: string, pos: number,
+      callback: (pos: number) => void): string { 
+      
       if (strExp[pos] === '(') {
          const close = this.getCloseIndex(strExp, pos + 1);
          if (close === -1) {
             throw new SyntaxError('Unexpected end of input');
          }
 
-         return close + 1;
+         callback(close + 1);
+         return strExp.slice(pos + 1, close);
 
       } else { 
          let endNumber = this.getEndNumber(strExp, pos);
@@ -200,7 +193,8 @@ export default class Expression {
             throw SyntaxError(`Extected number at position ${pos}`);
          }
 
-         return endNumber;
+         callback(endNumber);
+         return strExp.slice(pos, endNumber);
       }
 
    }
@@ -211,6 +205,15 @@ export default class Expression {
       }
 
       return pos;
+   }
+
+   private toNumber(str: string): number { 
+      let res = +str;
+      if (isNaN(res)) {
+         throw new SyntaxError(`"${str} is not a number"`);
+      }
+
+      return res;
    }
 
    private getCloseIndex(strExp: string, pos: number) { 
@@ -267,3 +270,4 @@ export default class Expression {
    }
    
 }
+let a = 0;
