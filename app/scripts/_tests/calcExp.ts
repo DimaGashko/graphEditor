@@ -53,15 +53,11 @@ const buildEpxGraph = (function () {
          builtGraph.addVertex(root);
       }
       
-      tree.getVVertices(vertex).forEach((next, i) => {
-         const nextCoords = new Vector(
-            (i == 0) ? coords.x - step.x : coords.x + step.x,
-            coords.y + step.y
-         );
+      const nexts = tree.getVVertices(vertex);
+      if (!nexts.length) return;
 
-         addNextVertex(next, nextCoords, root);
-      });
-
+      addNextVertex(nexts[0], new Vector(coords.x - step.x, coords.y + step.x), root);
+      addNextVertex(nexts[1], new Vector(coords.x + step.x, coords.y + step.y), root);
    }
 
 }());
