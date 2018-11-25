@@ -101,24 +101,59 @@ export default class Expression {
       this._tree.addVertex(this._root);
    }
 
-   private _parseNext(strExp: string) { 
+   private _parseNext(strExp: string): Vertex<NodeExp> { 
       let pos = 0;
 
-      const operand1 = this.getOperand(strExp, pos, (_pos => pos = _pos));
+      let operands: string[] = [];
+      let operators: Operator[] = [];
+
+      operands.push(this.getOperand(strExp, pos, (_pos => pos = _pos)));
 
       // It's only operand
-      if (pos === strExp.length) { 
-         let value = this.toNumber(operand1);
+       if (pos === strExp.length) { 
+         let value = this.toNumber(operands[0]);
          let newRoot = new Vertex(new NodeExp('operand', value));
 
          this._tree.addVertex(newRoot);
          return newRoot;
       }
 
-      const operator = this.getOperator(strExp, pos, (_pos => pos = _pos));
-      const operand2 = this.getOperand(strExp, pos, (_pos => pos = _pos));
+      while (pos < strExp.length) {
+         operators.push(this.getOperator(strExp, pos, (_pos => pos = _pos)));
+         operands.push(this.getOperand(strExp, pos, (_pos => pos = _pos)));
+      }
 
-      // Next Step
+      let operandPos = 0;
+      let operand1 = this._parseNext(operands[operandPos++]);
+      console.log(operand1);
+      for (let i = 0; i < operands.length; i++) { 
+         let operator = operators[i];
+
+         let operand2Str = (function () {
+            let operand = operands[operandPos++];
+
+            for (let j = i + 1; j < operators.length; j++) { 
+               if (operators[j].precedence <= operators[i].precedence) break;
+
+               i++;
+               operand += operators[j] + operands[operandPos++];
+            }
+
+            return operand;
+         }());
+
+         let operand2 = this._parseNext(operand2Str);
+
+         const newRoot = new Vertex(new NodeExp('operator', operator));  
+
+         this._tree.addEdge(new Edge(newRoot, operand1, null, 'uni'));
+         this._tree.addEdge(new Edge(newRoot, operand2, null, 'uni'));
+
+         operand1 = newRoot;
+      }
+
+      return operand1;
+     /*
       const newRoot = new Vertex(new NodeExp('operator', operator));      
       const left = this._parseNext(operand1);
       const right = this._parseNext(operand2);
@@ -126,7 +161,7 @@ export default class Expression {
       this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
       this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
 
-      return newRoot;
+      return newRoot;*/
    }
 
    private getOperator(strExp: string, pos: number,
@@ -143,7 +178,7 @@ export default class Expression {
 
    private getOperand(strExp: string, pos: number,
       callback: (pos: number) => void): string { 
-      
+      console.log(strExp)
       if (strExp[pos] === '(') {
          const close = this.getCloseIndex(strExp, pos + 1);
          if (close === -1) {
@@ -194,7 +229,7 @@ export default class Expression {
       }
 
       return -1;
-   }
+0   }
 
    private calc() { 
       this._res = this._calcNext(this._root);
