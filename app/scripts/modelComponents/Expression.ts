@@ -125,12 +125,11 @@ export default class Expression {
 
    private parse() { 
       this._fullStrExp = this._strExp;
-
       this._root = this._parseNext(this._fullStrExp);
       this._tree.addVertex(this._root);
    }
 
-   private _parseNext(strExp: string, prev?: Vertex<NodeExp>): Vertex<NodeExp> { 
+   private _parseNext(strExp: string) { 
       let pos = 0;
 
       const operand1 = this.getOperand(strExp, pos, (_pos => pos = _pos));
@@ -146,20 +145,16 @@ export default class Expression {
 
       const operator = this.getOperator(strExp, pos, (_pos => pos = _pos));
       const operand2 = this.getOperand(strExp, pos, (_pos => pos = _pos));
-      
+
       // Next Step
       const newRoot = new Vertex(new NodeExp('operator', operator));      
-      const left = this._parseNext(operand1, newRoot);
-      const right = this._parseNext(operand2, newRoot);
+      const left = this._parseNext(operand1);
+      const right = this._parseNext(operand2);
 
       this._tree.addAllVertices([newRoot, left, right]);
 
       this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
       this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
-
-      if (prev) {
-         this._tree.addEdge(new Edge(prev, newRoot, null, 'uni'));
-      } 
 
       return newRoot;
    }
