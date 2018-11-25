@@ -122,11 +122,11 @@ export default class Expression {
          operators.push(this.getOperator(strExp, pos, (_pos => pos = _pos)));
          operands.push(this.getOperand(strExp, pos, (_pos => pos = _pos)));
       }
-
+      
       let operandPos = 0;
       let operand1 = this._parseNext(operands[operandPos++]);
-      console.log(operand1);
-      for (let i = 0; i < operands.length; i++) { 
+      
+      for (let i = 0; i < operators.length; i++) {
          let operator = operators[i];
 
          let operand2Str = (function () {
@@ -178,7 +178,7 @@ export default class Expression {
 
    private getOperand(strExp: string, pos: number,
       callback: (pos: number) => void): string { 
-      console.log(strExp)
+      
       if (strExp[pos] === '(') {
          const close = this.getCloseIndex(strExp, pos + 1);
          if (close === -1) {

@@ -15,7 +15,7 @@ workspace.start();
 export default function demoCalcExp() {
    //global.exp = setExp(new Expression("((28.3-32)*2)+(((8*9)/(9*(3+6)))/((28-32)/((2+6)*8)))"));
    
-   global.exp = setExp(new Expression("2+2"));
+   global.exp = setExp(new Expression("2+4*7+3"));
    global.Expression = Expression;
    
    global.setExp = ((exp: Expression) => { 
