@@ -38,19 +38,17 @@ class Operator {
  * ext.strExt //"2+3*6"
  * exp.res //20
  * exp.tree //дерево выражения
+ * exp.root //вершина дерева выражения
  */
 export default class Expression { 
    private _tree = new Graph<null, NodeExp>();
    private _root: Vertex<NodeExp> = null;
    private _res: number = null;
-   
-   private _fullStrExp: string;
 
    /**
     * @param strExp Математическое выражение в виде строки 
     */
    constructor(private _strExp: string) { 
-      this.correctStrExp();
       this.parse();
       this.calc();
    }
@@ -79,25 +77,8 @@ export default class Expression {
       return `${this._strExp} = ${this._res}`;
    }
 
-   private correctStrExp() {
-      this._fullStrExp = this._strExp;
-      return;
-      /*for (let pos = 0; pos < strExp.length; pos++) { 
-         //if (!(strExp[pos] in Expression.operators)) continue;
-
-         strExp = strExp.slice(0, pos) + ')' + strExp[pos] +
-            '(' + strExp.slice(pos + 1);
-         
-         pos += 1;
-      }
-
-      strExp = `(${strExp})`;
-
-      console.log(strExp);*/
-   }
-
    private parse() { 
-      this._root = this._parseNext(this._fullStrExp);
+      this._root = this._parseNext(this._strExp);
       this._tree.addVertex(this._root);
    }
 
@@ -223,7 +204,7 @@ export default class Expression {
       }
 
       return -1;
-0   }
+   }
 
    private calc() { 
       this._res = this._calcNext(this._root);
