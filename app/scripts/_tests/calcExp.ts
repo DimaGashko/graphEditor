@@ -13,7 +13,7 @@ const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.start();
 
 export default function demoCalcExp() {
-   global.exp = setExp(new Expression("(3+6)*(((2+8)/(6%7))+8)"));
+   global.exp = setExp(new Expression("(3+6)*(((2+8)/(6%7.69))+8)"));
    global.Expression = Expression;
 
    global.setExp = ((exp: Expression) => { 
@@ -34,23 +34,21 @@ const buildEpxGraph = (function () {
    let builtGraph: Graph<WSEdge, WSVertex>;
    
    return function buildEpxGraph(exp: Expression): Graph<WSEdge, WSVertex> {
-      const root = exp.root;
-
       builtGraph = new Graph<WSEdge, WSVertex>();
       tree = exp.tree;
 
-      builtGraph.addVertex(getNextVertex(root, start));
+      builtGraph.addVertex(getNextVertex(exp.root, start, 4));
       return builtGraph;
    }
    
-   function getNextVertex(vertex: Vertex<NodeExp>, coords: Vector): Vertex<WSVertex> { 
+   function getNextVertex(vertex: Vertex<NodeExp>, coords: Vector, height: number): Vertex<WSVertex> { 
       const root = new Vertex(new WSVertex(vertex.targ.toString(), coords));
       
       const nexts = tree.getVVertices(vertex);
       if (!nexts.length) return root;
 
-      const v1 = getNextVertex(nexts[0], new Vector(coords.x - step.x, coords.y + step.y));
-      const v2 = getNextVertex(nexts[1], new Vector(coords.x + step.x, coords.y + step.y));
+      const v1 = getNextVertex(nexts[0], new Vector(coords.x - step.x * height, coords.y + step.y), height - 1);
+      const v2 = getNextVertex(nexts[1], new Vector(coords.x + step.x * height, coords.y + step.y), height - 1);
 
       builtGraph.addEdge(new Edge(root, v1, new WSEdge()));
       builtGraph.addEdge(new Edge(root, v2, new WSEdge()));
