@@ -218,21 +218,24 @@ export default class Expression {
    }
 
    private static operators: Operator[] = [
+      new Operator('|', 7, (a, b) => a | b),
+      new Operator('^', 8, (a, b) => a ^ b),
+      new Operator('&', 9, (a, b) => a & b),
 
       new Operator('+', 13, (a, b) => a + b),
       new Operator('-', 13, (a, b) => a - b),
       new Operator('*', 14, (a, b) => a * b),
       new Operator('/', 14, (a, b) => a / b),
-      new Operator('%', 14, (a, b) => a % b),
 
    ].sort((a, b) => a.precedence - b.precedence);
 
-   private static operatorsHash: { [name: string]: Operator } = {
-      '+': new Operator('+', 13, (a, b) => a + b),
-      '-': new Operator('-', 13, (a, b) => a - b),
-      '*': new Operator('*', 14, (a, b) => a * b),
-      '/': new Operator('/', 14, (a, b) => a / b),
-      '%': new Operator('%', 14, (a, b) => a % b),
-   }
-   
+   private static operatorsHash = (function () {
+      let hash: { [name: string]: Operator } = {};
+
+      Expression.operators.forEach((operator) => { 
+         hash[operator.name] = operator;
+      });
+
+      return hash;
+   }());
 }

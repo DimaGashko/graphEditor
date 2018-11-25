@@ -28,8 +28,7 @@ function setExp(exp: Expression): Expression {
 
 const buildEpxGraph = (function () {
    const start = new Vector(0, -250);
-   const step = new Vector(30, 100);
-   const offset = new Vector(20, 50)
+   const step = new Vector(30, 80);
 
    let tree: Graph<null, NodeExp> = null;
    let builtGraph: Graph<WSEdge, WSVertex>;
