@@ -39,25 +39,23 @@ const buildEpxGraph = (function () {
       builtGraph = new Graph<WSEdge, WSVertex>();
       tree = exp.tree;
 
-      addNextVertex(root, start);
+      builtGraph.addVertex(getNextVertex(root, start));
       return builtGraph;
    }
    
-   function addNextVertex(vertex: Vertex<NodeExp>, coords: Vector, prev?: Vertex<WSVertex>) { 
+   function getNextVertex(vertex: Vertex<NodeExp>, coords: Vector): Vertex<WSVertex> { 
       const root = new Vertex(new WSVertex(vertex.targ.toString(), coords));
-
-      if (prev) {
-         builtGraph.addEdge(new Edge(prev, root, new WSEdge()));
-
-      } else { 
-         builtGraph.addVertex(root);
-      }
       
       const nexts = tree.getVVertices(vertex);
-      if (!nexts.length) return;
+      if (!nexts.length) return root;
 
-      addNextVertex(nexts[0], new Vector(coords.x - step.x, coords.y + step.x), root);
-      addNextVertex(nexts[1], new Vector(coords.x + step.x, coords.y + step.y), root);
+      const v1 = getNextVertex(nexts[0], new Vector(coords.x - step.x, coords.y + step.y));
+      const v2 = getNextVertex(nexts[1], new Vector(coords.x + step.x, coords.y + step.y));
+
+      builtGraph.addEdge(new Edge(root, v1, new WSEdge()));
+      builtGraph.addEdge(new Edge(root, v2, new WSEdge()));
+
+      return root;
    }
 
 }());
