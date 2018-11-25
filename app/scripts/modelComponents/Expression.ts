@@ -1,7 +1,19 @@
 import Graph from "./graph/graph";
 import Vertex from "./graph/vertex";
 import Edge from "./graph/edge";
-import { stringLiteral } from "babel-types";
+
+export class NodeExp {
+   constructor(
+      public readonly type: 'operand' | 'operator',
+      public readonly val: number | Operator,
+   ) { 
+
+   }
+
+   public toString() { 
+      return this.val.toString();
+   }
+}
 
 class Operator { 
    constructor(
@@ -17,19 +29,6 @@ class Operator {
       
    }
 
-}
-
-export class NodeExp {
-   constructor(
-      public readonly type: 'operand' | 'operator',
-      public readonly val: number | Operator,
-   ) { 
-
-   }
-
-   public toString() { 
-      return this.val.toString();
-   }
 }
 
 /**
@@ -81,6 +80,7 @@ export default class Expression {
    }
 
    private correctStrExp() {
+      this._fullStrExp = this._strExp;
       return;
       /*for (let pos = 0; pos < strExp.length; pos++) { 
          //if (!(strExp[pos] in Expression.operators)) continue;
@@ -96,35 +96,7 @@ export default class Expression {
       console.log(strExp);*/
    }
 
-   private _parse() {
-      const root = new Vertex(new NodeExp('operator', Expression.operatorsHash['+']));
-      this._root = root;
-      
-      const _2 = new Vertex(new NodeExp('operand', 2));
-      const _6 = new Vertex(new NodeExp('operand', 6));
-      const _7 = new Vertex(new NodeExp('operand', 7));
-      const _8 = new Vertex(new NodeExp('operand', 8));
-      const _9 = new Vertex(new NodeExp('operand', 9)); 
-
-      const mul = new Vertex(new NodeExp('operator', Expression.operatorsHash['*']));
-      const dev = new Vertex(new NodeExp('operator', Expression.operatorsHash['/']));
-      const plus = new Vertex(new NodeExp('operator', Expression.operatorsHash['+']));
-
-      this.tree.addEdge(new Edge(root, _2, null, 'uni'));
-      this.tree.addEdge(new Edge(root, mul, null, 'uni'));
-
-      this.tree.addEdge(new Edge(mul, _6, null, 'uni'));
-      this.tree.addEdge(new Edge(mul, dev, null, 'uni'));
-
-      this.tree.addEdge(new Edge(dev, _7, null, 'uni'));
-      this.tree.addEdge(new Edge(dev, plus, null, 'uni'));
-
-      this.tree.addEdge(new Edge(plus, _8, null, 'uni'));
-      this.tree.addEdge(new Edge(plus, _9, null, 'uni'));
-   }
-
    private parse() { 
-      this._fullStrExp = this._strExp;
       this._root = this._parseNext(this._fullStrExp);
       this._tree.addVertex(this._root);
    }
@@ -150,8 +122,6 @@ export default class Expression {
       const newRoot = new Vertex(new NodeExp('operator', operator));      
       const left = this._parseNext(operand1);
       const right = this._parseNext(operand2);
-
-      this._tree.addAllVertices([newRoot, left, right]);
 
       this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
       this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
