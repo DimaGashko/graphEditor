@@ -132,18 +132,20 @@ export default class Expression {
          let operand2Str = (function () {
             let operand = operands[operandPos++];
 
-            for (let j = i + 1; j < operators.length; j++) { 
+            let j;
+            for (j = i + 1; j < operators.length; j++) { 
                if (operators[j].precedence <= operators[i].precedence) break;
 
-               i++;
-               operand += operators[j] + operands[operandPos++];
+               operand += `${operators[j]}(${operands[operandPos++]})`;
             }
+
+            i = j - 1;
 
             return operand;
          }());
-
+         
          let operand2 = this._parseNext(operand2Str);
-
+         
          const newRoot = new Vertex(new NodeExp('operator', operator));  
 
          this._tree.addEdge(new Edge(newRoot, operand1, null, 'uni'));
@@ -153,15 +155,6 @@ export default class Expression {
       }
 
       return operand1;
-     /*
-      const newRoot = new Vertex(new NodeExp('operator', operator));      
-      const left = this._parseNext(operand1);
-      const right = this._parseNext(operand2);
-
-      this._tree.addEdge(new Edge(newRoot, left, null, 'uni'));
-      this._tree.addEdge(new Edge(newRoot, right, null, 'uni'));
-
-      return newRoot;*/
    }
 
    private getOperator(strExp: string, pos: number,
@@ -172,7 +165,8 @@ export default class Expression {
          return Expression.operatorsHash[strExp[pos]];
 
       } else {
-         throw new SyntaxError(`Extected operator at position ${pos}`);
+         throw new SyntaxError(`Extected operator at position ${pos}`
+            + ` but got ${strExp[pos]}`);
       }
    }
 
@@ -261,6 +255,7 @@ export default class Expression {
       new Operator('-', 13, (a, b) => a - b),
       new Operator('*', 14, (a, b) => a * b),
       new Operator('/', 14, (a, b) => a / b),
+      new Operator('%', 14, (a, b) => a % b),
 
    ].sort((a, b) => a.precedence - b.precedence);
 

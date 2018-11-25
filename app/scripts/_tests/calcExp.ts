@@ -13,9 +13,7 @@ const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.start();
 
 export default function demoCalcExp() {
-   //global.exp = setExp(new Expression("((28.3-32)*2)+(((8*9)/(9*(3+6)))/((28-32)/((2+6)*8)))"));
-   
-   global.exp = setExp(new Expression("2+4*7+3"));
+   global.exp = setExp(new Expression("2.2+4*7+6.3*4/7/4%(5&6|7^8)"));
    global.Expression = Expression;
    
    global.setExp = ((exp: Expression) => { 
