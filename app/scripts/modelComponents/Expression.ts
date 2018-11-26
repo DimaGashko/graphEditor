@@ -53,7 +53,7 @@ class Operator {
  * 
   ```javascript
   const exp = new Expression("2+3*6");
-  ext.strExt //"2+3*6"
+  ext.strExp //"2+3*6"
   exp.res //20
   exp.tree //дерево выражения
   exp.root //вершина дерева выражения
@@ -74,7 +74,7 @@ export default class Expression {
       this.calc();
    }
    
-   /** @returns результат выражения */
+   /** @returns выражение в виде строки */
    public get strExp(): string { 
       return this._strExp;
    }
@@ -112,7 +112,7 @@ export default class Expression {
       operands.push(this.getOperand(strExp, pos, (_pos => pos = _pos)));
 
       // It's only operand
-       if (pos === strExp.length) { 
+       if (pos >= strExp.length) { 
          let value = this.toNumber(operands[0]);
          let newRoot = new Vertex(new NodeExp('operand', value));
 
@@ -172,9 +172,9 @@ export default class Expression {
    private getOperator(strExp: string, pos: number,
       callback: (pos: number) => void): Operator {
     
-      if (strExp[pos] in Expression.operatorsHash) { 
+      if (strExp[pos] in Expression.operators) { 
          callback(pos + 1);
-         return Expression.operatorsHash[strExp[pos]];
+         return Expression.operators[strExp[pos]];
 
       } else {
          throw new SyntaxError(`Extected operator at position ${pos}`
@@ -277,28 +277,17 @@ export default class Expression {
       }
    }
 
-   private static operators: Operator[] = [
-      new Operator('|', 7, (a, b) => a | b),
-      new Operator('^', 8, (a, b) => a ^ b),
-      new Operator('&', 9, (a, b) => a & b),
+   private static operators: { [name: string]: Operator } = {
+      '|': new Operator('|', 7, (a, b) => a | b),
+      '^': new Operator('^', 8, (a, b) => a ^ b),
+      '&': new Operator('&', 9, (a, b) => a & b),
 
-      new Operator('+', 13, (a, b) => a + b),
-      new Operator('-', 13, (a, b) => a - b),
-      new Operator('*', 14, (a, b) => a * b),
-      new Operator('/', 14, (a, b) => a / b),
-      new Operator('%', 14, (a, b) => a % b),
-
-   ].sort((a, b) => a.precedence - b.precedence);
-
-   private static operatorsHash = (function () {
-      let hash: { [name: string]: Operator } = {};
-
-      Expression.operators.forEach((operator) => { 
-         hash[operator.name] = operator;
-      });
-
-      return hash;
-   }());
+      '+': new Operator('+', 13, (a, b) => a + b),
+      '-': new Operator('-', 13, (a, b) => a - b),
+      '*': new Operator('*', 14, (a, b) => a * b),
+      '/': new Operator('/', 14, (a, b) => a / b),
+      '%': new Operator('%', 14, (a, b) => a % b),
+   }
 
    public toString() { 
       return `${this._strExp} = ${this._res}`;
