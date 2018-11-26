@@ -1,7 +1,6 @@
 import Vertex from "../vertex";
 import Graph from "../graph";
 
-let verticesResult: Vertex<Object>[];
 let tree: Graph<null, Object>;
 let type: 'pre' | 'in' | 'post'; 
 
@@ -11,7 +10,6 @@ export default function traversalTree<V=Object>(
    _type: 'pre' | 'in' | 'post'
 ): Vertex<V>[] {
    
-   verticesResult = [];
    tree = _tree;
    type = _type;
 
