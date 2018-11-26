@@ -182,28 +182,42 @@ export default class Graph<ETarget, VTarget> {
    //Additional methods
 
    /**
-    * Возвращает копию массива вершин
+    * @returns копию массива вершин
     */
    public getVertices(): Vertex<VTarget>[] {
       return this.vertices.slice();
    }
 
    /**
-    * Возвращает копию массива ребер
+    * @returns копию массива ребер
     */
    public getEdges(): Edge<ETarget, VTarget>[] {
       return this.edges.slice();
    }
 
    /**
-    * Возвращает количество вершин
+    * @returns вершину по индексу (индекс больше длины корректируется)
+    */
+   public getVertex(index: number) { 
+      return this.vertices[(index^0) % this.vertices.length];
+   };
+
+   /**
+    * @returns ребро по индексу (индекс больше длины корректируется)
+    */
+   public getEdge(index: number) { 
+      return this.edges[(index^0) % this.vertices.length];
+   };
+
+   /**
+    * @returns количество вершин
     */
    public getVSCount(): number { 
       return this.vertices.length;
    }
 
    /**
-    * Возвращает количество ребер
+    * @returns количество ребер
     */
    public getESCount(): number { 
       return this.edges.length
