@@ -2,6 +2,7 @@ import Expression, { NodeExp } from "../modelComponents/Expression";
 import Workspace from "../workspace/workspace";
 import { positionedTree } from "../modelComponents/graph/algorithms/positionedTree";
 import Graph from "../modelComponents/graph/graph";
+import Vertex from "../modelComponents/graph/vertex";
 
 const global = (<any>window);
 
@@ -9,15 +10,18 @@ const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.start();
 
 export default function demoCalcExp() {
-   let exp = global.exp = setExp(new Expression("2.2+4*7+6.3*4/7/4%(5&6|7^8)"));
+   let exp = new Expression("2.2+4*7+6.3*4/7/4%(5&6|7^8)")
+   //exp = new Expression("2+3*4+5");
+   global.exp = setExp(exp);
    global.Expression = Expression;
    
    global.setExp = ((exp: Expression) => { 
       return global.exp = setExp(exp);
    });
 
-   global.inorder = (() => inorder(exp.tree));
-   global.postorder = (() => postorder(exp.tree));
+   global.preorde = (() => preorder(exp));
+   global.inorder = (() => inorder(exp));
+   global.postorder = (() => postorder(exp));
 }
 
 function setExp(exp: Expression): Expression { 
@@ -25,11 +29,39 @@ function setExp(exp: Expression): Expression {
    return exp;
 }
 
-function inorder(tree: Graph<any, any>): string { 
-   return '';
-}
+const preorder = (function () { 
+   let tree: Graph<null, Object>;
 
-function postorder(tree: Graph<any, any>): string { 
+   return function inorder(exp: Expression): string {
+      tree = exp.tree;
+      return getNext(exp.root);
+   }
+
+   function getNext(root: Vertex<Object>): string { 
+      const nexts = tree.getVVertices(root);
+      if (!nexts.length) return root.targ.toString();
+      
+      return `(${getNext(nexts[0])}${root.targ.toString()}${getNext(nexts[1])})`;
+   }
+}());
+
+const inorder = (function () { 
+   let tree: Graph<null, Object>;
+
+   return function inorder(exp: Expression): string {
+      tree = exp.tree;
+      return getNext(exp.root);
+   }
+
+   function getNext(root: Vertex<Object>): string { 
+      const nexts = tree.getVVertices(root);
+      if (!nexts.length) return root.targ.toString();
+      
+      return `(${getNext(nexts[0])}${root.targ.toString()}${getNext(nexts[1])})`;
+   }
+}());
+
+function postorder(exp: Expression): string { 
    return '';
 }
 
