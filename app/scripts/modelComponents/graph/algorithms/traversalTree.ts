@@ -16,11 +16,11 @@ export default function traversalTree<V=Object>(
    return <Vertex<V>[]>addNext(root);
 }
 
-function addNext(root: Vertex<Object>): Vertex<Object>[] {
+function addNext(root: Vertex<Object>, prev?: Vertex<Object>): Vertex<Object>[] {
    const nexts = tree.getVVertices(root);
    if (!nexts.length) return [root]; 
 
-   const nextsRes = nexts.map(next => addNext(next));
+   const nextsRes = nexts.filter(v => v !== prev).map(next => addNext(next, root));
 
    if (type === 'pre') {
       return [].concat(root, ...nextsRes);
