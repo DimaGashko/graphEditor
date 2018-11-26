@@ -5,6 +5,7 @@ import Vector from "../modelComponents/vector";
 import traversalTree from "../modelComponents/graph/algorithms/traversalTree";
 import Graph from "../modelComponents/graph/graph";
 import Vertex from "../modelComponents/graph/vertex";
+import Edge from "../modelComponents/graph/edge";
 
 const global = <any>window;
 
@@ -16,14 +17,10 @@ export default function demoGetMST() {
    workspace.start();
 
    workspace.addEvent('tik', () => {
-      const mst = getMST(graph, (edge) => {
-         return Vector.getSquareDistance(
-            edge.v1.targ.coords, edge.v2.targ.coords
-         ) * edge.getWeight();
-      });
+      const mst = getMST(graph, getWeight);
 
-      graph.getEdges().forEach(e => e.targ.style.color = "rgba(0,0,0,.15)");
-      mst.getEdges().forEach(e => e.targ.style.color = "#000");
+      //graph.getEdges().forEach(e => e.targ.style.color = "rgba(0,0,0,.15)");
+      //mst.getEdges().forEach(e => e.targ.style.color = "#000");
 
       global.mst = mst;
    });
@@ -34,6 +31,12 @@ export default function demoGetMST() {
 }
 
 function traversalGraph(graph: Graph<any, any>): Vertex<any>[] {
-   const mst = getMST(graph);
+   const mst = getMST(graph, getWeight);
    return traversalTree(mst, graph.getVertex(0), 'pre');
+}
+
+function getWeight(edge: Edge<any, any>) {
+   return Vector.getSquareDistance(
+      edge.v1.targ.coords, edge.v2.targ.coords
+   ) * edge.getWeight();
 }
