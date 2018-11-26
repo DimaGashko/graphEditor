@@ -23,11 +23,16 @@ function addNext(root: Vertex<Object>, prev?: Vertex<Object>): Vertex<Object>[] 
    const nextsRes = nexts.filter(v => v !== prev)
       .map(next => addNext(next, root));
 
+   if (!nextsRes.length) return [root];
+   
    if (type === 'pre') {
       return [].concat(root, ...nextsRes);
    
    } else if (type === 'in') {
-      return [].concat(nextsRes[0], root, ...nextsRes.slice(1));
+      const res = [].concat(nextsRes[0], root);
+      const last = nextsRes.slice(1);
+      
+      return (last.length) ? res.concat(...last) : res;
 
    } else if (type === 'post') { 
       return [].concat(...nextsRes, root);
