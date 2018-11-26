@@ -10,7 +10,6 @@ import Edge from "./graph/edge";
  */
 export class NodeExp {
    /**
-    * 
     * @param type тип вершини - оператор или операнд
     * @param val значение
     */
