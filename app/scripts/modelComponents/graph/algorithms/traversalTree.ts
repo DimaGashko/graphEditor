@@ -4,6 +4,14 @@ import Graph from "../graph";
 let tree: Graph<null, Object>;
 let type: 'pre' | 'in' | 'post'; 
 
+/**
+ * Возвращает массив вершин дерева образованный при его обходе
+ * (дерево может быть любым)
+ * 
+ * @param _tree Обрабатываемое дерево
+ * @param root Корень дерева
+ * @param _type Тип обхода: 'pre' - прямой, 'in' - внутренний, 'post' - обратный
+ */
 export default function traversalTree<V=Object>(
    _tree: Graph<null, Object>,
    root: Vertex<Object>,
