@@ -1,6 +1,7 @@
 import Expression, { NodeExp } from "../modelComponents/Expression";
 import Workspace from "../workspace/workspace";
 import { positionedTree } from "../modelComponents/graph/algorithms/positionedTree";
+import Graph from "../modelComponents/graph/graph";
 
 const global = (<any>window);
 
@@ -8,12 +9,15 @@ const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.start();
 
 export default function demoCalcExp() {
-   global.exp = setExp(new Expression("2.2+4*7+6.3*4/7/4%(5&6|7^8)"));
+   let exp = global.exp = setExp(new Expression("2.2+4*7+6.3*4/7/4%(5&6|7^8)"));
    global.Expression = Expression;
    
    global.setExp = ((exp: Expression) => { 
       return global.exp = setExp(exp);
    });
+
+   global.inorder = (() => inorder(exp.tree));
+   global.postorder = (() => postorder(exp.tree));
 }
 
 function setExp(exp: Expression): Expression { 
@@ -21,4 +25,11 @@ function setExp(exp: Expression): Expression {
    return exp;
 }
 
+function inorder(tree: Graph<any, any>): string { 
+   return '';
+}
+
+function postorder(tree: Graph<any, any>): string { 
+   return '';
+}
 
