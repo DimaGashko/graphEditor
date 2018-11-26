@@ -20,9 +20,11 @@ export default function demoCalcExp() {
       return global.exp = setExp(exp);
    });
 
-   global.preorder = (() => preorder(exp));
-   global.inorder = (() => inorder(exp));
-   global.postorder = (() => postorder(exp));
+   global.preorder = (() => traversal(exp, 'pre'));
+   global.inorder = (() => traversal(exp, 'in'));
+   global.postorder = (() => traversal(exp, 'post'));
+
+   global.inorderPrecedence = (() => inorderPrecedence(exp));
 }
 
 function setExp(exp: Expression): Expression { 
@@ -30,11 +32,11 @@ function setExp(exp: Expression): Expression {
    return exp;
 }
 
-function preorder(exp: Expression): string {
-   return traversalTree(exp.tree, exp.root, 'pre').map(v => v.targ).join('');
+function traversal(exp: Expression, type: 'pre' | 'in' | 'post'): string {
+   return traversalTree(exp.tree, exp.root, type).map(v => v.targ).join('');
 }
 
-const inorder = (function () { 
+const inorderPrecedence = (function () { 
    let tree: Graph<null, Object>;
 
    return function inorder(exp: Expression): string {
@@ -47,22 +49,6 @@ const inorder = (function () {
       if (!nexts.length) return root.targ.toString();
       
       return `(${getNext(nexts[0])}${root.targ.toString()}${getNext(nexts[1])})`;
-   }
-}());
-
-const postorder = (function () { 
-   let tree: Graph<null, Object>;
-
-   return function inorder(exp: Expression): string {
-      tree = exp.tree;
-      return getNext(exp.root);
-   }
-
-   function getNext(root: Vertex<Object>): string { 
-      const nexts = tree.getVVertices(root);
-      if (!nexts.length) return root.targ.toString();
-      
-      return `${getNext(nexts[0])}${getNext(nexts[1])}${root.targ.toString()}`;
    }
 }());
 

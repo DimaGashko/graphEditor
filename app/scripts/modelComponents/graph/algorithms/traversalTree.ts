@@ -15,15 +15,25 @@ export default function traversalTree<V=Object>(
    tree = _tree;
    type = _type;
 
-   addNext(root);
-   return <Vertex<V>[]>verticesResult;
+   return <Vertex<V>[]>addNext(root);
 }
 
-function addNext(root: Vertex<Object>): Vertex<Object> {
+function addNext(root: Vertex<Object>): Vertex<Object>[] {
    const nexts = tree.getVVertices(root);
-   if (!nexts.length) return root; 
+   if (!nexts.length) return [root]; 
 
-   verticesResult.push(root, addNext(nexts[0]), addNext(nexts[1]));
-   return root;
+   const nextsRes = nexts.map(next => addNext(next));
+
+   if (type === 'pre') {
+      return [].concat(root, ...nextsRes);
+   
+   } else if (type === 'in') {
+      return [].concat(nextsRes[0], root, ...nextsRes.slice(1));
+
+   } else if (type === 'post') { 
+      return [].concat(...nextsRes, root);
+
+   }
+   
 }
 
