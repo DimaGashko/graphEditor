@@ -3,6 +3,7 @@ import Workspace from "../workspace/workspace";
 import { positionedTree } from "../modelComponents/graph/algorithms/positionedTree";
 import Graph from "../modelComponents/graph/graph";
 import Vertex from "../modelComponents/graph/vertex";
+import traversalTree from "../modelComponents/graph/algorithms/traversalTree";
 
 const global = (<any>window);
 
@@ -29,21 +30,9 @@ function setExp(exp: Expression): Expression {
    return exp;
 }
 
-const preorder = (function () { 
-   let tree: Graph<null, Object>;
-
-   return function inorder(exp: Expression): string {
-      tree = exp.tree;
-      return getNext(exp.root);
-   }
-
-   function getNext(root: Vertex<Object>): string { 
-      const nexts = tree.getVVertices(root);
-      if (!nexts.length) return root.targ.toString();
-      
-      return `${root.targ.toString()}${getNext(nexts[0])}${getNext(nexts[1])}`;
-   }
-}());
+function preorder(exp: Expression): string {
+   return traversalTree(exp.tree, exp.root, 'pre').map(v => v.targ).join('');
+}
 
 const inorder = (function () { 
    let tree: Graph<null, Object>;
