@@ -2,7 +2,18 @@ import Graph from "./graph/graph";
 import Vertex from "./graph/vertex";
 import Edge from "./graph/edge";
 
+/**
+ * Вершина в дереве выражения. 
+ * Является обобщением операндов и операторов
+ * 
+ * @class
+ */
 export class NodeExp {
+   /**
+    * 
+    * @param type тип вершини - оператор или операнд
+    * @param val значение
+    */
    constructor(
       public readonly type: 'operand' | 'operator',
       public readonly val: number | Operator,
@@ -15,7 +26,16 @@ export class NodeExp {
    }
 }
 
+/**
+ * Оператор
+ * @class
+ */
 class Operator { 
+   /**
+    * @param name имя оператора (что используется в выражении)
+    * @param precedence приоритет
+    * @param call функция вызова оператора
+    */
    constructor(
       public readonly name: string,
       public readonly precedence: number,
@@ -26,19 +46,21 @@ class Operator {
 
    public toString() { 
       return this.name;
-      
    }
-
 }
 
 /**
  * Математическое уравнение 
  * 
- * const exp = new Expression("2+3*6");
- * ext.strExt //"2+3*6"
- * exp.res //20
- * exp.tree //дерево выражения
- * exp.root //вершина дерева выражения
+  ```javascript
+  const exp = new Expression("2+3*6");
+  ext.strExt //"2+3*6"
+  exp.res //20
+  exp.tree //дерево выражения
+  exp.root //вершина дерева выражения
+  ```
+ * 
+ * @class
  */
 export default class Expression { 
    private _tree = new Graph<null, NodeExp>();
@@ -73,13 +95,13 @@ export default class Expression {
       return this._root;
    }
 
-   public toString() { 
-      return `${this._strExp} = ${this._res}`;
-   }
-
    private parse() { 
       this._root = this._parseNext(this._strExp);
       this._tree.addVertex(this._root);
+   }
+
+   private calc() { 
+      this._res = this._calcNext(this._root);
    }
 
    private _parseNext(strExp: string): Vertex<NodeExp> { 
@@ -138,6 +160,16 @@ export default class Expression {
       return operand1;
    }
 
+   /**
+    * Возвращает оператор находящийся на перданной позиции pos
+    * 
+    * @param strExp строка выражения
+    * @param pos позиция на которой ожидается оператор
+    * @param callback коллбек-функция, которая получает новое значение pos
+    * @returns оператор находящийся на перданной позиции pos
+    * 
+    * @private
+    */
    private getOperator(strExp: string, pos: number,
       callback: (pos: number) => void): Operator {
     
@@ -151,6 +183,27 @@ export default class Expression {
       }
    }
 
+   /**
+    * Возвращает операнд находящийся на перданной позиции pos
+    * 
+    * Если оператор предствален просто числом, возвращает его (в виде строки)
+    *
+    * Если оператор заключен в скобки, то возвращается все что находится 
+    * между ними
+    * 
+     ``` javascript
+      this.getOperand('25+36', 0, (_pos => {})) // '25'
+      this.getOperand('(25+36)+5', (_pos => {})) // '25+36'
+     ```
+    * В обоих случаях новый pos указывает на последний "+"
+    * 
+    * @param strExp строка выражения
+    * @param pos позиция на которой ожидается операнд
+    * @param callback коллбэк-функция, которая получает новое значение pos
+    * @returns операнд находящийся на перданной позиции pos
+    * 
+    * @private
+    */
    private getOperand(strExp: string, pos: number,
       callback: (pos: number) => void): string { 
       
@@ -175,6 +228,7 @@ export default class Expression {
 
    }
 
+   // Возвращает индекс конца числа
    private getEndNumber(strExp: string, pos: number) { 
       for (pos; pos < strExp.length; pos++) { 
          if (strExp[pos] !== '.' && isNaN(+strExp[pos])) return pos;
@@ -192,6 +246,7 @@ export default class Expression {
       return res;
    }
 
+   // Возвращает интекс закрывающейся скобки (к предыдущей открывающейся)
    private getCloseIndex(strExp: string, pos: number) { 
       let open = 0;
 
@@ -204,10 +259,6 @@ export default class Expression {
       }
 
       return -1;
-   }
-
-   private calc() { 
-      this._res = this._calcNext(this._root);
    }
 
    private _calcNext(vertex: Vertex<NodeExp>): number { 
@@ -249,4 +300,8 @@ export default class Expression {
 
       return hash;
    }());
+
+   public toString() { 
+      return `${this._strExp} = ${this._res}`;
+   }
 }
