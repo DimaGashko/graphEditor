@@ -6,7 +6,7 @@ import traversalTree from "./traversalTree";
 
 export default function traversalGraph<V=Object>(
    graph: Graph<null, Object>,
-   type: 'pre' | 'in' | 'post'
+   type: 'pre' | 'in' | 'post' = 'pre'
 ): Vertex<V>[] {
    
    const mst = getMST(graph);

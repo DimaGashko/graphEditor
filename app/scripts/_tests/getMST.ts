@@ -3,6 +3,7 @@ import Workspace from "../workspace/workspace";
 import getMST from "../modelComponents/graph/algorithms/getMST";
 import Vector from "../modelComponents/vector";
 import traversalTree from "../modelComponents/graph/algorithms/traversalTree";
+import traversalGraph from "../modelComponents/graph/algorithms/traversalGraph";
 
 const global = <any>window;
 
@@ -28,4 +29,5 @@ export default function demoGetMST() {
 
    global.graph = graph;
    global.traversalTree = traversalTree;
+   global.traversalGraph = traversalGraph;
 }
