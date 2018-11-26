@@ -11,7 +11,7 @@ workspace.start();
 
 export default function demoCalcExp() {
    let exp = new Expression("2.2+4*7+6.3*4/7/4%(5&6|7^8)")
-   //exp = new Expression("2+3*4+5");
+   exp = new Expression("2+3*4+5");
    global.exp = setExp(exp);
    global.Expression = Expression;
    
@@ -19,7 +19,7 @@ export default function demoCalcExp() {
       return global.exp = setExp(exp);
    });
 
-   global.preorde = (() => preorder(exp));
+   global.preorder = (() => preorder(exp));
    global.inorder = (() => inorder(exp));
    global.postorder = (() => postorder(exp));
 }
@@ -41,7 +41,7 @@ const preorder = (function () {
       const nexts = tree.getVVertices(root);
       if (!nexts.length) return root.targ.toString();
       
-      return `(${getNext(nexts[0])}${root.targ.toString()}${getNext(nexts[1])})`;
+      return `${root.targ.toString()}${getNext(nexts[0])}${getNext(nexts[1])}`;
    }
 }());
 
@@ -61,7 +61,19 @@ const inorder = (function () {
    }
 }());
 
-function postorder(exp: Expression): string { 
-   return '';
-}
+const postorder = (function () { 
+   let tree: Graph<null, Object>;
+
+   return function inorder(exp: Expression): string {
+      tree = exp.tree;
+      return getNext(exp.root);
+   }
+
+   function getNext(root: Vertex<Object>): string { 
+      const nexts = tree.getVVertices(root);
+      if (!nexts.length) return root.targ.toString();
+      
+      return `${getNext(nexts[0])}${getNext(nexts[1])}${root.targ.toString()}`;
+   }
+}());
 
