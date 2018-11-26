@@ -5,7 +5,7 @@ import Graph from "../modelComponents/graph/graph";
 import Vertex from "../modelComponents/graph/vertex";
 import traversalTree from "../modelComponents/graph/algorithms/traversalTree";
 
-const global = (<any>window);
+const global = <any>window;
 
 const workspace = new Workspace(document.querySelector('.workspace'));
 workspace.start();
